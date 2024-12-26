@@ -3,6 +3,10 @@ import bcrypt from "bcrypt";
 
 // Define the User Schema
 const userSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    unique: true,
+  },
   username: {
     type: String, // Stores the username of the user
     required: true, // Ensures the username field is mandatory
@@ -17,6 +21,15 @@ const userSchema = new mongoose.Schema({
     type: String, // Stores the user's password (hashed before saving)
     required: true, // Ensures the password field is mandatory
   },
+  avatar: {
+    type: String,
+    required: true,
+  },
+  channels: [
+    {
+      type: String,
+    },
+  ],
 });
 
 // Hash password before saving the user document to the database
@@ -31,6 +44,6 @@ userSchema.pre("save", async function (next) {
 });
 
 // Create a User model using the schema
-const userModel = mongoose.model('User', userSchema);
+const userModel = mongoose.model("User", userSchema);
 
 export default userModel;

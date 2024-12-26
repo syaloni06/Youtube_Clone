@@ -1,6 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import { authRoutes } from "./Routes/authRoutes.js";
+import { channelRoutes } from "./Routes/channelRoutes.js";
+import { videoRoutes } from "./Routes/videoRoutes.js";
+
 const app = new express();
 
 // Middleware to parse incoming JSON requests
@@ -20,6 +23,8 @@ app.listen(5100, () => {
 });
 
 authRoutes(app);    // Handles authentication-related routes
+channelRoutes(app);
+videoRoutes(app);
 
 // Connect to MongoDB database
 mongoose.connect("mongodb://localhost:27017/youtubeCloneDB");

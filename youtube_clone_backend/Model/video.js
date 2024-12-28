@@ -13,6 +13,10 @@ const commentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    userAvatar: {
+        type: String,
+        required: true
+    },
     text: {
         type: String,
         required: true
@@ -46,6 +50,10 @@ const videoSchema = new mongoose.Schema({
         minlength: 10
     },
     channelId: {
+        type: String,
+        required: true
+    },
+    channelLogo: {
         type: String,
         required: true
     },

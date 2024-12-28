@@ -3,10 +3,10 @@ import { v4 as uuidv4 } from "uuid";
 
 export const createChannel = async (req, res) => {
   try {
-    const { channelName, owner, description, channelBanner, subscribers } = req.body;
+    const { channelName, owner, description, channelBanner, channelLogo } = req.body;
 
     // Check if the channel name or ID already exists
-    const existingChannel = await channelModel.findOne(channelName);
+    const existingChannel = await channelModel.findOne({channelName});
     if (existingChannel) {
       return res
         .status(400)
@@ -20,6 +20,7 @@ export const createChannel = async (req, res) => {
       owner: owner,
       description: description,
       channelBanner: channelBanner,
+      channelLogo: channelLogo,
       subscribers:  Math.floor(Math.random() * 1000) + 1 
     });
 

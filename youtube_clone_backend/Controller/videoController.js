@@ -9,6 +9,7 @@ export const createVideo = async (req, res) => {
       thumbnailUrl,
       description,
       channelId,
+      channelLogo,
       uploader,
       uploadDate,
     } = req.body;
@@ -20,6 +21,7 @@ export const createVideo = async (req, res) => {
       thumbnailUrl: thumbnailUrl,
       description: description,
       channelId: channelId,
+      channelLogo: channelLogo,
       uploader: uploader,
       views: Math.floor(Math.random() * 10000) + 1,
       likes: Math.floor(Math.random() * 1000) + 1,

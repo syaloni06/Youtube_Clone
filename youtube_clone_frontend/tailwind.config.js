@@ -5,7 +5,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      scale: {
+        '85': '0.85',
+      },
+      colors: {
+        'youtube-red': '#ff1919',
+      },
+      fontWeight: {
+        'semi-bolder': '650',
+      }
+    },
   },
   plugins: [],
 }

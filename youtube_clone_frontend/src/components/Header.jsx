@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom"; // Importing Link and useLocation from react-router-dom for navigation and accessing the current route
 import { FaYoutube } from "react-icons/fa"; // Importing Shopify icon
 import { AiOutlineMenu } from "react-icons/ai";
-import { FaCartShopping } from "react-icons/fa6"; // Importing Cart icon
-import { FaSearch } from "react-icons/fa"; // Importing Search icon
+import { CiSearch } from "react-icons/ci"; // Importing Search icon
+import { BsPerson } from "react-icons/bs";
 import { useContext } from "react"; // Importing useContext to access context data
 import { SearchContext } from "../utils/SearchContext.jsx"; // Importing SearchContext for managing search term state
 import { SearchFlagContext } from "../utils/SearchFlagContext.jsx"; // Importing SearchFlagContext to handle search visibility
@@ -59,58 +59,34 @@ const Header = () => {
         </div>
         {/* Search bar for the home page */}
         {location.pathname === "/" && (
-          <div className="relative w-auto md:w-3/6 self-center">
-            {/* Input Field */}
-            <input
-              className="rounded-full p-3 h-10 border border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 md:w-full px-4 pr-12 shadow-sm"
-              type="text"
-              name="task"
-              value={searchTerm}
-              id="task"
-              placeholder="Search"
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-
-            {/* Search Button */}
-            <button
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 rounded-full h-10 w-10 flex items-center justify-center hover:bg-gray-100"
-              onClick={searchProduct}
-            >
-              <FaSearch className="text-lg" />
-            </button>
-          </div>
-        )}
-        {/* Cart and other navigation links */}
-        <div className="flex items-center space-x-4 sm:space-x-10 mr-4 lg:mr-8 ">
-          {/* Cart link for small screens */}
-          <Link to={"/cart"} className="flex sm:hidden text-lg">
-            <FaCartShopping className="text-2xl" />
-            {/* Cart icon */}
-            {/* Display cart item count if items exist */}
-            {/* {cartItems.length > 0 && (
-              <span className="absolute top-1 right-1 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-                {cartItems.length}
-              </span>
-            )} */}
-          </Link>
-          {/* Cart link for larger screens */}
-          <div className="hidden sm:flex space-x-3 sm:space-x-6 relative">
-            <Link to={"/cart"} className="text-lg sm:text-2xl hover:scale-110">
-              <div className="cursor-pointer font-semibold flex items-center gap-1 relative">
-                <p className="self-start">Cart</p>
-                {/* Cart Icon */}
-                <FaCartShopping className="self-center text-2xl" />
-
-                {/* Cart Number */}
-                {/* {cartItems.length > 0 && (
-                  <span className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-                    {cartItems.length}
-                  </span>
-                )} */}
-              </div>
-            </Link>
-          </div>
+          <div className="flex items-center rounded-full shadow-sm w-auto md:w-3/6 self-center">
+          {/* Input Field */}
+          <input
+            className="flex-grow rounded-l-full py-2 px-4 text-gray-700 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 h-10"
+            type="text"
+            name="task"
+            value={searchTerm}
+            id="task"
+            placeholder="Search"
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        
+          {/* Search Button */}
+          <button
+            className="bg-gray-50 p-2 rounded-r-full h-10 w-16 border border-gray-300 flex items-center justify-center hover:bg-gray-200"
+            onClick={searchProduct}
+          >
+            <CiSearch className=" text-black text-2xl" />
+          </button>
         </div>
+        
+        )}
+        <button className="border border-gray-300 rounded-full h-10 mr-7 self-center">
+        <div className="flex mx-4 gap-2">
+          <BsPerson className="self-center font-semibold text-blue-500 text-2xl rounded-full border-2 p-1 border-blue-500" />
+          <div className="text-blue-500 self-center font-semibold">Sign in</div>
+        </div>
+        </button>
       </div>
     </>
   );

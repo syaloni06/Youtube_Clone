@@ -2,7 +2,6 @@ import { Outlet } from "react-router-dom"; // Import Outlet to render nested rou
 import "./App.css"; // Import global CSS for the app's styles
 import Header from "./components/Header"; // Import Header component
 
-
 function App() {
   return (
     <>

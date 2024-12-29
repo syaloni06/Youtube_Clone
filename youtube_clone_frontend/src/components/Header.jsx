@@ -17,13 +17,13 @@ import { useContext, useState } from "react";
 import { SearchContext } from "../utils/SearchContext.jsx";
 import { SearchFlagContext } from "../utils/SearchFlagContext.jsx";
 import useFetch from "../utils/useFetch.js";
-
+import { useNavigate } from "react-router-dom";
 const Header = () => {
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const { searchFlag, setSearchFlag } = useContext(SearchFlagContext);
   const { data } = useFetch("https://dummyjson.com/products?limit=50");
   const location = useLocation();
-
+  const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const searchProduct = () => {
@@ -99,7 +99,7 @@ const Header = () => {
             </button>
           </div>
         )}
-        <button className="border border-gray-300 rounded-full h-10 mr-7 self-center">
+        <button onClick={() => navigate('/signin')} className="border border-gray-300 rounded-full h-10 mr-7 self-center">
           <div className="flex mx-4 gap-2">
             <BsPerson className="self-center font-semibold text-blue-500 text-2xl rounded-full border-2 p-1 border-blue-500" />
             <div className="text-blue-500 self-center font-semibold">

@@ -7,6 +7,7 @@ import "./index.css"; // Import the global CSS styles
 import App from "./App.jsx"; // Import the main App component
 import { createBrowserRouter } from "react-router-dom"; // Import for creating browser-based routing
 import Home from "./components/Home.jsx";
+import SignIn from "./components/SignIn.jsx";
 import NotFound from "./components/NotFound.jsx"; // Import the NotFound component (for handling 404s)
 import { RouterProvider } from "react-router-dom"; // Import RouterProvider to manage routing in the app
 import { SearchProvider } from "./utils/SearchContext.jsx";
@@ -41,6 +42,10 @@ const appRouter = createBrowserRouter([
             <Channel /> {/* Lazy load Cart component */}
           </Suspense>
         ),
+      },
+      {
+        path: "/signin",
+        element: <SignIn />, // Route for the product list
       },
     ],
     errorElement: <NotFound />, // 404 route if an undefined route is accessed

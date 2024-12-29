@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { FaYoutube } from "react-icons/fa";
 import { AiOutlineMenu } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
-import { BsPerson } from "react-icons/bs";
+import { RiAccountCircleLine } from "react-icons/ri";
 import { MdHome } from "react-icons/md";
 import { SiYoutubeshorts } from "react-icons/si";
 import { MdOutlineSubscriptions } from "react-icons/md";
@@ -13,6 +13,17 @@ import { GoVideo } from "react-icons/go";
 import { MdOutlineWatchLater } from "react-icons/md";
 import { AiOutlineLike } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
+import { HiFire } from "react-icons/hi";
+import { RiShoppingBag4Line } from "react-icons/ri";
+import { IoMusicalNotesOutline } from "react-icons/io5";
+import { PiFilmSlate } from "react-icons/pi";
+import { HiOutlineStatusOnline } from "react-icons/hi";
+import { SiYoutubegaming } from "react-icons/si";
+import { MdOutlineNewspaper } from "react-icons/md";
+import { GoTrophy } from "react-icons/go";
+import { PiGraduationCapLight } from "react-icons/pi";
+import { GiHanger } from "react-icons/gi";
+import { MdPodcasts } from "react-icons/md";
 import { useContext, useState } from "react";
 import { SearchContext } from "../utils/SearchContext.jsx";
 import { SearchFlagContext } from "../utils/SearchFlagContext.jsx";
@@ -99,10 +110,13 @@ const Header = () => {
             </button>
           </div>
         )}
-        <button onClick={() => navigate('/signin')} className="border border-gray-300 rounded-full h-10 mr-7 self-center">
-          <div className="flex mx-4 gap-2">
-            <BsPerson className="self-center font-semibold text-blue-500 text-2xl rounded-full border-2 p-1 border-blue-500" />
-            <div className="text-blue-500 self-center font-semibold">
+        <button
+          onClick={() => navigate("/signin")}
+          className="flex items-center border border-gray-300 rounded-full h-10 mr-7 self-center hover:bg-blue-100"
+        >
+          <div className="flex p-2 gap-1">
+            <RiAccountCircleLine className="self-center text-blue-600 text-3xl" />
+            <div className="text-blue-600 self-center font-semibold text-lg">
               Sign in
             </div>
           </div>
@@ -265,6 +279,58 @@ const Header = () => {
                   <IoIosArrowDown className="text-2xl text-gray-700" />
                   <span className="ml-6">See More</span>
                 </h2>
+              </ul>
+            </div>
+            <hr className="mx-4" />
+            <div className="mx-4 my-2">
+              <h2 className="flex items-center text-black font-semibold  px-4 py-2 rounded-lg text-lg">
+                Explore
+              </h2>
+              <ul>
+                <li className="flex items-center text-black font-semibold hover:bg-gray-100 px-4 py-2 rounded-lg">
+                  <HiFire className="text-3xl text-black" />
+                  <span className="ml-5">Trending</span>
+                </li>
+                <li className="flex items-center text-black font-semibold hover:bg-gray-100 px-4 py-2 rounded-lg">
+                  <RiShoppingBag4Line className="text-3xl text-black" />
+                  <span className="ml-5">Shopping</span>
+                </li>
+                <li className="flex items-center text-black font-semibold hover:bg-gray-100 px-4 py-3 rounded-lg">
+                  <IoMusicalNotesOutline className="text-2xl text-black" />
+                  <span className="ml-7">Music</span>
+                </li>
+                <li className="flex items-center text-black font-semibold hover:bg-gray-100 px-4 py-2 rounded-lg">
+                  <PiFilmSlate className="text-3xl text-black" />
+                  <span className="ml-6">Films</span>
+                </li>
+                <li className="flex items-center text-black font-semibold hover:bg-gray-100 px-4 py-2 rounded-lg">
+                  <HiOutlineStatusOnline className="text-3xl text-black" />
+                  <span className="ml-6">Live</span>
+                </li>
+                <li className="flex items-center text-black font-semibold hover:bg-gray-100 px-5 py-2 rounded-lg">
+                  <SiYoutubegaming className="text-2xl text-white stroke-black stroke-2" />
+                  <span className="ml-6">Gaming</span>
+                </li>
+                <li className="flex items-center text-black font-semibold hover:bg-gray-100 px-4 py-2 rounded-lg">
+                  <MdOutlineNewspaper className="text-3xl text-black" />
+                  <span className="ml-6">News</span>
+                </li>
+                <li className="flex items-center text-black font-semibold hover:bg-gray-100 px-4 py-2 rounded-lg">
+                  <GoTrophy className="text-3xl text-black" />
+                  <span className="ml-6">Sport</span>
+                </li>
+                <li className="flex items-center text-black font-semibold hover:bg-gray-100 px-4 py-2 rounded-lg">
+                  <PiGraduationCapLight className="text-3xl text-black" />
+                  <span className="ml-5">Courses</span>
+                </li>
+                <li className="flex items-center text-black font-semibold hover:bg-gray-100 px-4 py-2 rounded-lg">
+                  <GiHanger className="text-3xl text-black" />
+                  <span className="ml-6 text-sm">Fashion & beauty</span>
+                </li>
+                <li className="flex items-center text-black font-semibold hover:bg-gray-100 px-4 py-2 rounded-lg">
+                  <MdPodcasts className="text-3xl text-black" />
+                  <span className="ml-6">Podcasts</span>
+                </li>
               </ul>
             </div>
             <hr className="mx-4" />

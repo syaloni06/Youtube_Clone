@@ -13,8 +13,9 @@ import { RouterProvider } from "react-router-dom"; // Import RouterProvider to m
 import { SearchProvider } from "./utils/SearchContext.jsx";
 import { SearchFlagProvider } from "./utils/SearchFlagContext.jsx";
 
+
 // Lazy load the product detail, cart, and checkout components for better performance
-const Video = lazy(() => import("./components/Video.jsx"));
+const VideoDetail = lazy(() => import("./components/VideoDetail.jsx"));
 const Channel = lazy(() => import("./components/Channel.jsx"));
 
 // Define the app's router with different routes and lazy-loaded components
@@ -31,7 +32,7 @@ const appRouter = createBrowserRouter([
         path: "/video/:id",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
-            <Video /> {/* Lazy load ProductDetail component */}
+            <VideoDetail /> {/* Lazy load ProductDetail component */}
           </Suspense>
         ),
       },

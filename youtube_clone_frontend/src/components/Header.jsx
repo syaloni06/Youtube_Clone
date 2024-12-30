@@ -37,6 +37,8 @@ import { SearchContext } from "../utils/SearchContext.jsx";
 import { SearchFlagContext } from "../utils/SearchFlagContext.jsx";
 import useFetch from "../utils/useFetch.js";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 const Header = () => {
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const { searchFlag, setSearchFlag } = useContext(SearchFlagContext);
@@ -44,6 +46,8 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const user = useSelector((state) => state.user.data);
+  console.log(user);
 
   const searchProduct = () => {
     const searchedProduct = data.products.filter((product) => {
@@ -118,7 +122,7 @@ const Header = () => {
             </button>
           </div>
         )}
-        <button
+        { user === null ? (<><button
           onClick={() => navigate("/signin")}
           className="flex items-center border border-gray-300 rounded-full h-10 mr-7 self-center hover:bg-blue-100"
         >
@@ -128,7 +132,12 @@ const Header = () => {
               Sign in
             </div>
           </div>
-        </button>
+        </button></>) : (<><button className="flex items-center text-black hover:bg-gray-100 px-3 py-2 rounded-lg">
+                  <img
+                    className="rounded-full w-7 h-7"
+                    src={user.avatar}
+                  />
+                </button></>)}
       </div>
 
       {/* Drawer Overlay */}

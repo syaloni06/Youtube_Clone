@@ -7,6 +7,7 @@ import { RiAccountCircleLine } from "react-icons/ri";
 import { BsPlusLg } from "react-icons/bs";
 import { GoBell } from "react-icons/go";
 import { useContext, useState } from "react";
+import { DrawerContext } from "../utils/DrawerContext.jsx";
 import { SearchContext } from "../utils/SearchContext.jsx";
 import { SearchFlagContext } from "../utils/SearchFlagContext.jsx";
 import useFetch from "../utils/useFetch.js";
@@ -17,6 +18,7 @@ import MenuBar from "./Menubar.jsx";
 const Header = () => {
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const { searchFlag, setSearchFlag } = useContext(SearchFlagContext);
+  const { drawerIsOpen, setDrawerIsOpen} = useContext(DrawerContext);
   const { data } = useFetch("https://dummyjson.com/products?limit=50");
   const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -36,11 +38,13 @@ const Header = () => {
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
+    setDrawerIsOpen(!drawerIsOpen);
   };
 
   const closeDrawer = (e) => {
     if (e.target.id === "drawer-overlay") {
       setIsDrawerOpen(false);
+      setDrawerIsOpen(false);
     }
   };
 
@@ -123,7 +127,7 @@ const Header = () => {
             <>
               <button
                 onClick={() => navigate("/signin")}
-                className="flex items-center border border-gray-300 rounded-full h-10 mr-7 self-center hover:bg-blue-100"
+                className="flex w-full items-center border border-gray-300 rounded-full h-10 mr-7 self-center hover:bg-blue-100"
               >
                 <div className="flex p-2 gap-1">
                   <RiAccountCircleLine className="self-center text-blue-600 text-3xl" />

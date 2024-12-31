@@ -12,6 +12,7 @@ import NotFound from "./components/NotFound.jsx"; // Import the NotFound compone
 import { RouterProvider } from "react-router-dom"; // Import RouterProvider to manage routing in the app
 import { SearchProvider } from "./utils/SearchContext.jsx";
 import { SearchFlagProvider } from "./utils/SearchFlagContext.jsx";
+import { DrawerProvider } from "./utils/DrawerContext.jsx";
 
 
 // Lazy load the product detail, cart, and checkout components for better performance
@@ -58,7 +59,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode> {/* Enables strict mode for additional warnings and checks */}
       <SearchProvider> {/* Wrap the app in the search context provider */}
         <SearchFlagProvider> {/* Wrap the app in the search flag context provider */}
-          <RouterProvider router={appRouter} /> {/* Provide the app's routing */}
+          <DrawerProvider>
+            <RouterProvider router={appRouter} /> {/* Provide the app's routing */}
+          </DrawerProvider>
         </SearchFlagProvider>
       </SearchProvider>
   </StrictMode>

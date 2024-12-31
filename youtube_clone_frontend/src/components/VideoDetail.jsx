@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { FaEye, FaThumbsUp, FaThumbsDown, FaEllipsisV } from "react-icons/fa";
+import { BsThreeDots } from "react-icons/bs";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { BiSolidLike } from "react-icons/bi";
+import { BiDislike } from "react-icons/bi";
+import { PiShareFatLight } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import ReactPlayer from "react-player";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +37,9 @@ const VideoDetail = () => {
           }
         );
         setVideoData(response.data); // Assuming the API returns a single video object
-        const filtervideo = videos.filter((video) => (video.videoId !== videoId.id));
+        const filtervideo = videos.filter(
+          (video) => video.videoId !== videoId.id
+        );
         setFilteredVideo(filtervideo);
         setError(null); // Clear any previous errors
       } catch (err) {
@@ -71,37 +77,45 @@ const VideoDetail = () => {
             </div>
 
             {/* Video Info */}
+            <h1 className="text-2xl font-bold mb-2">{videoData.title}</h1>
             <div className="flex gap-4 mb-6">
               <img
                 src={videoData.channelLogo}
                 alt={videoData.uploader}
-                className="w-16 h-16 rounded-full"
+                className="w-11 h-11 self-center rounded-full"
               />
               <div>
-                <h1 className="text-xl font-bold mb-1">{videoData.title}</h1>
-                <p className="text-gray-600">
-                  Uploaded by {videoData.uploader}
+                <p className="font-semibold text-lg line-clamp-1">
+                  {videoData.uploader}
                 </p>
                 <p className="text-sm text-gray-400">
                   {new Date(videoData.uploadDate).toLocaleDateString()}
                 </p>
               </div>
-            </div>
-
-            {/* Stats */}
-            <div className="flex gap-6 text-gray-600 mb-6">
-              <div className="flex items-center gap-2">
-                <FaEye className="text-xl" />
-                <span>{videoData.views.toLocaleString()} views</span>
+              <button className="self-center px-4 py-2 bg-black hover:bg-slate-800 text-white font-medium rounded-full shadow-sm transition">
+                <span>Subscribe</span>
+              </button>
+              <div className="flex">
+              <div className="flex items-center my-1 gap-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-l-full cursor-pointer shadow-sm">
+                <button className="flex items-center rounded-r-none gap-2">
+                  <BiSolidLike className="text-2xl" />
+                  <span className="font-medium">{videoData.likes}</span>
+                </button>
               </div>
-              <div className="flex items-center gap-2">
-                <FaThumbsUp className="text-xl" />
-                <span>{videoData.likes.toLocaleString()} likes</span>
+              <div className="h-6 w-px self-center bg-gray-300"></div>
+              <div className="flex items-center my-1 gap-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-r-full cursor-pointer shadow-sm">
+                <button className="flex items-center cursor-pointer">
+                  <BiDislike className="text-2xl" />
+                </button>
               </div>
-              <div className="flex items-center gap-2">
-                <FaThumbsDown className="text-xl" />
-                <span>{videoData.dislikes.toLocaleString()} dislikes</span>
               </div>
+              <button className="flex self-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-black font-medium rounded-full shadow-sm transition">
+                <PiShareFatLight className="text-2xl self-center" />
+                <span>Share</span>
+              </button>
+              <button className="flex self-center p-2 bg-gray-100 hover:bg-gray-200 text-black font-medium rounded-full shadow-sm transition">
+              <BsThreeDots className="text-2xl"/>
+              </button>
             </div>
 
             {/* Description */}
@@ -112,39 +126,44 @@ const VideoDetail = () => {
         )}
       </div>
       <div className="space-y-4">
-  {filteredVideo.map((video) => (
-    <div key={video.id} className="flex gap-4 items-start cursor-pointer" onClick={() => handleVideoClick(video.videoId)}>
-      {/* Video Thumbnail */}
-      <div className="relative">
-        <img
-          src={video.thumbnailUrl}
-          alt={video.title}
-          className="w-44 h-28 rounded-lg"
-        />
-        <span className="absolute bottom-1 right-1 bg-black bg-opacity-75 text-white text-xs px-1 rounded">
-          {video.duration}
-        </span>
-      </div>
+        {filteredVideo.map((video) => (
+          <div
+            key={video.id}
+            className="flex gap-4 items-start cursor-pointer"
+            onClick={() => handleVideoClick(video.videoId)}
+          >
+            {/* Video Thumbnail */}
+            <div className="relative">
+              <img
+                src={video.thumbnailUrl}
+                alt={video.title}
+                className="w-44 h-28 rounded-lg"
+              />
+              <span className="absolute bottom-1 right-1 bg-black bg-opacity-75 text-white text-xs px-1 rounded">
+                {video.duration}
+              </span>
+            </div>
 
-      {/* Video Info */}
-      <div className="flex-1">
-        <h3 className="text-sm font-semibold line-clamp-2">{video.title}</h3>
-        <p className="text-xs text-gray-500 mt-1">{video.channelName}</p>
-        <p className="text-xs text-gray-500">
-          {video.views} views • {video.uploadDate}
-        </p>
-      </div>
+            {/* Video Info */}
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold line-clamp-2">
+                {video.title}
+              </h3>
+              <p className="text-xs text-gray-500 mt-1">{video.channelName}</p>
+              <p className="text-xs text-gray-500">
+                {video.views} views • {video.uploadDate}
+              </p>
+            </div>
 
-      {/* Options Icon */}
-      <div className="ml-auto">
-        <button className="text-gray-400 hover:text-gray-600">
-          <FaEllipsisV />
-        </button>
+            {/* Options Icon */}
+            <div className="ml-auto">
+              <button className="text-gray-400 hover:text-gray-600">
+              <BsThreeDotsVertical />
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
-  ))}
-</div>
-
     </div>
   );
 };

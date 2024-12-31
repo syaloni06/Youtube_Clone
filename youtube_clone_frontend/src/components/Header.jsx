@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaYoutube } from "react-icons/fa";
 import { AiOutlineMenu } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
@@ -9,13 +9,14 @@ import { SearchFlagContext } from "../utils/SearchFlagContext.jsx";
 import useFetch from "../utils/useFetch.js";
 import { useSelector } from "react-redux";
 import SidebarDrawer from "./SidebarDrawer.jsx";
+import MenuBar from "./Menubar.jsx";
 const Header = () => {
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const { searchFlag, setSearchFlag } = useContext(SearchFlagContext);
   const { data } = useFetch("https://dummyjson.com/products?limit=50");
-  const location = useLocation();
   const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State for user menu
   const user = useSelector((state) => state.user.data);
   console.log(user);
 
@@ -36,6 +37,16 @@ const Header = () => {
   const closeDrawer = (e) => {
     if (e.target.id === "drawer-overlay") {
       setIsDrawerOpen(false);
+    }
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen); // Toggle user menu
+  };
+
+  const closeMenu = (e) => {
+    if (e.target.id === "menu-overlay") {
+      setIsMenuOpen(false);
     }
   };
 
@@ -73,7 +84,6 @@ const Header = () => {
           </div>
         </div>
         {/* Search bar for the home page */}
-        {location.pathname === "/" && (
           <div className="flex items-center rounded-full shadow-sm w-auto md:w-3/6 self-center">
             <input
               className="flex-grow rounded-l-full py-2 px-6 text-gray-700 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-10"
@@ -91,7 +101,7 @@ const Header = () => {
               <CiSearch className="text-black text-2xl" />
             </button>
           </div>
-        )}
+        
         {user === null ? (
           <>
             <button
@@ -108,9 +118,13 @@ const Header = () => {
           </>
         ) : (
           <>
-            <button className="flex items-center text-black hover:bg-gray-100 px-3 py-2 rounded-lg">
-              <img className="rounded-full w-9 h-9" src={user.avatar} />
-            </button>
+              {/* MenuBar Component */}
+              <MenuBar
+                isMenuOpen={isMenuOpen}
+                toggleMenu={toggleMenu}
+                closeMenu={closeMenu}
+                user={user}
+              />
           </>
         )}
       </div>

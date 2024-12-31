@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-const Home = () => {
+import { setVideoList } from "../utils/videoSlice";
+const VideoList = () => {
   const [videos, setVideos] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true); // State for loading
   const user = useSelector((state) => state.user.data);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchVideos = async () => {
       setLoading(true);
@@ -22,17 +24,18 @@ const Home = () => {
             },
           });
           setVideos(response.data); // Assuming the API returns an array of videos
+          dispatch(setVideoList(response.data));
           setError(null); // Clear any previous errors
         }
       } catch (err) {
         console.error(err);
-        setError("Failed to fetch videos. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchVideos();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const handleVideoClick = (videoId) => {
@@ -52,13 +55,14 @@ const Home = () => {
             {videos.map((video) => (
               <div
                 key={video._id}
-                className="bg-white overflow-hidden w-full sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)]"
+                className="bg-white overflow-hidden w-full sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)] cursor-pointer"
+                onClick={() => handleVideoClick(video.videoId)} // Handle click event to navigate
               >
                 <img
                   src={video.thumbnailUrl}
                   alt={video.title}
                   className="w-full h-56 rounded-xl cursor-pointer"
-                  onClick={() => handleVideoClick(video.videoId)} // Handle click event to navigate
+
                 />
                 <div className="px-1 py-2">
                   <div className="flex">
@@ -91,4 +95,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default VideoList;

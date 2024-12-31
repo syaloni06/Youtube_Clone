@@ -6,7 +6,7 @@ import { createRoot } from "react-dom/client"; // Import for creating the React 
 import "./index.css"; // Import the global CSS styles
 import App from "./App.jsx"; // Import the main App component
 import { createBrowserRouter } from "react-router-dom"; // Import for creating browser-based routing
-import Home from "./components/Home.jsx";
+import VideoList from "./components/VideoList.jsx";
 import SignIn from "./components/SignIn.jsx";
 import NotFound from "./components/NotFound.jsx"; // Import the NotFound component (for handling 404s)
 import { RouterProvider } from "react-router-dom"; // Import RouterProvider to manage routing in the app
@@ -26,7 +26,7 @@ const appRouter = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />, // Route for the product list
+        element: <VideoList />, // Route for the product list
       },
       {
         path: "/video/:id",

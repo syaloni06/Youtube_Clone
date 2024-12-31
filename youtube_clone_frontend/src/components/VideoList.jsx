@@ -51,7 +51,7 @@ const VideoList = () => {
         {loading ? (
           <p className="text-center text-gray-500">Loading videos...</p>
         ) : videos.length > 0 ? (
-          <div className="flex flex-wrap justify-evenly gap-3">
+          <div className="flex flex-wrap justify-evenly gap-y-10">
             {videos.map((video) => (
               <div
                 key={video._id}
@@ -65,23 +65,23 @@ const VideoList = () => {
 
                 />
                 <div className="px-1 py-2">
-                  <div className="flex">
+                  <div className="flex gap-4">
                     <img
                       src={video.channelLogo}
                       alt={video.uploader}
-                      className="w-10 h-10 rounded-full"
+                      className="w-10 h-10 my-1 rounded-full"
                     />
-                    <div className="m-3">
-                      <h3 className="font-bold text-lg line-clamp-2">
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg line-clamp-2">
                         {video.title}
                       </h3>
-                      <span className="truncate">{video.uploader}</span>
-                      <div className="text-gray-500 text-sm mt-2">
+                      <span className="truncate text-gray-500">{video.uploader}</span>
+                      <div className="text-gray-600 text-sm">
                         {video.views.toLocaleString()} views •{" "}
-                        {new Date(video.uploadDate).toLocaleDateString()}
+                        {new Date(video.uploadDate).toLocaleTimeString()}
                       </div>
                     </div>
-                    <BsThreeDotsVertical />
+                    <BsThreeDotsVertical className="ml-auto text-xl my-2"/>
                   </div>
                 </div>
               </div>

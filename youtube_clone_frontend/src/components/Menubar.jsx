@@ -1,9 +1,6 @@
 /* eslint-disable react/prop-types */
-
-
 import { RiAccountCircleLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-
 
 const MenuBar = ({ toggleMenu, isMenuOpen, user }) => {
   const navigate = useNavigate();

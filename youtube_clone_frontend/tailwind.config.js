@@ -18,6 +18,7 @@ export default {
       },
       width: {
         '66': '270px',
+        '18': '70px',
       }
     },
   },

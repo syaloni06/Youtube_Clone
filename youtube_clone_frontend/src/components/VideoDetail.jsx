@@ -9,7 +9,8 @@ import { PiShareFatLight } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import ReactPlayer from "react-player";
 import { useNavigate } from "react-router-dom";
-
+import { FaCheckCircle } from "react-icons/fa";
+import Comment from "./Comment";
 const VideoDetail = () => {
   const videoId = useParams(); // Get the videoId from the URL
   const [videoData, setVideoData] = useState(null);
@@ -55,7 +56,7 @@ const VideoDetail = () => {
 
   return (
     <div className="flex my-16 mx-24">
-      <div className="flex flex-col w-3/5 mr-6 rounded-lg">
+      <div className="flex flex-col w-4/5 mr-6 rounded-lg">
         {/* Error Message */}
         {error && <p className="text-red-500 text-center">{error}</p>}
 
@@ -78,48 +79,61 @@ const VideoDetail = () => {
 
             {/* Video Info */}
             <h1 className="text-2xl font-bold mb-2">{videoData.title}</h1>
-            <div className="flex gap-4 mb-6">
+            <div className="flex gap-y-4 mb-6">
               <img
                 src={videoData.channelLogo}
                 alt={videoData.uploader}
                 className="w-11 h-11 self-center rounded-full"
               />
-              <div>
-                <p className="font-semibold text-lg line-clamp-1">
+
+              <div className="w-1/2">
+                <p className="font-semibold ml-4 text-lg line-clamp-1">
                   {videoData.uploader}
                 </p>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm ml-4 text-gray-400">
                   {new Date(videoData.uploadDate).toLocaleDateString()}
                 </p>
               </div>
-              <button className="self-center px-4 py-2 bg-black hover:bg-slate-800 text-white font-medium rounded-full shadow-sm transition">
+              <FaCheckCircle className="text-3xl text-zinc-600" />
+              <button className="self-center ml-4 px-4 py-2 bg-black hover:bg-slate-800 text-white font-medium rounded-full shadow-sm transition">
                 <span>Subscribe</span>
               </button>
-              <div className="flex">
-              <div className="flex items-center my-1 gap-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-l-full cursor-pointer shadow-sm">
-                <button className="flex items-center rounded-r-none gap-2">
-                  <BiSolidLike className="text-2xl" />
-                  <span className="font-medium">{videoData.likes}</span>
+              <div className="flex justify-end w-full gap-x-2">
+                <div className="flex">
+                  <div className="flex items-center my-1 gap-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-l-full cursor-pointer shadow-sm">
+                    <button className="flex items-center rounded-r-none gap-2">
+                      <BiSolidLike className="text-2xl" />
+                      <span className="font-medium">{videoData.likes}</span>
+                    </button>
+                  </div>
+                  <div className="h-6 w-px self-center bg-gray-300"></div>
+                  <div className="flex items-center my-1 gap-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-r-full cursor-pointer shadow-sm">
+                    <button className="flex items-center cursor-pointer">
+                      <BiDislike className="text-2xl" />
+                    </button>
+                  </div>
+                </div>
+                <button className="flex self-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-black font-medium rounded-full shadow-sm transition">
+                  <PiShareFatLight className="text-2xl self-center" />
+                  <span>Share</span>
+                </button>
+                <button className="flex self-center p-2 bg-gray-100 hover:bg-gray-200 text-black font-medium rounded-full shadow-sm transition">
+                  <BsThreeDots className="text-2xl text-gray-800" />
                 </button>
               </div>
-              <div className="h-6 w-px self-center bg-gray-300"></div>
-              <div className="flex items-center my-1 gap-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-r-full cursor-pointer shadow-sm">
-                <button className="flex items-center cursor-pointer">
-                  <BiDislike className="text-2xl" />
-                </button>
-              </div>
-              </div>
-              <button className="flex self-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-black font-medium rounded-full shadow-sm transition">
-                <PiShareFatLight className="text-2xl self-center" />
-                <span>Share</span>
-              </button>
-              <button className="flex self-center p-2 bg-gray-100 hover:bg-gray-200 text-black font-medium rounded-full shadow-sm transition">
-              <BsThreeDots className="text-2xl"/>
-              </button>
             </div>
 
             {/* Description */}
-            <p className="text-gray-700 mb-4">{videoData.description}</p>
+            <div className="text-black bg-gray-100 p-3 rounded-xl mb-4">
+              <div className="flex gap-x-2">
+                <div className="font-semibold">{videoData.views} views</div>
+                <div className="font-semibold">
+                  {new Date(videoData.uploadDate).getDay()} days ago
+                </div>
+              </div>
+              {videoData.description}
+            </div>
+            <Comment videoId={videoId}/>
           </>
         ) : (
           <p className="text-center text-gray-500">No video details found.</p>
@@ -146,19 +160,21 @@ const VideoDetail = () => {
 
             {/* Video Info */}
             <div className="flex-1">
-              <h3 className="text-sm font-semibold line-clamp-2">
+              <h3 className="font-semibold line-clamp-2">
                 {video.title}
               </h3>
-              <p className="text-xs text-gray-500 mt-1">{video.channelName}</p>
+              <div className="flex text-sm text-gray-500 font-medium mt-1 line-clamp-1">
+                  {video.uploader}
+                  <FaCheckCircle className="self-center text-xs text-zinc-500"/>
+                </div>
               <p className="text-xs text-gray-500">
                 {video.views} views • {video.uploadDate}
               </p>
             </div>
-
             {/* Options Icon */}
             <div className="ml-auto">
               <button className="text-gray-400 hover:text-gray-600">
-              <BsThreeDotsVertical />
+                <BsThreeDotsVertical />
               </button>
             </div>
           </div>

@@ -84,7 +84,7 @@ const VideoList = () => {
                         </span>
                         <div className="text-gray-600 text-sm">
                           {video.views.toLocaleString()} views •{" "}
-                          {new Date(video.uploadDate).toLocaleTimeString()}
+                          {new Date(video.uploadDate).getDay()} days ago
                         </div>
                       </div>
                       <BsThreeDotsVertical className="ml-auto text-xl my-2" />

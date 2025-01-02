@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { RiAccountCircleLine } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { MdOutlineSwitchAccount } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
@@ -56,12 +56,12 @@ const MenuBar = ({ toggleMenu, isMenuOpen, user }) => {
                   <p className=" font-medium text-base">
                     @{user?.username || "User ID"}
                   </p>
-                  <a
-                    href="/your-channel"
+                  <Link
+                    to={`/channel/${user.channelId}`}
                     className="text-blue-500 font-medium text-sm"
                   >
                     View your channel
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="mt-2 max-h-[70vh] scrollbar-hide overflow-y-auto">

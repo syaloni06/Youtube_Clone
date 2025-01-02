@@ -44,7 +44,6 @@ const VideoList = () => {
     // Navigate to the video detail page when a video is clicked
     navigate(`/video/${videoId}`);
   };
-  console.log(drawerIsOpen);
   return (
     <>
       <div className={`transition-all duration-300 ${

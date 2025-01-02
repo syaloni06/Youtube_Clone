@@ -10,32 +10,21 @@ import { useContext, useState } from "react";
 import { DrawerContext } from "../utils/DrawerContext.jsx";
 import { SearchContext } from "../utils/SearchContext.jsx";
 import { SearchFlagContext } from "../utils/SearchFlagContext.jsx";
-import useFetch from "../utils/useFetch.js";
 import { useSelector } from "react-redux";
 import SidebarDrawer from "./SidebarDrawer.jsx";
 import MenuBar from "./Menubar.jsx";
+import { VideoListContext } from "../utils/VideoListContext.jsx";
 
 const Header = () => {
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const { searchFlag, setSearchFlag } = useContext(SearchFlagContext);
+  const { setSearchedVideoList } = useContext(VideoListContext);
   const { drawerIsOpen, setDrawerIsOpen } = useContext(DrawerContext);
-  const { data } = useFetch("https://dummyjson.com/products?limit=50");
   const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for user menu
   const user = useSelector((state) => state.user.data);
-  console.log(user);
-
-  const searchProduct = () => {
-    const searchedProduct = data.products.filter((product) => {
-      const matchesSearch = searchTerm
-        ? product.title?.toLowerCase().includes(searchTerm.toLowerCase())
-        : true;
-      return matchesSearch;
-    });
-    console.log(searchedProduct);
-  };
-
+  const videos = useSelector((state) => state.videos.data);
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
     setDrawerIsOpen(!drawerIsOpen);
@@ -57,7 +46,29 @@ const Header = () => {
       setIsMenuOpen(false);
     }
   };
-
+  const searchVideos = () => {
+    const searchedVideo = videos.filter((video) => {
+      if (!searchTerm || searchTerm.trim() === "") return true; // If no search term, return all videos
+  
+      // Split the search term into individual words
+      const searchWords = searchTerm.toLowerCase().split(" ").filter((word) => word.trim() !== "");
+  
+      // Check if any word matches either the title, description, or uploader
+      const matchesSearch = searchWords.some((word) =>
+        (video.title?.toLowerCase().includes(word) || 
+         video.description?.toLowerCase().includes(word) || 
+         video.uploader?.toLowerCase().includes(word))
+      );
+  
+      return matchesSearch;
+    });
+  
+    // Update the video list with filtered videos
+    setSearchedVideoList(searchedVideo);
+    navigate("/");
+  };
+  
+  
   return (
     <>
       <div className="flex justify-between bg-white top-0 fixed w-full z-40 h-16">
@@ -105,7 +116,7 @@ const Header = () => {
             />
             <button
               className="bg-gray-50 p-3 rounded-r-full h-10 w-18 border border-gray-300 flex items-center justify-center hover:bg-gray-200"
-              onClick={searchProduct}
+              onClick={searchVideos}
             >
               <CiSearch className="text-black text-2xl" />
             </button>

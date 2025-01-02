@@ -84,7 +84,7 @@ const Channel = () => {
                   <FaCheckCircle className="text-sm self-center" />
                 </h2>
                 <div className="flex font-medium mt-3 text-gray-500">
-                  <span className="text-black">@{channelData.owner}</span>
+                  <span className="text-black">@{user.username}</span>
                   <LuDot className="self-center" />
                   <span>{channelData.subscribers} subscribers</span>
                   <LuDot className="self-center" />

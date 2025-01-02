@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import ReactPlayer from "react-player";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
+import { LuDot } from "react-icons/lu";
 import Comment from "./Comment";
 const VideoDetail = () => {
   const videoId = useParams(); // Get the videoId from the URL
@@ -163,7 +164,9 @@ const VideoDetail = () => {
               </div>
               <div className="flex gap-x-2 text-sm text-gray-500 font-medium">
                 <div className="">{video.views} views</div>
-                <div className="">
+                
+                <div className="flex">
+                <LuDot className="self-center text-lg"/>
                   {new Date(video.uploadDate).getDay()} days ago
                 </div>
               </div>

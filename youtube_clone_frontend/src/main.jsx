@@ -13,6 +13,7 @@ import { RouterProvider } from "react-router-dom"; // Import RouterProvider to m
 import { SearchProvider } from "./utils/SearchContext.jsx";
 import { SearchFlagProvider } from "./utils/SearchFlagContext.jsx";
 import { DrawerProvider } from "./utils/DrawerContext.jsx";
+import { VideoListProvider } from "./utils/VideoListContext.jsx";
 
 
 // Lazy load the product detail, cart, and checkout components for better performance
@@ -57,6 +58,7 @@ const appRouter = createBrowserRouter([
 // Render the root of the React app
 createRoot(document.getElementById("root")).render(
   <StrictMode> {/* Enables strict mode for additional warnings and checks */}
+    <VideoListProvider>
       <SearchProvider> {/* Wrap the app in the search context provider */}
         <SearchFlagProvider> {/* Wrap the app in the search flag context provider */}
           <DrawerProvider>
@@ -64,5 +66,6 @@ createRoot(document.getElementById("root")).render(
           </DrawerProvider>
         </SearchFlagProvider>
       </SearchProvider>
+    </VideoListProvider>
   </StrictMode>
 );

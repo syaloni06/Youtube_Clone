@@ -5,14 +5,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setVideoList } from "../utils/videoSlice";
 import { DrawerContext } from "../utils/DrawerContext";
+import { VideoListContext } from "../utils/VideoListContext";
+import { SearchFlagContext } from "../utils/SearchFlagContext";
+import { SearchContext } from "../utils/SearchContext";
+
 const VideoList = () => {
-  const [videos, setVideos] = useState([]);
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true); // State for loading
   const { drawerIsOpen } = useContext(DrawerContext);
   const user = useSelector((state) => state.user.data);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { searchedVideoList, setSearchedVideoList } = useContext(VideoListContext);
+  const { searchFlag } = useContext(SearchFlagContext);
+  const { searchTerm } = useContext(SearchContext);
+
   useEffect(() => {
     const fetchVideos = async () => {
       setLoading(true);
@@ -25,7 +33,7 @@ const VideoList = () => {
               Authorization: token, // Pass token in the Authorization header
             },
           });
-          setVideos(response.data); // Assuming the API returns an array of videos
+          setSearchedVideoList(response.data);
           dispatch(setVideoList(response.data));
           setError(null); // Clear any previous errors
         }
@@ -38,7 +46,7 @@ const VideoList = () => {
 
     fetchVideos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, searchFlag, searchTerm.length === 0]);
 
   const handleVideoClick = (videoId) => {
     // Navigate to the video detail page when a video is clicked
@@ -46,17 +54,19 @@ const VideoList = () => {
   };
   return (
     <>
-      <div className={`transition-all duration-300 ${
-    drawerIsOpen ? "ml-40 flex flex-shrink" : "ml-0"
-  }`}>
+      <div
+        className={`transition-all duration-300 ${
+          drawerIsOpen ? "ml-40 flex flex-shrink" : "ml-0"
+        }`}
+      >
         <main className="container ml-24 mt-12 py-6">
           {error && <p className="text-red-500">{error}</p>}
 
           {loading ? (
             <p className="text-center text-gray-500">Loading videos...</p>
-          ) : videos.length > 0 ? (
+          ) : searchedVideoList.length > 0 ? (
             <div className="flex flex-wrap justify-evenly gap-y-10">
-              {videos.map((video) => (
+              {searchedVideoList.map((video) => (
                 <div
                   key={video._id}
                   className="bg-white overflow-hidden w-full sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)] cursor-pointer"

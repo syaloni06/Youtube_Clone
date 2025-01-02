@@ -49,7 +49,7 @@ const VideoList = () => {
       <div className={`transition-all duration-300 ${
     drawerIsOpen ? "ml-40 flex flex-shrink" : "ml-0"
   }`}>
-        <main className="container ml-24 mt-5 py-6">
+        <main className="container ml-24 mt-12 py-6">
           {error && <p className="text-red-500">{error}</p>}
 
           {loading ? (

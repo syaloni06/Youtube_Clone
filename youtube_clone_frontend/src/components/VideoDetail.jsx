@@ -93,7 +93,7 @@ const VideoDetail = () => {
                 </p>
               </div>
               <FaCheckCircle className="text-3xl text-zinc-600" />
-              <button className="self-center ml-4 px-4 py-2 bg-black hover:bg-slate-800 text-white font-medium rounded-full shadow-sm transition">
+              <button className="self-center ml-4 px-5 py-2 bg-black hover:bg-slate-800 text-white font-medium rounded-full shadow-sm transition">
                 <span>Subscribe</span>
               </button>
               <div className="flex justify-end w-full gap-x-2">

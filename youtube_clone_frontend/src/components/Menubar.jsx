@@ -11,6 +11,12 @@ import { RiShieldUserLine } from "react-icons/ri";
 import { BsMoon } from "react-icons/bs";
 import { IoLanguageOutline } from "react-icons/io5";
 import { TbUserShield } from "react-icons/tb";
+import { CiGlobe } from "react-icons/ci";
+import { FaRegKeyboard } from "react-icons/fa6";
+import { IoSettingsOutline } from "react-icons/io5";
+import { IoHelpCircleOutline } from "react-icons/io5";
+import { MdOutlineFeedback } from "react-icons/md";
+
 const MenuBar = ({ toggleMenu, isMenuOpen, user }) => {
   const navigate = useNavigate();
   return (
@@ -70,10 +76,12 @@ const MenuBar = ({ toggleMenu, isMenuOpen, user }) => {
                     <FaGoogle className="self-center text-2xl" />
                     Google Account
                   </li>
-                  <li className="flex gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
-                    <MdOutlineSwitchAccount className="self-center text-2xl" />
-                    Switch account
-                    <IoIosArrowForward className="self-center justify-items-end text-xl" />
+                  <li className="flex items-center justify-between gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
+                    <div className="flex gap-4">
+                      <MdOutlineSwitchAccount className="self-center text-2xl" />
+                      Switch account
+                    </div>
+                    <IoIosArrowForward className="self-center text-xl" />
                   </li>
                   <li className="flex gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
                     <CiLogin className="self-center text-2xl" />
@@ -93,25 +101,51 @@ const MenuBar = ({ toggleMenu, isMenuOpen, user }) => {
                     <RiShieldUserLine className="self-center text-2xl" />
                     Your data in YouTube
                   </li>
-                  <li className="flex gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
-                    <BsMoon className="self-center text-2xl" />
-                    Appearance: Light
+                  <li className="flex items-center justify-between gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
+                    <div className="flex gap-4">
+                      <BsMoon className="self-center text-2xl" />
+                      Appearance: Light
+                    </div>
+                    <IoIosArrowForward className="self-center text-xl" />
+                  </li>
+                  <li className="flex items-center justify-between gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
+                    <div className="flex gap-4">
+                      <IoLanguageOutline className="self-center text-2xl" />
+                      Language: British English
+                    </div>
+                    <IoIosArrowForward className="self-center text-xl" />
+                  </li>
+                  <li className="flex items-center justify-between gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
+                    <div className="flex gap-4">
+                      <TbUserShield className="self-center text-2xl" />
+                      Restricted Mode: Off
+                    </div>
+                    <IoIosArrowForward className="self-center text-xl" />
+                  </li>
+                  <li className="flex items-center justify-between gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
+                    <div className="flex gap-4">
+                      <CiGlobe className="self-center text-2xl" />
+                      Location: India
+                    </div>
+                    <IoIosArrowForward className="self-center text-xl" />
                   </li>
                   <li className="flex gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
-                    <IoLanguageOutline className="self-center text-2xl" />
-                    Language: British English
-                  </li>
-                  <li className="flex gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
-                    <TbUserShield className="self-center text-2xl" />
-                    Restricted Mode: Off
-                  </li>
-                  <li className="flex gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
-                    <FaGoogle className="self-center text-2xl" />
-                    Location: India
-                  </li>
-                  <li className="flex gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
-                    <FaGoogle className="self-center text-2xl" />
+                    <FaRegKeyboard className="self-center text-2xl" />
                     Keyboard shortcuts
+                  </li>
+                  <hr className="border-b mt-2 border-gray-200" />
+                  <li className="flex gap-4 mt-2 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
+                    <IoSettingsOutline className="self-center text-2xl" />
+                    Settings
+                  </li>
+                  <hr className="border-b mt-2 border-gray-200" />
+                  <li className="flex gap-3 mt-2 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
+                    <IoHelpCircleOutline className="self-center text-2xl" />
+                    Help
+                  </li>
+                  <li className="flex gap-3 mt-2 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
+                    <MdOutlineFeedback className="self-center text-2xl" />
+                    Send feedback
                   </li>
                 </ul>
               </div>

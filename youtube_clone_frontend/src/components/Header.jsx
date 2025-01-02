@@ -18,7 +18,7 @@ import MenuBar from "./Menubar.jsx";
 const Header = () => {
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const { searchFlag, setSearchFlag } = useContext(SearchFlagContext);
-  const { drawerIsOpen, setDrawerIsOpen} = useContext(DrawerContext);
+  const { drawerIsOpen, setDrawerIsOpen } = useContext(DrawerContext);
   const { data } = useFetch("https://dummyjson.com/products?limit=50");
   const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -123,31 +123,31 @@ const Header = () => {
             <GoBell className="text-2xl self-center text-black" />
           </div>
           <div className="mr-7 self-center">
-          {user === null ? (
-            <>
-              <button
-                onClick={() => navigate("/signin")}
-                className="flex w-full items-center border border-gray-300 rounded-full h-10 mr-7 self-center hover:bg-blue-100"
-              >
-                <div className="flex p-2 gap-1">
-                  <RiAccountCircleLine className="self-center text-blue-600 text-3xl" />
-                  <span className="text-blue-600 self-center font-semibold text-lg">
-                    Sign in
-                  </span>
-                </div>
-              </button>
-            </>
-          ) : (
-            <>
-              {/* MenuBar Component */}
-              <MenuBar
-                isMenuOpen={isMenuOpen}
-                toggleMenu={toggleMenu}
-                closeMenu={closeMenu}
-                user={user}
-              />
-            </>
-          )}
+            {user === null ? (
+              <>
+                <button
+                  onClick={() => navigate("/signin")}
+                  className="flex w-full items-center border border-gray-300 rounded-full h-10 mr-7 self-center hover:bg-blue-100"
+                >
+                  <div className="flex p-2 gap-1">
+                    <RiAccountCircleLine className="self-center text-blue-600 text-3xl" />
+                    <span className="text-blue-600 self-center font-semibold text-lg">
+                      Sign in
+                    </span>
+                  </div>
+                </button>
+              </>
+            ) : (
+              <>
+                {/* MenuBar Component */}
+                <MenuBar
+                  isMenuOpen={isMenuOpen}
+                  toggleMenu={toggleMenu}
+                  closeMenu={closeMenu}
+                  user={user}
+                />
+              </>
+            )}
           </div>
         </div>
       </div>

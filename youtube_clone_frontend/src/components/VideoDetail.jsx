@@ -24,6 +24,7 @@ const VideoDetail = () => {
     // Navigate to the video detail page when a video is clicked
     navigate(`/video/${videoId}`);
   };
+
   useEffect(() => {
     const fetchVideo = async () => {
       setLoading(true);
@@ -50,7 +51,6 @@ const VideoDetail = () => {
         setLoading(false);
       }
     };
-
     fetchVideo();
   }, [user?.token, videoId, videos]);
 
@@ -76,7 +76,6 @@ const VideoDetail = () => {
                 className="rounded-2xl overflow-hidden aspect-video"
               />
             </div>
-
             {/* Video Info */}
             <h1 className="text-2xl font-bold mb-2">{videoData.title}</h1>
             <div className="flex gap-y-4 mb-6">
@@ -85,7 +84,6 @@ const VideoDetail = () => {
                 alt={videoData.uploader}
                 className="w-11 h-11 self-center rounded-full"
               />
-
               <div className="w-1/2">
                 <p className="font-semibold ml-4 text-lg line-clamp-1">
                   {videoData.uploader}
@@ -122,7 +120,6 @@ const VideoDetail = () => {
                 </button>
               </div>
             </div>
-
             {/* Description */}
             <div className="text-black bg-gray-100 p-3 rounded-xl mb-4">
               <div className="flex gap-x-2">
@@ -133,13 +130,13 @@ const VideoDetail = () => {
               </div>
               {videoData.description}
             </div>
-            <Comment videoId={videoId}/>
+            <Comment videoId={videoId} />
           </>
         ) : (
           <p className="text-center text-gray-500">No video details found.</p>
         )}
       </div>
-      <div className="space-y-4">
+      <div className="space-y-4 mr-4">
         {filteredVideo.map((video) => (
           <div
             key={video.id}
@@ -151,29 +148,29 @@ const VideoDetail = () => {
               <img
                 src={video.thumbnailUrl}
                 alt={video.title}
-                className="w-44 h-28 rounded-lg"
+                className="w-48 h-28 rounded-lg"
               />
               <span className="absolute bottom-1 right-1 bg-black bg-opacity-75 text-white text-xs px-1 rounded">
                 {video.duration}
               </span>
             </div>
-
             {/* Video Info */}
-            <div className="flex-1">
-              <h3 className="font-semibold line-clamp-2">
-                {video.title}
-              </h3>
+            <div className="flex-1 w-2/3">
+              <h3 className="font-semibold line-clamp-2">{video.title}</h3>
               <div className="flex text-sm text-gray-500 font-medium mt-1 line-clamp-1">
-                  {video.uploader}
-                  <FaCheckCircle className="self-center text-xs text-zinc-500"/>
+                {video.uploader}
+                <FaCheckCircle className="self-center ml-1 text-xs text-zinc-500" />
+              </div>
+              <div className="flex gap-x-2 text-sm text-gray-500 font-medium">
+                <div className="">{video.views} views</div>
+                <div className="">
+                  {new Date(video.uploadDate).getDay()} days ago
                 </div>
-              <p className="text-xs text-gray-500">
-                {video.views} views • {video.uploadDate}
-              </p>
+              </div>
             </div>
             {/* Options Icon */}
-            <div className="ml-auto">
-              <button className="text-gray-400 hover:text-gray-600">
+            <div className="mt-1">
+              <button className="text-xl">
                 <BsThreeDotsVertical />
               </button>
             </div>

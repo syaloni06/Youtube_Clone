@@ -14,7 +14,7 @@ import { SearchProvider } from "./utils/SearchContext.jsx";
 import { SearchFlagProvider } from "./utils/SearchFlagContext.jsx";
 import { DrawerProvider } from "./utils/DrawerContext.jsx";
 import { VideoListProvider } from "./utils/VideoListContext.jsx";
-
+import SignUp from "./components/SignUp.jsx";
 
 // Lazy load the product detail, cart, and checkout components for better performance
 const VideoDetail = lazy(() => import("./components/VideoDetail.jsx"));
@@ -49,6 +49,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/signin",
         element: <SignIn />, // Route for the product list
+      },
+      {
+        path: "signup",
+        element: <SignUp />
       },
     ],
     errorElement: <NotFound />, // 404 route if an undefined route is accessed

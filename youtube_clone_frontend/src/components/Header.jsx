@@ -156,6 +156,7 @@ const Header = () => {
                   toggleMenu={toggleMenu}
                   closeMenu={closeMenu}
                   user={user}
+                  setIsMenuOpen={setIsMenuOpen}
                 />
               </>
             )}

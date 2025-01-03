@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useRef, useEffect, useState } from "react";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
@@ -16,9 +17,27 @@ import { FaRegKeyboard } from "react-icons/fa6";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { MdOutlineFeedback } from "react-icons/md";
+import CreateChannel from "./CreateChannel";
 
-const MenuBar = ({ toggleMenu, isMenuOpen, user }) => {
+const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
   const navigate = useNavigate();
+  const [isCreateChannelOpen, setIsCreateChannelOpen] = useState(false);
+  const menuRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuRef, setIsMenuOpen]);
+
+  
   return (
     <div className="relative flex items-center">
       {user === null ? (
@@ -49,6 +68,7 @@ const MenuBar = ({ toggleMenu, isMenuOpen, user }) => {
           {isMenuOpen && (
             <div
               id="menu-overlay"
+              ref={menuRef}
               className="absolute right-0 top-12 max-h-[90vh] mt-2 w-80 bg-white border border-gray-300 shadow-lg rounded-lg z-50"
             >
               <div className="flex gap-4 p-4 border-b border-gray-200">
@@ -62,15 +82,24 @@ const MenuBar = ({ toggleMenu, isMenuOpen, user }) => {
                   <p className=" font-medium text-base">
                     @{user?.username || "User ID"}
                   </p>
-                  <Link
+                  {user.channelId !== undefined ? (<><Link
                     to={`/channel/${user.channelId}`}
                     className="text-blue-500 font-medium text-sm"
+                    onClick={() => setIsMenuOpen(false)}
                   >
                     View your channel
-                  </Link>
+                  </Link></>) : (<><button
+                    onClick={() => setIsCreateChannelOpen(true)}
+                    className="block text-blue-500 font-medium text-sm mt-2"
+                  >
+                    Create Channel
+                  </button></>)}
+                  
+                  
                 </div>
               </div>
-              <div className="mt-2 max-h-[70vh] scrollbar-hide overflow-y-auto">
+              
+              <div className="mt-2 max-h-[65vh] scrollbar-hide overflow-y-auto">
                 <ul className="">
                   <li className="flex gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
                     <FaGoogle className="self-center text-2xl" />
@@ -97,7 +126,7 @@ const MenuBar = ({ toggleMenu, isMenuOpen, user }) => {
                     Purchases and memberships
                   </li>
                   <hr className="border-b mt-2 border-gray-200" />
-                  <li className="flex gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
+                  <li className="flex gap-4 px-4 mt-2 py-3 text-base hover:bg-gray-100 cursor-pointer">
                     <RiShieldUserLine className="self-center text-2xl" />
                     Your data in YouTube
                   </li>
@@ -151,6 +180,10 @@ const MenuBar = ({ toggleMenu, isMenuOpen, user }) => {
               </div>
             </div>
           )}
+           <CreateChannel 
+           isCreateChannelOpen={isCreateChannelOpen}
+           setIsCreateChannelOpen={setIsCreateChannelOpen}
+           />
         </>
       )}
     </div>

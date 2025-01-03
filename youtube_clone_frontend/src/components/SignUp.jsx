@@ -1,15 +1,17 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux"; // Import useDispatch
-import { setUserInfo } from "../utils/userSlice"; 
-import { Link } from "react-router-dom";
 
-const SignIn = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+const SignUp = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    avatar: "",
+    channelId: ""
+  });
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch(); // Initialize useDispatch
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,10 +20,9 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(formData);
 
     // Validate inputs (basic example)
-    if (!formData.email || !formData.password) {
+    if (!formData.username || !formData.email || !formData.password || !formData.avatar) {
       setError("Please fill in all fields.");
       return;
     }
@@ -30,34 +31,25 @@ const SignIn = () => {
       setError("Please enter a valid email address.");
       return;
     }
+
     try {
       // Send POST request with Axios
       const response = await axios.post(
-        "http://localhost:5100/login",
+        "http://localhost:5100/register",
         formData
       );
 
-      if (response.status === 200) {
-        // console.log("Response:", response.data);
+      if (response.status === 201) {
         setError(""); // Clear errors if successful
 
-        // Save the token or other data to localStorage
-        const { token, user } = response.data; // Assuming the response contains a token and user
-        // localStorage.setItem("authToken", token);
-        // localStorage.setItem("user", JSON.stringify(user));
-        // console.log("Token saved in localStorage");
-
-        // Dispatch the user data to Redux store
-        dispatch(setUserInfo({ token, ...user }));
-
-        // Example: Redirect to dashboard
-        navigate("/");
+        // Example: Redirect to sign-in or dashboard
+        navigate("/signin");
       } else {
         setError("Unexpected response from the server.");
       }
     } catch (err) {
       console.error("Error:", err);
-      setError("Failed to sign in. Please try again.");
+      setError("Failed to sign up. Please try again.");
     }
   };
 
@@ -65,10 +57,27 @@ const SignIn = () => {
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-full max-w-md bg-gray-50 p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Sign In
+          Sign Up
         </h2>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+              placeholder="Enter your username"
+            />
+          </div>
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -86,7 +95,7 @@ const SignIn = () => {
               placeholder="Enter your email"
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-4">
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-700 mb-2"
@@ -103,24 +112,39 @@ const SignIn = () => {
               placeholder="Enter your password"
             />
           </div>
+          <div className="mb-6">
+            <label
+              htmlFor="avatar"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Avatar (Image URL)
+            </label>
+            <input
+              type="text"
+              id="avatar"
+              name="avatar"
+              value={formData.avatar}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+              placeholder="Enter the URL of your avatar image"
+            />
+          </div>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
           >
-            Sign In
+            Sign Up
           </button>
         </form>
         <p className="text-sm text-gray-600 text-center mt-4">
-          Don&apos;t have an account?{" "}
-          <Link 
-          to={"/signup"}
-          className="text-blue-500 hover:underline">
-            Sign up
-          </Link>
+          Already have an account?{" "}
+          <a href="#" className="text-blue-500 hover:underline">
+            Sign in
+          </a>
         </p>
       </div>
     </div>
   );
 };
 
-export default SignIn;
+export default SignUp;

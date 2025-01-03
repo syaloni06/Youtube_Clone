@@ -174,7 +174,6 @@ const Comment = ({ videoId }) => {
           )}
         </div>
       </div>
-
       <div className=" py-2 w-full">
         {comments.length > 0 ? (
           comments.map((cmt) => (
@@ -204,21 +203,45 @@ const Comment = ({ videoId }) => {
                         }))
                       }
                     />
-                    {menuVisible[cmt.commentId] && (
-                      <div className="absolute shadow-lg rounded-lg right-0 z-50">
-                        <button
-                          className="flex items-center mt-2 gap-2 px-8 py-2 text-base hover:bg-gray-200 w-full"
-                          onClick={() => handleEdit(cmt.commentId, cmt.text)}
-                        >
-                          <MdOutlineModeEdit className="text-2xl" /> Edit
-                        </button>
-                        <button
-                          className="flex items-center gap-2 px-8 py-2 mb-2 text-base hover:bg-gray-200 w-full"
-                          onClick={() => handleDelete(cmt.commentId)}
-                        >
-                          <RiDeleteBin6Line className="text-2xl" /> Delete
-                        </button>
-                      </div>
+                    {cmt.userId === user.userId ? (
+                      <>
+                        {menuVisible[cmt.commentId] && (
+                          <div className="absolute shadow-lg rounded-lg right-0 z-50">
+                            <button
+                              className="flex items-center mt-2 gap-2 px-8 py-2 text-base hover:bg-gray-200 w-full"
+                              onClick={() =>
+                                handleEdit(cmt.commentId, cmt.text)
+                              }
+                            >
+                              <MdOutlineModeEdit className="text-2xl" /> Edit
+                            </button>
+                            <button
+                              className="flex items-center gap-2 px-8 py-2 mb-2 text-base hover:bg-gray-200 w-full"
+                              onClick={() => handleDelete(cmt.commentId)}
+                            >
+                              <RiDeleteBin6Line className="text-2xl" /> Delete
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {menuVisible[cmt.commentId] && (
+                          <div className="absolute shadow-lg rounded-lg right-0 z-50">
+                            <button
+                              className="flex items-center gap-2 px-8 py-2 mb-2 text-base hover:bg-gray-200 w-full"
+                              onClick={() =>
+                                setMenuVisible((prev) => ({
+                                  ...prev,
+                                  [cmt.commentId]: false,
+                                }))
+                              }
+                            >
+                              <RiDeleteBin6Line className="text-2xl" /> Report
+                            </button>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>

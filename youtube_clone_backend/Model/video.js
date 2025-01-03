@@ -49,6 +49,10 @@ const videoSchema = new mongoose.Schema({
         required: true,
         minlength: 10
     },
+    category: {
+        type: String,
+        required: true,
+    },
     channelId: {
         type: String,
         required: true
@@ -60,6 +64,11 @@ const videoSchema = new mongoose.Schema({
     uploader: {
         type: String,
         required: true
+    },
+    subscribers: {
+        type: Number,
+        required: true,
+        default: 0
     },
     views: {
         type: Number,

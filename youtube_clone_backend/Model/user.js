@@ -25,11 +25,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  channels: [
-    {
-      type: String,
-    },
-  ],
+  channelId: {
+    type: String,
+    required: false
+  }
 });
 
 // Hash password before saving the user document to the database

@@ -8,6 +8,7 @@ export const createVideo = async (req, res) => {
       title,
       thumbnailUrl,
       description,
+      category,
       channelId,
       channelLogo,
       uploader,
@@ -20,10 +21,12 @@ export const createVideo = async (req, res) => {
       title: title,
       thumbnailUrl: thumbnailUrl,
       description: description,
+      category: category,
       channelId: channelId,
       channelLogo: channelLogo,
       uploader: uploader,
-      views: Math.floor(Math.random() * 10000) + 1,
+      subscribers: Math.floor(Math.random() * 1000000) + 1,
+      views: Math.floor(Math.random() * 100000) + 1,
       likes: Math.floor(Math.random() * 1000) + 1,
       dislikes: Math.floor(Math.random() * 100) + 1,
       uploadDate: uploadDate,
@@ -65,7 +68,7 @@ export const getVideoById = async (req, res) => {
 export const getVideoByChannelId = async (req, res) => {
     try {
       const { channelId } = req.params;
-      const video = await videoModel.findOne({ channelId });
+      const video = await videoModel.find({ channelId });
       if (!video) {
         return res.status(404).json({ message: "Video not found" });
       }
@@ -116,7 +119,7 @@ export const deleteVideo = async (req, res) => {
 export const addComment = async (req, res) => {
   try {
     const { videoId } = req.params;
-    const { userId, userName, text, timestamp } = req.body;
+    const { userId, userName, userAvatar, text, timestamp } = req.body;
 
     // Find the video by videoId
     const video = await videoModel.findOne({ videoId });
@@ -129,6 +132,7 @@ export const addComment = async (req, res) => {
       commentId: "comment" + uuidv4(),
       userId,
       userName,
+      userAvatar,
       text,
       timestamp,
     });

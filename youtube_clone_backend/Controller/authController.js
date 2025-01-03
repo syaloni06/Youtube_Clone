@@ -19,7 +19,7 @@ export const registerUser = async (req, res) => {
       username: username, 
       email: email,
       password: password, 
-      avatar: avatar 
+      avatar: avatar,
     });
 
     // Save the user to the database
@@ -64,7 +64,7 @@ export const loginUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const { userId } = req.params; // Get the userId from request parameters
-    const { password, avatar, channels } = req.body; // Get updated fields from the request body
+    const { password, avatar, channelId } = req.body; // Get updated fields from the request body
 
     // Find the user by userId
     const user = await userModel.findOne({ userId });
@@ -75,7 +75,7 @@ export const updateUser = async (req, res) => {
     // Update fields if they are provided in the request body
     if (password) user.password = password;
     if (avatar) user.avatar = avatar;
-    if (channels) user.channels = channels;
+    if (channelId) user.channelId = channelId;
 
     // Save the updated user to the database
     await user.save();

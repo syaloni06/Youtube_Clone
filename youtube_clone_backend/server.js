@@ -1,10 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
+import cors from "cors"; // Import the CORS package
 import { authRoutes } from "./Routes/authRoutes.js";
 import { channelRoutes } from "./Routes/channelRoutes.js";
 import { videoRoutes } from "./Routes/videoRoutes.js";
 
 const app = new express();
+
+// Middleware to enable CORS for all origins
+app.use(cors());
 
 // Middleware to parse incoming JSON requests
 app.use(express.json());
@@ -19,10 +23,10 @@ app.use((req, res, next) => {
 
 // Start the server on port 5100
 app.listen(5100, () => {
-    console.log("Server is running on port 5100");
+  console.log("Server is running on port 5100");
 });
 
-authRoutes(app);    // Handles authentication-related routes
+authRoutes(app); // Handles authentication-related routes
 channelRoutes(app);
 videoRoutes(app);
 

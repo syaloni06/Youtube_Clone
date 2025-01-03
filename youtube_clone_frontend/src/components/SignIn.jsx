@@ -49,7 +49,6 @@ const SignIn = () => {
 
         // Dispatch the user data to Redux store
         dispatch(setUserInfo({ token, ...user }));
-
         // Example: Redirect to dashboard
         navigate("/");
       } else {

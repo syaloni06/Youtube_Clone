@@ -79,7 +79,7 @@ const VideoDetail = () => {
             </div>
             {/* Video Info */}
             <h1 className="text-2xl font-bold mb-2">{videoData.title}</h1>
-            <div className="flex gap-y-4 mb-6">
+            <div className="flex gap-y-4 mb-6 w-full">
               <img
                 src={videoData.channelLogo}
                 alt={videoData.uploader}

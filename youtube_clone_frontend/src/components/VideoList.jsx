@@ -8,6 +8,7 @@ import { DrawerContext } from "../utils/DrawerContext";
 import { VideoListContext } from "../utils/VideoListContext";
 import { SearchFlagContext } from "../utils/SearchFlagContext";
 import { SearchContext } from "../utils/SearchContext";
+import { FaCheckCircle } from "react-icons/fa";
 
 const VideoList = () => {
 
@@ -88,8 +89,9 @@ const VideoList = () => {
                         <h3 className="font-semibold text-lg line-clamp-2">
                           {video.title}
                         </h3>
-                        <span className="truncate text-gray-500">
+                        <span className="flex truncate text-gray-500">
                           {video.uploader}
+                          <FaCheckCircle className="self-center ml-1 text-xs text-zinc-500" />
                         </span>
                         <div className="text-gray-600 text-sm">
                           {video.views.toLocaleString()} views •{" "}

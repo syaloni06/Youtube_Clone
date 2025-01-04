@@ -15,6 +15,11 @@ const channelSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    handle: {
+        type: String,
+        required: true,
+        unique: true
+    },
     description: {
         type: String,
         required: true,

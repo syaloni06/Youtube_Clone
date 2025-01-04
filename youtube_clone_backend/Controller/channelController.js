@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export const createChannel = async (req, res) => {
   try {
-    const { channelName, owner, description, channelBanner, channelLogo } = req.body;
+    const { channelName, owner, handle, description, channelBanner, channelLogo } = req.body;
 
     // Check if the channel name or ID already exists
     const existingChannel = await channelModel.findOne({channelName});
@@ -18,10 +18,11 @@ export const createChannel = async (req, res) => {
       channelId: "channel" + uuidv4(),
       channelName: channelName,
       owner: owner,
+      handle: handle,
       description: description,
       channelBanner: channelBanner,
       channelLogo: channelLogo,
-      subscribers:  Math.floor(Math.random() * 1000) + 1 
+      subscribers:  Math.floor(Math.random() * 1000000) + 1 
     });
 
     // Save channel to the database

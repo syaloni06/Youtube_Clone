@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
 import Comment from "./Comment";
+import { formatSubscribers } from "../utils/formater";
+
 const VideoDetail = () => {
   const videoId = useParams(); // Get the videoId from the URL
   const [videoData, setVideoData] = useState(null);
@@ -54,16 +56,6 @@ const VideoDetail = () => {
     };
     fetchVideo();
   }, [user?.token, videoId, videos]);
-
-  const formatSubscribers = (subscribers) => {
-    if (subscribers < 1000) {
-      return `${subscribers}`;
-    } else if (subscribers >= 1000 && subscribers < 1000000) {
-      return `${(subscribers / 1000).toFixed(1).replace(/\.0$/, '')}k`;
-    } else if (subscribers >= 1000000) {
-      return `${(subscribers / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
-    }
-  }
 
   return (
     <div className="flex my-16 mx-24">

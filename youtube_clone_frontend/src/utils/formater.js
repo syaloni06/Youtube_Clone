@@ -36,3 +36,13 @@ export const timeAgo = (uploadTime) => {
     const diffInYears = Math.floor(diffInDays / 365);
     return `${diffInYears} years ago`;
   }
+
+  export const formatSubscribers = (subscribers) => {
+    if (subscribers < 1000) {
+      return `${subscribers}`;
+    } else if (subscribers >= 1000 && subscribers < 1000000) {
+      return `${(subscribers / 1000).toFixed(1).replace(/\.0$/, "")}k`;
+    } else if (subscribers >= 1000000) {
+      return `${(subscribers / 1000000).toFixed(1).replace(/\.0$/, "")}M`;
+    }
+  };

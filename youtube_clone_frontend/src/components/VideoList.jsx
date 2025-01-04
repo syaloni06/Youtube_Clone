@@ -9,8 +9,9 @@ import { VideoListContext } from "../utils/VideoListContext";
 import { SearchFlagContext } from "../utils/SearchFlagContext";
 import { SearchContext } from "../utils/SearchContext";
 import { FaCheckCircle } from "react-icons/fa";
-import { FaArrowCircleLeft } from "react-icons/fa"; // Left arrow icon
-import { FaArrowCircleRight } from "react-icons/fa"; // Right arrow icon
+import { MdOutlineArrowForwardIos } from "react-icons/md";
+import { MdArrowBackIos } from "react-icons/md"; // Left arrow icon
+import { formatSubscribers } from "../utils/formater";
 import { timeAgo } from "../utils/formater";
 const VideoList = () => {
   const [error, setError] = useState(null);
@@ -24,7 +25,12 @@ const VideoList = () => {
     useContext(VideoListContext);
   const { searchFlag } = useContext(SearchFlagContext);
   const { searchTerm } = useContext(SearchContext);
+  // UseRef hook to control scroll behavior
+  const scrollRef = useRef(null);
+  const [isAtStart, setIsAtStart] = useState(true);
+  const [isAtEnd, setIsAtEnd] = useState(false);
 
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const categories = [...new Set(videos.map((video) => video.category))];
   useEffect(() => {
     const fetchVideos = async () => {
@@ -60,91 +66,127 @@ const VideoList = () => {
     // Navigate to the video detail page when a video is clicked
     navigate(`/channel/${channelId}`);
   };
-  // UseRef hook to control scroll behavior
-  const scrollRef = useRef(null);
 
-  // Scrolls the categories list to the left
+  // Function to scroll left
   const scrollLeft = () => {
-    scrollRef.current.scrollBy({
-      left: -300, // Scroll left by 300px
-      behavior: "smooth", // Smooth scrolling
-    });
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
+    }
   };
 
-  // Scrolls the categories list to the right
+  // Function to scroll right
   const scrollRight = () => {
-    scrollRef.current.scrollBy({
-      left: 300, // Scroll right by 300px
-      behavior: "smooth", // Smooth scrolling
-    });
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
+    }
   };
+
+  // Check if the container is at the start or end
+  const checkScrollPosition = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      const tolerance = 2; // Add a small tolerance to account for precision issues
+      setIsAtStart(scrollLeft <= 0);
+      setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - tolerance);
+    }
+  };
+
+  // Attach the scroll listener
+  useEffect(() => {
+    const ref = scrollRef.current;
+    if (ref) {
+      ref.addEventListener("scroll", checkScrollPosition);
+      checkScrollPosition(); // Initial check
+    }
+    return () => {
+      if (ref) {
+        ref.removeEventListener("scroll", checkScrollPosition);
+      }
+    };
+  }, []);
 
   const handleOnClick = (category) => {
     const filteredVideo = videos.filter((video) => video.category === category);
     setSearchedVideoList(filteredVideo);
   };
-  const formatSubscribers = (subscribers) => {
-    if (subscribers < 1000) {
-      return `${subscribers}`;
-    } else if (subscribers >= 1000 && subscribers < 1000000) {
-      return `${(subscribers / 1000).toFixed(1).replace(/\.0$/, "")}k`;
-    } else if (subscribers >= 1000000) {
-      return `${(subscribers / 1000000).toFixed(1).replace(/\.0$/, "")}M`;
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    if (category === "All") {
+      setSearchedVideoList(videos); // Handle "All" category separately
+    } else {
+      handleOnClick(category); // Handle other categories
     }
   };
 
   return (
     <>
-      {/* Categories section with scrolling functionality */}
-      <section className="p-6 sm:p-8 mt-8 relative">
-        {/* Left Arrow Button for scrolling */}
-        <button
-          className="absolute top-1/2 left-2 transform -translate-y-1/2 p-2 hover:scale-110"
-          onClick={scrollLeft}
-        >
-          <FaArrowCircleLeft className="text-2xl sm:text-3xl text-purple-800" />
-        </button>
-
-        {/* List of categories with horizontal scrolling */}
-        <ul
-          ref={scrollRef}
-          className="flex flex-nowrap gap-4 sm:gap-6 overflow-x-auto scrollbar-hide mx-2 sm:mx-4"
-        >
-          <li className="flex-shrink-0">
-            <button
-              onClick={() => setSearchedVideoList(videos)} // Navigate to the selected category
-              className="px-3 sm:px-4 py-1 sm:py-2 bg-white font-bold text-purple-800 border border-purple-800 rounded-lg shadow-md hover:bg-purple-200 focus:outline-none hover:scale-110 m-2"
-            >
-              All
-            </button>
-          </li>
-          {categories.map((category, index) => (
-            <li key={index} className="flex-shrink-0">
-              <button
-                onClick={() => handleOnClick(category)} // Navigate to the selected category
-                className="px-3 sm:px-4 py-1 sm:py-2 bg-white font-bold text-purple-800 border border-purple-800 rounded-lg shadow-md hover:bg-purple-200 focus:outline-none hover:scale-110 m-2"
-              >
-                {category}
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        {/* Right Arrow Button for scrolling */}
-        <button
-          className="absolute top-1/2 right-2 transform -translate-y-1/2 hover:scale-110"
-          onClick={scrollRight}
-        >
-          <FaArrowCircleRight className="text-2xl sm:text-3xl text-purple-800" />
-        </button>
-      </section>
-
       <div
         className={`transition-all duration-300 ${
           drawerIsOpen ? "ml-40 flex flex-shrink" : "ml-0"
         }`}
       >
-        <main className="container ml-24 mt-12 py-6">
+        {/* Categories section with scrolling functionality */}
+        {user !== null && (
+          <section className="p-6 sm:p-8 ml-16 mt-10 relative">
+            {/* Left Arrow Button */}
+            {!isAtStart && (
+              <button
+                className="absolute top-1/2 left-2 transform -translate-y-1/2 p-3 bg-white rounded-full hover:scale-110 focus:outline-none hover:bg-gray-100"
+                onClick={scrollLeft}
+              >
+                <MdArrowBackIos className="text-xl text-gray-800" />
+              </button>
+            )}
+
+            {/* List of categories with horizontal scrolling */}
+            <ul
+              ref={scrollRef}
+              className="flex flex-nowrap gap-4 sm:gap-6 overflow-x-auto scrollbar-hide mx-6"
+            >
+              {/* "All" Category */}
+              <li className="flex-shrink-0">
+                <button
+                  onClick={() => handleCategoryClick("All")}
+                  className={`px-3 py-2  font-medium text-sm rounded-lg transition-transform ${
+                    selectedCategory === "All"
+                      ? "bg-black text-white"
+                      : "bg-gray-100 text-black hover:bg-gray-200 hover:scale-105"
+                  }`}
+                >
+                  All
+                </button>
+              </li>
+              {/* Other Categories */}
+              {categories.map((category, index) => (
+                <li key={index} className="flex-shrink-0">
+                  <button
+                    onClick={() => handleCategoryClick(category)}
+                    className={`px-3 py-2 font-medium text-sm rounded-lg transition-transform ${
+                      selectedCategory === category
+                        ? "bg-black text-white"
+                        : "bg-gray-100 text-black hover:bg-gray-200 hover:scale-105"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            {/* Right Arrow Button */}
+            {!isAtEnd && (
+              <button
+                className="absolute top-1/2 right-2 transform -translate-y-1/2 p-3 bg-white rounded-full hover:scale-110 focus:outline-none hover:bg-gray-100"
+                onClick={scrollRight}
+              >
+                <MdOutlineArrowForwardIos className="text-xl text-gray-800" />
+              </button>
+            )}
+          </section>
+        )}
+
+        <main className="container ml-24 pt-3 pb-6">
           {error && <p className="text-red-500">{error}</p>}
 
           {loading ? (
@@ -155,7 +197,7 @@ const VideoList = () => {
                 <div
                   key={video._id}
                   className="bg-white overflow-hidden w-full sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)]"
-                   // Handle click event to navigate
+                  // Handle click event to navigate
                 >
                   <img
                     src={video.thumbnailUrl}
@@ -172,7 +214,10 @@ const VideoList = () => {
                         onClick={() => handleChannelClick(video.channelId)}
                       />
                       <div className="flex-1">
-                        <h3 onClick={() => handleVideoClick(video.videoId)} className="font-semibold text-lg line-clamp-2 cursor-pointer">
+                        <h3
+                          onClick={() => handleVideoClick(video.videoId)}
+                          className="font-semibold text-lg line-clamp-2 cursor-pointer"
+                        >
                           {video.title}
                         </h3>
                         <span className="flex truncate text-gray-500">

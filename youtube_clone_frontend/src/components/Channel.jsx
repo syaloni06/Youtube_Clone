@@ -7,6 +7,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
 import { CiSearch } from "react-icons/ci";
 import EditVideo from "./EditVideo";
+import { formatSubscribers } from "../utils/formater";
 
 const Channel = () => {
   const channelId = useParams();
@@ -108,16 +109,6 @@ const Channel = () => {
       console.error("Error deleting video:", err);
     }
   };
-
-  const formatSubscribers = (subscribers) => {
-    if (subscribers < 1000) {
-      return `${subscribers}`;
-    } else if (subscribers >= 1000 && subscribers < 1000000) {
-      return `${(subscribers / 1000).toFixed(1).replace(/\.0$/, '')}k`;
-    } else if (subscribers >= 1000000) {
-      return `${(subscribers / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
-    }
-  }
 
   return (
     <>

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useContext } from "react";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
@@ -18,12 +18,12 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { MdOutlineFeedback } from "react-icons/md";
 import CreateChannel from "./CreateChannel";
-
+import { ChannelContext } from "../utils/ChannelContext";
 const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
   const navigate = useNavigate();
   const [isCreateChannelOpen, setIsCreateChannelOpen] = useState(false);
   const menuRef = useRef();
-
+  const { channelHandle } = useContext(ChannelContext);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -37,7 +37,7 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
     };
   }, [menuRef, setIsMenuOpen]);
 
-  
+  console.log(channelHandle)
   return (
     <div className="relative flex items-center">
       {user === null ? (
@@ -80,7 +80,7 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
                 <div>
                   <p className="font-medium text-lg">{user?.username}</p>
                   <p className=" font-medium text-base">
-                    @{user?.username || "User ID"}
+                    @{channelHandle && channelHandle || user?.email}
                   </p>
                   {user.channelId !== undefined ? (<><Link
                     to={`/channel/${user.channelId}`}

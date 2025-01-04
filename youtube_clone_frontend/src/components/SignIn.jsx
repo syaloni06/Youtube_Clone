@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux"; // Import useDispatch
 import { setUserInfo } from "../utils/userSlice"; 
 import { Link } from "react-router-dom";
-
+import { ChannelContext } from "../utils/ChannelContext";
 const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch(); // Initialize useDispatch
-
+   const { setChannelHandle } = useContext(ChannelContext);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -49,6 +49,17 @@ const SignIn = () => {
 
         // Dispatch the user data to Redux store
         dispatch(setUserInfo({ token, ...user }));
+        if(user.channelId !== undefined){
+          const channelResponse = await axios.get(
+            `http://localhost:5100/channels/${user.channelId}`,
+            {
+              headers: {
+                Authorization: token,
+              },
+            }
+          );
+          setChannelHandle(channelResponse.data.handle);
+        }
         // Example: Redirect to dashboard
         navigate("/");
       } else {

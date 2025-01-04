@@ -108,6 +108,17 @@ const Channel = () => {
       console.error("Error deleting video:", err);
     }
   };
+
+  const formatSubscribers = (subscribers) => {
+    if (subscribers < 1000) {
+      return `${subscribers}`;
+    } else if (subscribers >= 1000 && subscribers < 1000000) {
+      return `${(subscribers / 1000).toFixed(1).replace(/\.0$/, '')}k`;
+    } else if (subscribers >= 1000000) {
+      return `${(subscribers / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
+    }
+  }
+
   return (
     <>
       {/* Channel Header */}
@@ -206,12 +217,10 @@ const Channel = () => {
                   >
                     {video.title}
                   </h3>
-                  <span className="truncate text-gray-500">
-                    {video.uploader}
-                  </span>
-                  <div className="text-gray-600 text-sm">
-                    {video.views.toLocaleString()} views •{" "}
-                    {new Date(video.uploadDate).getDay()} days ago
+                  <div className="flex mt-2 text-gray-600 text-sm">
+                    <span>{formatSubscribers(video.views)} views</span> 
+                    <LuDot className="self-center" />
+                    <span>{video.timestamp} days ago</span>
                   </div>
                 </div>
                 <div className="relative">

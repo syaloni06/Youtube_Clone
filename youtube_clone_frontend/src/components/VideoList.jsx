@@ -11,7 +11,7 @@ import { SearchContext } from "../utils/SearchContext";
 import { FaCheckCircle } from "react-icons/fa";
 import { FaArrowCircleLeft } from "react-icons/fa"; // Left arrow icon
 import { FaArrowCircleRight } from "react-icons/fa"; // Right arrow icon
-
+import { timeAgo } from "../utils/formater";
 const VideoList = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true); // State for loading
@@ -31,7 +31,6 @@ const VideoList = () => {
       setLoading(true);
       const token = user?.token;
       try {
-        console.log(token, "syaloni");
         if (token !== null) {
           const response = await axios.get("http://localhost:5100/videos", {
             headers: {
@@ -182,7 +181,7 @@ const VideoList = () => {
                         </span>
                         <div className="text-gray-600 text-sm">
                           {formatSubscribers(video.views)} views •{" "}
-                          {new Date(video.uploadDate).getDay()} days ago
+                          {timeAgo(video.uploadDate)}
                         </div>
                       </div>
                       <BsThreeDotsVertical className="ml-auto text-xl my-2" />

@@ -6,12 +6,17 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
 import { CiSearch } from "react-icons/ci";
+import EditVideo from "./EditVideo";
 
 const Channel = () => {
   const channelId = useParams();
   const user = useSelector((state) => state.user.data);
   const [channelVideos, setChannelVideos] = useState([]);
-  const [channelData, setChannelData] = useState(null); // State to store channel data
+  const [visibleDropdown, setVisibleDropdown] = useState(null); // State to track which dropdown is visible
+  const [channelData, setChannelData] = useState(null);
+  const [updateFlag, setUpdateFlag] = useState(true);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [editVideo, setEditVideo] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,12 +58,56 @@ const Channel = () => {
       fetchVideo();
       fetchChannel();
     }
-  }, [user?.token, channelId]);
+  }, [user?.token, channelId, updateFlag]);
 
   const handleVideoClick = (videoId) => {
     navigate(`/video/${videoId}`);
   };
 
+  const handleSaveEdit = async () => {
+    const token = user?.token;
+    try {
+      const response = await axios.put(
+        `http://localhost:5100/videos/${editVideo.videoId}`,
+        editVideo,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(response.data);
+      setShowEditDialog(false);
+      setUpdateFlag(!updateFlag);
+    } catch (err) {
+      console.error("Error updating video:", err);
+    }
+  };
+
+  const toggleDropdown = (videoId) => {
+    setVisibleDropdown((prev) => (prev === videoId ? null : videoId));
+  };
+
+  const handleEditClick = (video) => {
+    setVisibleDropdown(null); // Close dropdown when editing
+    setEditVideo(video);
+    setShowEditDialog(true);
+  };
+
+  const handleDelete = async (videoId) => {
+    setVisibleDropdown(null); // Close dropdown when deleting
+    const token = user?.token;
+    try {
+      await axios.delete(`http://localhost:5100/videos/${videoId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      setUpdateFlag(!updateFlag);
+    } catch (err) {
+      console.error("Error deleting video:", err);
+    }
+  };
   return (
     <>
       {/* Channel Header */}
@@ -84,7 +133,7 @@ const Channel = () => {
                   <FaCheckCircle className="text-sm self-center" />
                 </h2>
                 <div className="flex font-medium mt-3 text-gray-500">
-                  <span className="text-black">@{user.username}</span>
+                  <span className="text-black">@{channelData.handle}</span>
                   <LuDot className="self-center" />
                   <span>{channelData.subscribers} subscribers</span>
                   <LuDot className="self-center" />
@@ -135,13 +184,13 @@ const Channel = () => {
         {channelVideos?.map((video) => (
           <div
             key={video._id}
-            className="bg-white overflow-hidden w-full sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)] cursor-pointer"
-            onClick={() => handleVideoClick(video.videoId)}
+            className="bg-white overflow-hidden w-full sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)] "
           >
             <img
               src={video.thumbnailUrl}
               alt={video.title}
               className="w-full h-56 rounded-xl cursor-pointer"
+              onClick={() => handleVideoClick(video.videoId)}
             />
             <div className="px-1 py-2">
               <div className="flex gap-4">
@@ -151,7 +200,10 @@ const Channel = () => {
                   className="w-10 h-10 my-1 rounded-full"
                 />
                 <div className="flex-1">
-                  <h3 className="font-semibold text-lg line-clamp-2">
+                  <h3
+                    onClick={() => handleVideoClick(video.videoId)}
+                    className="font-semibold text-lg line-clamp-2 cursor-pointer"
+                  >
                     {video.title}
                   </h3>
                   <span className="truncate text-gray-500">
@@ -162,12 +214,50 @@ const Channel = () => {
                     {new Date(video.uploadDate).getDay()} days ago
                   </div>
                 </div>
-                <BsThreeDotsVertical className="ml-auto text-xl my-2" />
+                <div className="relative">
+                  <BsThreeDotsVertical
+                    className="ml-auto text-xl my-2 cursor-pointer"
+                    onClick={() => toggleDropdown(video._id)} // Toggle dropdown visibility
+                  />
+                  {user.channelId === channelId.id ? (<>{visibleDropdown === video._id && (
+                    <div className="absolute right-0 top-10 bg-white shadow-md rounded-lg z-10">
+                      <button
+                        className="px-4 py-2 hover:bg-gray-200 w-full text-left"
+                        onClick={() => handleEditClick(video)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="px-4 py-2 hover:bg-gray-200 w-full text-left"
+                        onClick={() => handleDelete(video.videoId)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}</>) : (<>
+                  {visibleDropdown === video._id && (
+                    <div className="absolute right-0 top-10 bg-white shadow-md rounded-lg z-10">
+                      <button
+                        className="px-4 py-2 hover:bg-gray-200 w-full text-left"
+                      >
+                        Report
+                      </button>
+                    </div>
+                  )}
+                  </>)}
+                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
+      <EditVideo
+        showEditDialog={showEditDialog}
+        editVideo={editVideo}
+        setEditVideo={setEditVideo}
+        setShowEditDialog={setShowEditDialog}
+        handleSaveEdit={handleSaveEdit}
+      />
     </>
   );
 };

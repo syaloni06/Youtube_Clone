@@ -55,6 +55,16 @@ const VideoDetail = () => {
     fetchVideo();
   }, [user?.token, videoId, videos]);
 
+  const formatSubscribers = (subscribers) => {
+    if (subscribers < 1000) {
+      return `${subscribers}`;
+    } else if (subscribers >= 1000 && subscribers < 1000000) {
+      return `${(subscribers / 1000).toFixed(1).replace(/\.0$/, '')}k`;
+    } else if (subscribers >= 1000000) {
+      return `${(subscribers / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
+    }
+  }
+
   return (
     <div className="flex my-16 mx-24">
       <div className="flex flex-col w-4/5 mr-6 rounded-lg">
@@ -86,14 +96,17 @@ const VideoDetail = () => {
                 className="w-11 h-11 self-center rounded-full"
               />
               <div className="w-1/2">
+                <div className="flex gap-2">
                 <p className="font-semibold ml-4 text-lg line-clamp-1">
                   {videoData.uploader}
                 </p>
+                <FaCheckCircle className="text-sm self-center text-zinc-600" />
+                </div>
                 <p className="text-sm ml-4 text-gray-400">
-                  {new Date(videoData.uploadDate).toLocaleDateString()}
+                  {formatSubscribers(videoData.subscribers)} subscribers
                 </p>
               </div>
-              <FaCheckCircle className="text-3xl text-zinc-600" />
+              
               <button className="self-center ml-4 px-5 py-2 bg-black hover:bg-slate-800 text-white font-medium rounded-full shadow-sm transition">
                 <span>Subscribe</span>
               </button>
@@ -163,7 +176,7 @@ const VideoDetail = () => {
                 <FaCheckCircle className="self-center ml-1 text-xs text-zinc-500" />
               </div>
               <div className="flex gap-x-2 text-sm text-gray-500 font-medium">
-                <div className="">{video.views} views</div>
+                <div className="">{formatSubscribers(video.views)} views</div>
                 
                 <div className="flex">
                 <LuDot className="self-center text-lg"/>

@@ -286,12 +286,12 @@ const Comment = ({ videoId }) => {
                     {/* Buttons for Like, Dislike, and Reply */}
                     <div className="flex gap-x-2 mt-1">
                       <button className="rounded-full hover:bg-gray-200 flex items-center">
-                        <BiLike className="text-2xl m-2" />
+                        <BiLike className="text-xl lg:text-2xl m-2" />
                       </button>
                       <button className="rounded-full hover:bg-gray-200 flex items-center">
-                        <BiDislike className="text-2xl m-2" />
+                        <BiDislike className="text-xl lg:text-2xl m-2" />
                       </button>
-                      <button className="rounded-full hover:bg-gray-200 flex items-center text-sm font-medium px-3">
+                      <button className="rounded-full hover:bg-gray-200 flex items-center text-xs lg:text-sm font-medium px-1 lg:px-3">
                         Reply
                       </button>
                     </div>

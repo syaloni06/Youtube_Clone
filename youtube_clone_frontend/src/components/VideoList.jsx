@@ -48,7 +48,7 @@ const VideoList = () => {
       } catch (err) {
         console.error(err);
         dispatch(clearUserInfo());
-            navigate('/signin');
+        navigate("/signin");
       } finally {
         setLoading(false);
       }
@@ -81,76 +81,78 @@ const VideoList = () => {
   return (
     <>
       <div
-        className={`transition-all duration-300 ${
+        className={`transition-all duration-300 overflow-x-hidden ${
           drawerIsOpen ? "ml-40 flex flex-shrink" : "ml-0"
         }`}
       >
         <div className="flex flex-col">
-        {user !== null && (
-          <CategoryList
-            categories={categories}
-            selectedCategory={selectedCategory}
-            handleCategoryClick={handleCategoryClick}
-          />
-        )}
-        <div className="container ml-24 pt-3 pb-6">
-          {error && <p className="text-red-500">{error}</p>}
-          {loading ? (
-            <p className="text-center text-gray-500">Loading videos...</p>
-          ) : searchedVideoList.length > 0 ? (
-            <div className={`flex overflow-hidden flex-wrap justify-evenly gap-y-10 ${
-              drawerIsOpen ? "flex-shrink" : ""
-            }`}>
-              {searchedVideoList.map((video) => (
-                <div
-                  key={video._id}
-                  className={`bg-white overflow-hidden sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)]`}
-                >
-                  <img
-                    src={video.thumbnailUrl}
-                    alt={video.title}
-                    className="w-full h-56 rounded-xl cursor-pointer"
-                    onClick={() => handleVideoClick(video.videoId)}
-                  />
-                  <div className="px-1 py-2">
-                    <div className="flex gap-4">
-                      <img
-                        src={video.channelLogo}
-                        alt={video.uploader}
-                        className="w-10 h-10 my-1 rounded-full cursor-pointer"
-                        onClick={() => handleChannelClick(video.channelId)}
-                      />
-                      <div className="flex-1">
-                        <h3
-                          onClick={() => handleVideoClick(video.videoId)}
-                          className="font-semibold text-lg line-clamp-2 cursor-pointer"
-                        >
-                          {video.title}
-                        </h3>
-                        <span className="flex truncate text-sm text-gray-500">
-                          {video.uploader}
-                          <FaCheckCircle className="self-center ml-1 text-xs text-zinc-600" />
-                        </span>
-                        <div className="flex items-center gap-1 text-gray-500">
-                          <span>
-                            {formatSubscribers$Views(video.views)} views
+          {user !== null && (
+            <CategoryList
+              categories={categories}
+              selectedCategory={selectedCategory}
+              handleCategoryClick={handleCategoryClick}
+            />
+          )}
+          <div className="container ml-24 pt-3 pb-6">
+            {error && <p className="text-red-500">{error}</p>}
+            {loading ? (
+              <p className="text-center text-gray-500">Loading videos...</p>
+            ) : searchedVideoList.length > 0 ? (
+              <div
+                className={`flex overflow-hidden flex-wrap justify-evenly gap-y-10 ${
+                  drawerIsOpen ? "flex-shrink" : ""
+                }`}
+              >
+                {searchedVideoList.map((video) => (
+                  <div
+                    key={video._id}
+                    className={`bg-white overflow-hidden sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)]`}
+                  >
+                    <img
+                      src={video.thumbnailUrl}
+                      alt={video.title}
+                      className="w-full h-56 rounded-xl cursor-pointer"
+                      onClick={() => handleVideoClick(video.videoId)}
+                    />
+                    <div className="px-1 py-2">
+                      <div className="flex gap-4">
+                        <img
+                          src={video.channelLogo}
+                          alt={video.uploader}
+                          className="w-10 h-10 my-1 rounded-full cursor-pointer"
+                          onClick={() => handleChannelClick(video.channelId)}
+                        />
+                        <div className="flex-1">
+                          <h3
+                            onClick={() => handleVideoClick(video.videoId)}
+                            className="font-semibold text-lg line-clamp-2 cursor-pointer"
+                          >
+                            {video.title}
+                          </h3>
+                          <span className="flex truncate text-sm text-gray-500">
+                            {video.uploader}
+                            <FaCheckCircle className="self-center ml-1 text-xs text-zinc-600" />
                           </span>
-                          <LuDot />
-                          <span>{timeAgo(video.uploadDate)}</span>
+                          <div className="flex items-center text-sm gap-1 text-gray-500">
+                            <span>
+                              {formatSubscribers$Views(video.views)} views
+                            </span>
+                            <LuDot />
+                            <span>{timeAgo(video.uploadDate)}</span>
+                          </div>
                         </div>
+                        <BsThreeDotsVertical className="cursor-pointer self-start" />
                       </div>
-                      <BsThreeDotsVertical className="cursor-pointer self-start" />
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-500 text-center">
-              No videos found for this category.
-            </p>
-          )}
-        </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 text-center">
+                No videos found for this category.
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </>

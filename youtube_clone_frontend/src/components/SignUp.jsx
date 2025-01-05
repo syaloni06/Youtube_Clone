@@ -8,60 +8,94 @@ const SignUp = () => {
     email: "",
     password: "",
     avatar: "",
-    channelId: ""
+    channelId: "",
   });
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    // Validate individual field on change
+    validateField(name, value);
+  };
+
+  const validateField = (name, value) => {
+    const fieldErrors = { ...errors };
+
+    switch (name) {
+      case "username":
+        fieldErrors.username =
+          value.trim() === "" ? "Username is required." : "";
+        break;
+      case "email":
+        fieldErrors.email = value.includes("@") ? "" : "Invalid email address.";
+        break;
+      case "password":
+        fieldErrors.password =
+          value.length < 6
+            ? "Password must be at least 6 characters long."
+            : "";
+        break;
+      case "avatar":
+        fieldErrors.avatar =
+          value.startsWith("http") && value.includes(".")
+            ? ""
+            : "Invalid image URL.";
+        break;
+    }
+
+    setErrors(fieldErrors);
+  };
+
+  const validateForm = () => {
+    const fieldErrors = {};
+    if (!formData.username) fieldErrors.username = "Username is required.";
+    if (!formData.email.includes("@"))
+      fieldErrors.email = "Invalid email address.";
+    if (formData.password.length < 6)
+      fieldErrors.password = "Password must be at least 6 characters long.";
+    if (!formData.avatar.startsWith("http") || !formData.avatar.includes("."))
+      fieldErrors.avatar = "Invalid image URL.";
+
+    setErrors(fieldErrors);
+    return Object.keys(fieldErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate inputs (basic example)
-    if (!formData.username || !formData.email || !formData.password || !formData.avatar) {
-      setError("Please fill in all fields.");
-      return;
-    }
-
-    if (!formData.email.includes("@")) {
-      setError("Please enter a valid email address.");
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
-      // Send POST request with Axios
       const response = await axios.post(
         "http://localhost:5100/register",
         formData
       );
 
       if (response.status === 201) {
-        setError(""); // Clear errors if successful
-
-        // Example: Redirect to sign-in or dashboard
+        setErrors({});
         navigate("/signin");
       } else {
-        setError("Unexpected response from the server.");
+        setErrors({ form: "Unexpected response from the server." });
       }
     } catch (err) {
       console.error("Error:", err);
-      setError("Failed to sign up. Please try again.");
+      setErrors({ form: "Failed to sign up. Please try again." });
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-full max-w-md bg-gray-50 p-8 rounded-lg shadow-md">
+    <div className="flex items-center mt-20 justify-center">
+      <div className="w-full max-w-md bg-gray-100 p-8 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Sign Up
+          Create an Account
         </h2>
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+        {errors.form && (
+          <p className="text-red-500 text-sm text-center mb-4">{errors.form}</p>
+        )}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
             <label
               htmlFor="username"
               className="block text-sm font-medium text-gray-700 mb-2"
@@ -74,11 +108,18 @@ const SignUp = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                errors.username
+                  ? "border-red-500 focus:ring-red-400"
+                  : "focus:ring-blue-400 focus:border-blue-400"
+              }`}
               placeholder="Enter your username"
             />
+            {errors.username && (
+              <p className="text-red-500 text-sm mt-1">{errors.username}</p>
+            )}
           </div>
-          <div className="mb-4">
+          <div>
             <label
               htmlFor="email"
               className="block text-sm font-medium text-gray-700 mb-2"
@@ -91,11 +132,18 @@ const SignUp = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                errors.email
+                  ? "border-red-500 focus:ring-red-400"
+                  : "focus:ring-blue-400 focus:border-blue-400"
+              }`}
               placeholder="Enter your email"
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
-          <div className="mb-4">
+          <div>
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-700 mb-2"
@@ -108,11 +156,18 @@ const SignUp = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                errors.password
+                  ? "border-red-500 focus:ring-red-400"
+                  : "focus:ring-blue-400 focus:border-blue-400"
+              }`}
               placeholder="Enter your password"
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+            )}
           </div>
-          <div className="mb-6">
+          <div>
             <label
               htmlFor="avatar"
               className="block text-sm font-medium text-gray-700 mb-2"
@@ -125,9 +180,16 @@ const SignUp = () => {
               name="avatar"
               value={formData.avatar}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                errors.avatar
+                  ? "border-red-500 focus:ring-red-400"
+                  : "focus:ring-blue-400 focus:border-blue-400"
+              }`}
               placeholder="Enter the URL of your avatar image"
             />
+            {errors.avatar && (
+              <p className="text-red-500 text-sm mt-1">{errors.avatar}</p>
+            )}
           </div>
           <button
             type="submit"
@@ -138,7 +200,7 @@ const SignUp = () => {
         </form>
         <p className="text-sm text-gray-600 text-center mt-4">
           Already have an account?{" "}
-          <a href="#" className="text-blue-500 hover:underline">
+          <a href="/signin" className="text-blue-500 hover:underline">
             Sign in
           </a>
         </p>

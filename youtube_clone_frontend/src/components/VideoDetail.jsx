@@ -55,7 +55,7 @@ const VideoDetail = () => {
       } catch (err) {
         console.error(err);
         dispatch(clearUserInfo());
-            navigate('/signin');
+        navigate("/signin");
         setError("Failed to fetch video details. Please try again later.");
       } finally {
         setLoading(false);

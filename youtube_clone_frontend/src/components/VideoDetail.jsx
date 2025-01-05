@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
 import Comment from "./Comment";
-import { formatSubscribers } from "../utils/formater";
-
+import { formatSubscribers$Views } from "../utils/formater";
+import { timeAgo } from "../utils/formater";
 const VideoDetail = () => {
   const videoId = useParams(); // Get the videoId from the URL
   const [videoData, setVideoData] = useState(null);
@@ -89,16 +89,16 @@ const VideoDetail = () => {
               />
               <div className="w-1/2">
                 <div className="flex gap-2">
-                <p className="font-semibold ml-4 text-lg line-clamp-1">
-                  {videoData.uploader}
-                </p>
-                <FaCheckCircle className="text-sm self-center text-zinc-600" />
+                  <p className="font-semibold ml-4 text-lg line-clamp-1">
+                    {videoData.uploader}
+                  </p>
+                  <FaCheckCircle className="text-sm self-center text-zinc-600" />
                 </div>
                 <p className="text-sm ml-4 text-gray-400">
-                  {formatSubscribers(videoData.subscribers)} subscribers
+                  {formatSubscribers$Views(videoData.subscribers)} subscribers
                 </p>
               </div>
-              
+
               <button className="self-center ml-4 px-5 py-2 bg-black hover:bg-slate-800 text-white font-medium rounded-full shadow-sm transition">
                 <span>Subscribe</span>
               </button>
@@ -129,9 +129,11 @@ const VideoDetail = () => {
             {/* Description */}
             <div className="text-black bg-gray-100 p-3 rounded-xl mb-4">
               <div className="flex gap-x-2">
-                <div className="font-semibold">{videoData.views} views</div>
                 <div className="font-semibold">
-                  {new Date(videoData.uploadDate).getDay()} days ago
+                  {formatSubscribers$Views(videoData.views)} views
+                </div>
+                <div className="font-semibold">
+                  {timeAgo(videoData.uploadDate)}
                 </div>
               </div>
               {videoData.description}
@@ -163,17 +165,14 @@ const VideoDetail = () => {
             {/* Video Info */}
             <div className="flex-1 w-2/3">
               <h3 className="font-semibold line-clamp-2">{video.title}</h3>
-              <div className="flex text-sm text-gray-500 font-medium mt-1 line-clamp-1">
-                {video.uploader}
+              <div className="flex text-sm w-full text-gray-500 font-medium mt-1">
+                <span className="line-clamp-1">{video.uploader}</span>
                 <FaCheckCircle className="self-center ml-1 text-xs text-zinc-500" />
               </div>
-              <div className="flex gap-x-2 text-sm text-gray-500 font-medium">
-                <div className="">{formatSubscribers(video.views)} views</div>
-                
-                <div className="flex">
-                <LuDot className="self-center text-lg"/>
-                  {new Date(video.uploadDate).getDay()} days ago
-                </div>
+              <div className="flex text-gray-600 text-sm">
+                <span>{formatSubscribers$Views(video.views)} views</span>
+                <LuDot className="self-center text-lg" />
+                <span>{timeAgo(video.uploadDate)}</span>
               </div>
             </div>
             {/* Options Icon */}

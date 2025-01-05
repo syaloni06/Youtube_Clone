@@ -80,7 +80,7 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
                 <div>
                   <p className="font-medium text-lg">{user?.username}</p>
                   <p className=" font-medium text-base">
-                    @{channelHandle && channelHandle || user?.email}
+                  {channelHandle ? `@${channelHandle}` : user?.email}
                   </p>
                   {user.channelId !== undefined ? (<><Link
                     to={`/channel/${user.channelId}`}

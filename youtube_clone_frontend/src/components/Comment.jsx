@@ -9,6 +9,8 @@ import { BiDislike } from "react-icons/bi";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdOutlineSort } from "react-icons/md";
+import { MdOutlineFlag } from "react-icons/md";
+import { timeAgo } from "../utils/formater";
 
 const Comment = ({ videoId }) => {
   const [comment, setComment] = useState("");
@@ -190,7 +192,7 @@ const Comment = ({ videoId }) => {
                       @{cmt.userName}
                     </span>
                     <span className="text-sm self-center px-2 text-gray-500">
-                      {new Date(cmt.timestamp).getDay()} days ago
+                      {timeAgo(cmt.timestamp)}
                     </span>
                   </div>
                   <div className="relative">
@@ -237,7 +239,7 @@ const Comment = ({ videoId }) => {
                                 }))
                               }
                             >
-                              <RiDeleteBin6Line className="text-2xl" /> Report
+                              <MdOutlineFlag className="text-2xl" /> Report
                             </button>
                           </div>
                         )}

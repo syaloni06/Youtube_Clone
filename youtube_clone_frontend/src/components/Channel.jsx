@@ -7,8 +7,8 @@ import { FaCheckCircle } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
 import { CiSearch } from "react-icons/ci";
 import EditVideo from "./EditVideo";
-import { formatSubscribers } from "../utils/formater";
-
+import { formatSubscribers$Views } from "../utils/formater";
+import { timeAgo } from "../utils/formater";
 const Channel = () => {
   const channelId = useParams();
   const user = useSelector((state) => state.user.data);
@@ -137,7 +137,7 @@ const Channel = () => {
                 <div className="flex font-medium mt-3 text-gray-500">
                   <span className="text-black">@{channelData.handle}</span>
                   <LuDot className="self-center" />
-                  <span>{channelData.subscribers} subscribers</span>
+                  <span>{formatSubscribers$Views(channelData.subscribers)} subscribers</span>
                   <LuDot className="self-center" />
                   <span>{channelVideos.length} videos</span>
                 </div>
@@ -209,9 +209,9 @@ const Channel = () => {
                     {video.title}
                   </h3>
                   <div className="flex mt-2 text-gray-600 text-sm">
-                    <span>{formatSubscribers(video.views)} views</span> 
+                    <span>{formatSubscribers$Views(video.views)} views</span> 
                     <LuDot className="self-center" />
-                    <span>{video.timestamp} days ago</span>
+                    <span>{timeAgo(video.uploadDate)}</span>
                   </div>
                 </div>
                 <div className="relative">

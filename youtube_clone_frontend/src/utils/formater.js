@@ -37,7 +37,7 @@ export const timeAgo = (uploadTime) => {
     return `${diffInYears} years ago`;
   }
 
-  export const formatSubscribers = (subscribers) => {
+  export const formatSubscribers$Views = (subscribers) => {
     if (subscribers < 1000) {
       return `${subscribers}`;
     } else if (subscribers >= 1000 && subscribers < 1000000) {

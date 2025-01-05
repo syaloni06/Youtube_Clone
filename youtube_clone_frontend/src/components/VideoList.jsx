@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,13 +9,13 @@ import { VideoListContext } from "../utils/VideoListContext";
 import { SearchFlagContext } from "../utils/SearchFlagContext";
 import { SearchContext } from "../utils/SearchContext";
 import { FaCheckCircle } from "react-icons/fa";
-import { MdOutlineArrowForwardIos } from "react-icons/md";
-import { MdArrowBackIos } from "react-icons/md"; // Left arrow icon
-import { formatSubscribers } from "../utils/formater";
-import { timeAgo } from "../utils/formater";
+import { LuDot } from "react-icons/lu";
+import { formatSubscribers$Views, timeAgo } from "../utils/formater";
+import CategoryList from "./CategoryList"; // Import the new component
+
 const VideoList = () => {
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true); // State for loading
+  const [loading, setLoading] = useState(true);
   const { drawerIsOpen } = useContext(DrawerContext);
   const user = useSelector((state) => state.user.data);
   const videos = useSelector((state) => state.videos.data);
@@ -25,13 +25,10 @@ const VideoList = () => {
     useContext(VideoListContext);
   const { searchFlag } = useContext(SearchFlagContext);
   const { searchTerm } = useContext(SearchContext);
-  // UseRef hook to control scroll behavior
-  const scrollRef = useRef(null);
-  const [isAtStart, setIsAtStart] = useState(true);
-  const [isAtEnd, setIsAtEnd] = useState(false);
-
   const [selectedCategory, setSelectedCategory] = useState("All");
+
   const categories = [...new Set(videos.map((video) => video.category))];
+
   useEffect(() => {
     const fetchVideos = async () => {
       setLoading(true);
@@ -45,7 +42,7 @@ const VideoList = () => {
           });
           setSearchedVideoList(response.data);
           dispatch(setVideoList(response.data));
-          setError(null); // Clear any previous errors
+          setError(null);
         }
       } catch (err) {
         console.error(err);
@@ -59,63 +56,22 @@ const VideoList = () => {
   }, [user, searchFlag, searchTerm.length === 0]);
 
   const handleVideoClick = (videoId) => {
-    // Navigate to the video detail page when a video is clicked
     navigate(`/video/${videoId}`);
   };
+
   const handleChannelClick = (channelId) => {
-    // Navigate to the video detail page when a video is clicked
     navigate(`/channel/${channelId}`);
-  };
-
-  // Function to scroll left
-  const scrollLeft = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
-    }
-  };
-
-  // Function to scroll right
-  const scrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
-    }
-  };
-
-  // Check if the container is at the start or end
-  const checkScrollPosition = () => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      const tolerance = 2; // Add a small tolerance to account for precision issues
-      setIsAtStart(scrollLeft <= 0);
-      setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - tolerance);
-    }
-  };
-
-  // Attach the scroll listener
-  useEffect(() => {
-    const ref = scrollRef.current;
-    if (ref) {
-      ref.addEventListener("scroll", checkScrollPosition);
-      checkScrollPosition(); // Initial check
-    }
-    return () => {
-      if (ref) {
-        ref.removeEventListener("scroll", checkScrollPosition);
-      }
-    };
-  }, []);
-
-  const handleOnClick = (category) => {
-    const filteredVideo = videos.filter((video) => video.category === category);
-    setSearchedVideoList(filteredVideo);
   };
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     if (category === "All") {
-      setSearchedVideoList(videos); // Handle "All" category separately
+      setSearchedVideoList(videos);
     } else {
-      handleOnClick(category); // Handle other categories
+      const filteredVideos = videos.filter(
+        (video) => video.category === category
+      );
+      setSearchedVideoList(filteredVideos);
     }
   };
 
@@ -126,78 +82,26 @@ const VideoList = () => {
           drawerIsOpen ? "ml-40 flex flex-shrink" : "ml-0"
         }`}
       >
-        {/* Categories section with scrolling functionality */}
+        <div className="flex flex-col">
         {user !== null && (
-          <section className="p-6 sm:p-8 ml-16 mt-10 relative">
-            {/* Left Arrow Button */}
-            {!isAtStart && (
-              <button
-                className="absolute top-1/2 left-2 transform -translate-y-1/2 p-3 bg-white rounded-full hover:scale-110 focus:outline-none hover:bg-gray-100"
-                onClick={scrollLeft}
-              >
-                <MdArrowBackIos className="text-xl text-gray-800" />
-              </button>
-            )}
-
-            {/* List of categories with horizontal scrolling */}
-            <ul
-              ref={scrollRef}
-              className="flex flex-nowrap gap-4 sm:gap-6 overflow-x-auto scrollbar-hide mx-6"
-            >
-              {/* "All" Category */}
-              <li className="flex-shrink-0">
-                <button
-                  onClick={() => handleCategoryClick("All")}
-                  className={`px-3 py-2  font-medium text-sm rounded-lg transition-transform ${
-                    selectedCategory === "All"
-                      ? "bg-black text-white"
-                      : "bg-gray-100 text-black hover:bg-gray-200 hover:scale-105"
-                  }`}
-                >
-                  All
-                </button>
-              </li>
-              {/* Other Categories */}
-              {categories.map((category, index) => (
-                <li key={index} className="flex-shrink-0">
-                  <button
-                    onClick={() => handleCategoryClick(category)}
-                    className={`px-3 py-2 font-medium text-sm rounded-lg transition-transform ${
-                      selectedCategory === category
-                        ? "bg-black text-white"
-                        : "bg-gray-100 text-black hover:bg-gray-200 hover:scale-105"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                </li>
-              ))}
-            </ul>
-
-            {/* Right Arrow Button */}
-            {!isAtEnd && (
-              <button
-                className="absolute top-1/2 right-2 transform -translate-y-1/2 p-3 bg-white rounded-full hover:scale-110 focus:outline-none hover:bg-gray-100"
-                onClick={scrollRight}
-              >
-                <MdOutlineArrowForwardIos className="text-xl text-gray-800" />
-              </button>
-            )}
-          </section>
+          <CategoryList
+            categories={categories}
+            selectedCategory={selectedCategory}
+            handleCategoryClick={handleCategoryClick}
+          />
         )}
-
-        <main className="container ml-24 pt-3 pb-6">
+        <div className="container ml-24 pt-3 pb-6">
           {error && <p className="text-red-500">{error}</p>}
-
           {loading ? (
             <p className="text-center text-gray-500">Loading videos...</p>
           ) : searchedVideoList.length > 0 ? (
-            <div className="flex flex-wrap justify-evenly gap-y-10">
+            <div className={`flex overflow-hidden flex-wrap justify-evenly gap-y-10 ${
+              drawerIsOpen ? "flex-shrink" : ""
+            }`}>
               {searchedVideoList.map((video) => (
                 <div
                   key={video._id}
-                  className="bg-white overflow-hidden w-full sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)]"
-                  // Handle click event to navigate
+                  className={`bg-white overflow-hidden sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)]`}
                 >
                   <img
                     src={video.thumbnailUrl}
@@ -220,25 +124,31 @@ const VideoList = () => {
                         >
                           {video.title}
                         </h3>
-                        <span className="flex truncate text-gray-500">
+                        <span className="flex truncate text-sm text-gray-500">
                           {video.uploader}
-                          <FaCheckCircle className="self-center ml-1 text-xs text-zinc-500" />
+                          <FaCheckCircle className="self-center ml-1 text-xs text-zinc-600" />
                         </span>
-                        <div className="text-gray-600 text-sm">
-                          {formatSubscribers(video.views)} views •{" "}
-                          {timeAgo(video.uploadDate)}
+                        <div className="flex items-center gap-1 text-gray-500">
+                          <span>
+                            {formatSubscribers$Views(video.views)} views
+                          </span>
+                          <LuDot />
+                          <span>{timeAgo(video.uploadDate)}</span>
                         </div>
                       </div>
-                      <BsThreeDotsVertical className="ml-auto text-xl my-2" />
+                      <BsThreeDotsVertical className="cursor-pointer self-start" />
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-center text-gray-500">No videos available.</p>
+            <p className="text-gray-500 text-center">
+              No videos found for this category.
+            </p>
           )}
-        </main>
+        </div>
+        </div>
       </div>
     </>
   );

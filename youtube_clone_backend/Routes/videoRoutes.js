@@ -1,13 +1,51 @@
-import { createVideo, getAllVideos, getVideoById, getVideoByChannelId, updateVideo, deleteVideo, addComment, updateComment, deleteComment} from "../Controller/videoController.js";
-import {auth} from "../Middleware/auth.js";
+import { 
+  createVideo, 
+  getAllVideos, 
+  getVideoById, 
+  getVideoByChannelId, 
+  updateVideo, 
+  deleteVideo, 
+  addComment, 
+  updateComment, 
+  deleteComment 
+} from "../Controller/videoController.js";
+import { auth } from "../Middleware/auth.js";
+
+// Define the video-related routes and attach them to the application
 export const videoRoutes = (app) => {
-  app.post("/videos", createVideo); // Create a new video
-  app.get("/videos", auth, getAllVideos); // Get all videos
-  app.get("/videos/:videoId", auth, getVideoById); // Get a single video by ID
-  app.get("/videos/channel/:channelId", getVideoByChannelId);
-  app.put("/videos/:videoId", updateVideo); // Update a video by ID
-  app.delete("/videos/:videoId", deleteVideo); // Delete a video by ID
-  app.put("/videos/addComments/:videoId", addComment); // Add a comment to a video
-  app.put("/videos/updateComments/:videoId", updateComment);
-  app.put("/videos/deleteComments/:videoId", deleteComment);
+  // Route to create a new video
+  // Requires authentication via the `auth` middleware
+  app.post("/videos", auth, createVideo); 
+
+  // Route to get all videos
+  // Requires authentication via the `auth` middleware
+  app.get("/videos", auth, getAllVideos); 
+
+  // Route to get a single video by its ID
+  // Requires authentication via the `auth` middleware
+  app.get("/videos/:videoId", auth, getVideoById); 
+
+  // Route to get all videos by a specific channel ID
+  // Requires authentication via the `auth` middleware
+  app.get("/videos/channel/:channelId", auth, getVideoByChannelId); 
+
+  // Route to update a video by its ID
+  // Requires authentication via the `auth` middleware
+  app.put("/videos/:videoId", auth, updateVideo); 
+
+  // Route to delete a video by its ID
+  // Requires authentication via the `auth` middleware
+  app.delete("/videos/:videoId", auth, deleteVideo); 
+
+  // Route to add a comment to a specific video
+  // This route does not require authentication (consider reviewing for consistency)
+  app.put("/videos/addComments/:videoId", addComment); 
+
+  // Route to update a specific comment on a video
+  // This route does not require authentication (consider reviewing for consistency)
+  app.put("/videos/updateComments/:videoId", updateComment); 
+
+  // Route to delete a specific comment from a video
+  // This route does not require authentication (consider reviewing for consistency)
+  app.put("/videos/deleteComments/:videoId", deleteComment); 
 };

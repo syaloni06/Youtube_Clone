@@ -1,11 +1,12 @@
-import userModel from "../Model/user.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import {v4 as uuidv4} from "uuid";
+import userModel from "../Model/user.js"; // Import the user model
+import jwt from "jsonwebtoken"; // Import JSON Web Token for authentication
+import bcrypt from "bcrypt"; // Import bcrypt for password hashing and comparison
+import {v4 as uuidv4} from "uuid"; // Import UUID library to generate unique user IDs
 
 // Function to register a new user
 export const registerUser = async (req, res) => {
   try {
+     // Extract user details from the request body
     const { username, email, password, avatar } = req.body;
 
     // Check if email or username is already registered
@@ -28,7 +29,7 @@ export const registerUser = async (req, res) => {
     // Send success response
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
-    // Handle errors and send a 500 status
+    // Handle any errors that occur during registration
     res.status(500).json({ message: err.message });
   }
 };
@@ -36,6 +37,7 @@ export const registerUser = async (req, res) => {
 // Function to log in a user
 export const loginUser = async (req, res) => {
   try {
+    // Extract email and password from the request body
     const { email, password } = req.body;
 
     // Find user by email
@@ -61,6 +63,7 @@ export const loginUser = async (req, res) => {
   }
 };
 
+// Function to update user details
 export const updateUser = async (req, res) => {
   try {
     const { userId } = req.params; // Get the userId from request parameters
@@ -73,17 +76,17 @@ export const updateUser = async (req, res) => {
     }
 
     // Update fields if they are provided in the request body
-    if (password) user.password = password;
-    if (avatar) user.avatar = avatar;
-    if (channelId) user.channelId = channelId;
+    if (password) user.password = password; // Update the password (should be hashed before saving)
+    if (avatar) user.avatar = avatar; // Update the avatar
+    if (channelId) user.channelId = channelId; // Update the channel ID (if applicable)
 
     // Save the updated user to the database
     await user.save();
 
-    // Send success response
+    // Send a success response with the updated user details
     res.status(200).json({ message: "User updated successfully", user });
   } catch (error) {
-    // Handle errors and send a 500 status
+    // Handle any errors that occur during the update process
     res.status(500).json({ message: error.message });
   }
 };

@@ -24,7 +24,7 @@ const Sidebar = () => {
               <span className="text-xs text-gray-700 mt-1">Shorts</span>{/* Label for Shorts */}
             </div>
             {/* Subscriptions */}
-            <div className="flex flex-1 flex-col items-center py-2 lg:py-5 lg:rounded-xl hover:bg-gray-100">
+            <div className="flex flex-1 flex-col items-center px-5 lg:px-0 py-2 lg:py-5 lg:rounded-xl hover:bg-gray-100">
               <MdOutlineSubscriptions className="text-3xl text-black" />{/* Icon for Subscriptions */}
               <span className="text-xs text-gray-700 mt-1">Subscriptions</span>{/* Label for Subscriptions */}
             </div>

@@ -68,16 +68,15 @@ const Header = () => {
     navigate("/");
   };
   
-  
   return (
     <>
-      <div className="flex justify-between bg-white top-0 fixed w-full z-40 h-16">
+      <div className="flex md:justify-between bg-white top-0 fixed w-full z-40 h-16">
         {/* Logo and Home link */}
-        <div className="flex items-center w-1/3 mx-5">
+        <div className="flex items-center md:w-1/3 ml-3 mr-1 md:mx-5">
           {/* Menu Button */}
           <button
             onClick={toggleDrawer}
-            className="p-2 rounded-full hover:bg-gray-200"
+            className="p-2 rounded-full hover:bg-gray-200 sm:flex hidden"
           >
             <AiOutlineMenu className="mt-1 self-center text-lg xl:text-2xl font-bold" />
           </button>
@@ -93,8 +92,8 @@ const Header = () => {
               <div className="flex items-center justify-center ml-1 pt-1 hover:text-gray-800">
                 <h2 className="flex gap-1 text-2xl text-black-500 font-semi-bolder tracking-tighter scale-y-110 scale-x-85">
                   <FaYoutube className="text-3xl xl:text-4xl text-youtube-red scale-y-90 scale-x-125" />
-                  YouTube
-                  <div className="text-gray-500 text-xs self-start p-1 scale-y-90">
+                  <div className="md:flex hidden">YouTube</div>
+                  <div className="md:flex hidden text-gray-500 text-xs self-start p-1 scale-y-90">
                     IN
                   </div>
                 </h2>
@@ -103,10 +102,10 @@ const Header = () => {
           </div>
         </div>
         {/* Search bar for the home page */}
-        <div className="flex w-4/5 justify-center gap-x-4 mx-10">
-          <div className="flex items-center rounded-full shadow-sm w-full self-center">
+        <div className="flex w-auto md:w-4/5 md:justify-center md:gap-x-4 mx-2 md:mx-10">
+          <div className="flex items-center rounded-full shadow-sm lg:w-full self-center">
             <input
-              className="flex-grow rounded-l-full py-2 px-6 text-gray-700 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-10"
+              className=" md:flex-grow rounded-l-full py-2  px-3 md:px-6 text-gray-700 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 h-8 lg:h-10"
               type="text"
               name="task"
               value={searchTerm}
@@ -115,25 +114,27 @@ const Header = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <button
-              className="bg-gray-50 p-3 rounded-r-full h-10 w-18 border border-gray-300 flex items-center justify-center hover:bg-gray-200"
+              className="bg-gray-50 md:p-3 rounded-r-full h-8 lg:h-10  w-8 md:w-18 border border-gray-300 flex items-center justify-center hover:bg-gray-200"
               onClick={searchVideos}
             >
-              <CiSearch className="text-black text-2xl" />
+              <CiSearch className="text-black text-base lg:text-2xl" />
             </button>
           </div>
-          <div className="w-11 h-11 flex self-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full">
+          <div className="w-9 lg:w-12 h-9 lg:h-11 md:flex hidden self-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full">
             <IoMdMic className="text-2xl self-center text-black" />
           </div>
         </div>
         <div className="flex w-1/3 justify-end">
-          <div className="py-2 px-4 flex self-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 rounded-full">
+          <div className="py-2 px-4 lg:flex self-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 rounded-full 
+              hidden "> {/* Hides on devices >= 768px */}
             <BsPlusLg className="text-2xl self-center text-black" />
             <span className="font-semibold">Create</span>
           </div>
-          <div className="w-11 h-11 mr-3 ml-2 flex self-center justify-center hover:bg-gray-200 rounded-full">
+          <div className="w-11 h-11 mr-3 ml-2 lg:flex self-center justify-center hover:bg-gray-200 rounded-full 
+              hidden"> {/* Hides on devices >= 768px */}
             <GoBell className="text-2xl self-center text-black" />
           </div>
-          <div className="mr-7 self-center">
+          <div className="mr-3 md:mr-7 self-center">
             {user === null ? (
               <>
                 <button

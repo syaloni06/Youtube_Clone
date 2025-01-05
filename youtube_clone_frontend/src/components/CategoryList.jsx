@@ -51,7 +51,7 @@ const CategoryList = ({
   }, []);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 ml-4 sm:ml-8 lg:ml-16 mt-6 sm:mt-8 lg:mt-10 relative">
+    <div className="p-4 sm:p-6 lg:p-8 lg:ml-16 mt-12 lg:mt-10 relative">
       {/* Left Arrow Button */}
       {!isAtStart && (
         <button

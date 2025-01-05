@@ -46,7 +46,7 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
         >
           <div className="flex p-2 gap-1">
             <RiAccountCircleLine className="self-center text-blue-600 text-3xl" />
-            <div className="text-blue-600 self-center font-semibold text-lg">
+            <div className="text-blue-600 self-center md:flex hidden font-semibold text-lg">
               Sign in
             </div>
           </div>
@@ -54,11 +54,11 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
       ) : (
         <>
           <button
-            className="flex items-center text-black px-3 py-2 rounded-lg"
+            className="flex items-center text-black px-1 md:px-3 py-2 rounded-lg"
             onClick={toggleMenu}
           >
             <img
-              className="rounded-full w-9 h-9"
+              className="rounded-full w-6 md:w-9 h-6 md:h-9"
               src={user.avatar}
               alt="User Avatar"
             />

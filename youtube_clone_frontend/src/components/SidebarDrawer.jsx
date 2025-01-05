@@ -82,7 +82,7 @@ const SidebarDrawer = ({ isDrawerOpen, toggleDrawer, closeDrawer }) => {
         </div>
         {/* Drawer Items */}
         {/* Home Section */}
-        <div className="overflow-y-auto scrollbar-hide h-screen">
+        <div className="overflow-y-auto scrollbar-hide h-full">
           <div className="mb-20">
             <div className="my-4">
               <ul className="mx-4">

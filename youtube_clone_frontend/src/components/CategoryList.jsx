@@ -51,27 +51,27 @@ const CategoryList = ({
   }, []);
 
   return (
-    <section className="p-6 sm:p-8 ml-16 mt-10 relative">
+    <div className="p-4 sm:p-6 lg:p-8 ml-4 sm:ml-8 lg:ml-16 mt-6 sm:mt-8 lg:mt-10 relative">
       {/* Left Arrow Button */}
       {!isAtStart && (
         <button
-          className="absolute top-1/2 left-2 transform -translate-y-1/2 p-3 bg-white rounded-full hover:scale-110 focus:outline-none hover:bg-gray-100"
+          className="absolute top-1/2 left-2 transform -translate-y-1/2 p-2 sm:p-3 bg-white rounded-full hover:scale-110 focus:outline-none hover:bg-gray-100"
           onClick={scrollLeft}
         >
-          <MdArrowBackIos className="text-xl text-gray-800" />
+          <MdArrowBackIos className="text-lg sm:text-xl text-gray-800" />
         </button>
       )}
 
       {/* List of categories with horizontal scrolling */}
       <ul
         ref={scrollRef}
-        className="flex flex-nowrap gap-4 sm:gap-6 overflow-x-auto scrollbar-hide mx-6"
+        className="flex flex-nowrap gap-2 sm:gap-4 lg:gap-6 overflow-x-auto scrollbar-hide mx-4 sm:mx-6"
       >
         {/* "All" Category */}
         <li className="flex-shrink-0">
           <button
             onClick={() => handleCategoryClick("All")}
-            className={`px-3 py-2  font-medium text-sm rounded-lg transition-transform ${
+            className={`px-2 py-1 sm:px-3 sm:py-2 font-medium text-xs sm:text-sm rounded-lg transition-transform ${
               selectedCategory === "All"
                 ? "bg-black text-white"
                 : "bg-gray-100 text-black hover:bg-gray-200 hover:scale-105"
@@ -85,7 +85,7 @@ const CategoryList = ({
           <li key={index} className="flex-shrink-0">
             <button
               onClick={() => handleCategoryClick(category)}
-              className={`px-3 py-2 font-medium text-sm rounded-lg transition-transform ${
+              className={`px-2 py-1 sm:px-3 sm:py-2 font-medium text-xs sm:text-sm rounded-lg transition-transform ${
                 selectedCategory === category
                   ? "bg-black text-white"
                   : "bg-gray-100 text-black hover:bg-gray-200 hover:scale-105"
@@ -100,13 +100,13 @@ const CategoryList = ({
       {/* Right Arrow Button */}
       {!isAtEnd && (
         <button
-          className="absolute top-1/2 right-2 transform -translate-y-1/2 p-3 bg-white rounded-full hover:scale-110 focus:outline-none hover:bg-gray-100"
+          className="absolute top-1/2 right-2 transform -translate-y-1/2 p-2 sm:p-3 bg-white rounded-full hover:scale-110 focus:outline-none hover:bg-gray-100"
           onClick={scrollRight}
         >
-          <MdOutlineArrowForwardIos className="text-xl text-gray-800" />
+          <MdOutlineArrowForwardIos className="text-lg sm:text-xl text-gray-800" />
         </button>
       )}
-    </section>
+    </div>
   );
 };
 

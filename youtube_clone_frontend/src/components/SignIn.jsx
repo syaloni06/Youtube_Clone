@@ -18,7 +18,6 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(formData);
 
     // Validate inputs (basic example)
     if (!formData.email || !formData.password) {
@@ -38,14 +37,10 @@ const SignIn = () => {
       );
 
       if (response.status === 200) {
-        // console.log("Response:", response.data);
         setError(""); // Clear errors if successful
 
         // Save the token or other data to localStorage
-        const { token, user } = response.data; // Assuming the response contains a token and user
-        // localStorage.setItem("authToken", token);
-        // localStorage.setItem("user", JSON.stringify(user));
-        // console.log("Token saved in localStorage");
+        const { token, user } = response.data; // Assuming the response contains a token and use
 
         // Dispatch the user data to Redux store
         dispatch(setUserInfo({ token, ...user }));

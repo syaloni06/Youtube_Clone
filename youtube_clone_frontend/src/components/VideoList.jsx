@@ -12,6 +12,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
 import { formatSubscribers$Views, timeAgo } from "../utils/formater";
 import CategoryList from "./CategoryList"; // Import the new component
+import { clearUserInfo } from "../utils/userSlice";
 
 const VideoList = () => {
   const [error, setError] = useState(null);
@@ -46,6 +47,8 @@ const VideoList = () => {
         }
       } catch (err) {
         console.error(err);
+        dispatch(clearUserInfo());
+            navigate('/signin');
       } finally {
         setLoading(false);
       }

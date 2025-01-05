@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -14,6 +15,9 @@ import { LuDot } from "react-icons/lu";
 import Comment from "./Comment";
 import { formatSubscribers$Views } from "../utils/formater";
 import { timeAgo } from "../utils/formater";
+import { clearUserInfo } from "../utils/userSlice";
+import { useDispatch } from "react-redux";
+
 const VideoDetail = () => {
   const videoId = useParams(); // Get the videoId from the URL
   const [videoData, setVideoData] = useState(null);
@@ -23,6 +27,7 @@ const VideoDetail = () => {
   const user = useSelector((state) => state.user.data);
   const videos = useSelector((state) => state.videos.data);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleVideoClick = (videoId) => {
     // Navigate to the video detail page when a video is clicked
     navigate(`/video/${videoId}`);
@@ -49,6 +54,8 @@ const VideoDetail = () => {
         setError(null); // Clear any previous errors
       } catch (err) {
         console.error(err);
+        dispatch(clearUserInfo());
+            navigate('/signin');
         setError("Failed to fetch video details. Please try again later.");
       } finally {
         setLoading(false);
@@ -56,6 +63,10 @@ const VideoDetail = () => {
     };
     fetchVideo();
   }, [user?.token, videoId, videos]);
+
+  const handleChannelClick = (channelId) => {
+    navigate(`/channel/${channelId}`);
+  };
 
   return (
     <div className="flex my-16 mx-24">
@@ -85,7 +96,8 @@ const VideoDetail = () => {
               <img
                 src={videoData.channelLogo}
                 alt={videoData.uploader}
-                className="w-11 h-11 self-center rounded-full"
+                className="w-11 h-11 self-center rounded-full cursor-pointer"
+                onClick={() => handleChannelClick(videoData.channelId)}
               />
               <div className="w-1/2">
                 <div className="flex gap-2">

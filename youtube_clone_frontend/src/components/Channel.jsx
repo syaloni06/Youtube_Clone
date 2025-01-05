@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
@@ -9,6 +10,10 @@ import { CiSearch } from "react-icons/ci";
 import EditVideo from "./EditVideo";
 import { formatSubscribers$Views } from "../utils/formater";
 import { timeAgo } from "../utils/formater";
+import { MdOutlineFlag, MdOutlineModeEdit } from "react-icons/md";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { clearUserInfo } from "../utils/userSlice";
+
 const Channel = () => {
   const channelId = useParams();
   const user = useSelector((state) => state.user.data);
@@ -19,6 +24,7 @@ const Channel = () => {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [editVideo, setEditVideo] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchVideo = async () => {
@@ -35,6 +41,8 @@ const Channel = () => {
         setChannelVideos(response.data);
       } catch (err) {
         console.error("Error fetching videos:", err);
+        dispatch(clearUserInfo());
+        navigate("/signin");
       }
     };
 
@@ -52,6 +60,8 @@ const Channel = () => {
         setChannelData(response.data);
       } catch (err) {
         console.error("Error fetching channel data:", err);
+        dispatch(clearUserInfo());
+        navigate("/signin");
       }
     };
 
@@ -82,6 +92,8 @@ const Channel = () => {
       setUpdateFlag(!updateFlag);
     } catch (err) {
       console.error("Error updating video:", err);
+      dispatch(clearUserInfo());
+      navigate("/signin");
     }
   };
 
@@ -107,6 +119,8 @@ const Channel = () => {
       setUpdateFlag(!updateFlag);
     } catch (err) {
       console.error("Error deleting video:", err);
+      dispatch(clearUserInfo());
+      navigate("/signin");
     }
   };
 
@@ -137,7 +151,10 @@ const Channel = () => {
                 <div className="flex font-medium mt-3 text-gray-500">
                   <span className="text-black">@{channelData.handle}</span>
                   <LuDot className="self-center" />
-                  <span>{formatSubscribers$Views(channelData.subscribers)} subscribers</span>
+                  <span>
+                    {formatSubscribers$Views(channelData.subscribers)}{" "}
+                    subscribers
+                  </span>
                   <LuDot className="self-center" />
                   <span>{channelVideos.length} videos</span>
                 </div>
@@ -158,8 +175,8 @@ const Channel = () => {
         )}
       </div>
       {/* Navigation Bar */}
-      <div className="channel-navigation flex justify-start ml-36 mt-3 mb-6 text-gray-600 text-lg font-medium border-b-2 border-gray-200 mr-16">
-        <button className="px-2 mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
+      <div className="channel-navigation sticky top-[60px] z-10 bg-white flex justify-start ml-20 mt-3 mb-6 text-gray-600 text-lg font-medium border-b-2 border-gray-200 mr-2">
+        <button className="ml-16 px-2 mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
           Home
         </button>
         <button className="px-2 mx-2 pb-2 text-black border-b-2 border-black">
@@ -181,12 +198,13 @@ const Channel = () => {
           <CiSearch className="text-3xl" />
         </button>
       </div>
+
       {/* Channel Videos */}
-      <div className="flex flex-wrap ml-36 mr-16 justify-evenly gap-y-10">
+      <div className="flex flex-wrap ml-36 mr-16 justify-start mb-16 gap-10">
         {channelVideos?.map((video) => (
           <div
             key={video._id}
-            className="bg-white overflow-hidden w-full sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)] "
+            className="bg-white overflow-hidden w-full sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)]"
           >
             <img
               src={video.thumbnailUrl}
@@ -209,7 +227,7 @@ const Channel = () => {
                     {video.title}
                   </h3>
                   <div className="flex mt-2 text-gray-600 text-sm">
-                    <span>{formatSubscribers$Views(video.views)} views</span> 
+                    <span>{formatSubscribers$Views(video.views)} views</span>
                     <LuDot className="self-center" />
                     <span>{timeAgo(video.uploadDate)}</span>
                   </div>
@@ -219,32 +237,39 @@ const Channel = () => {
                     className="ml-auto text-xl my-2 cursor-pointer"
                     onClick={() => toggleDropdown(video._id)} // Toggle dropdown visibility
                   />
-                  {user.channelId === channelId.id ? (<>{visibleDropdown === video._id && (
-                    <div className="absolute right-0 top-10 bg-white shadow-md rounded-lg z-10">
-                      <button
-                        className="px-4 py-2 hover:bg-gray-200 w-full text-left"
-                        onClick={() => handleEditClick(video)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="px-4 py-2 hover:bg-gray-200 w-full text-left"
-                        onClick={() => handleDelete(video.videoId)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  )}</>) : (<>
-                  {visibleDropdown === video._id && (
-                    <div className="absolute right-0 top-10 bg-white shadow-md rounded-lg z-10">
-                      <button
-                        className="px-4 py-2 hover:bg-gray-200 w-full text-left"
-                      >
-                        Report
-                      </button>
-                    </div>
+                  {user.channelId === channelId.id ? (
+                    <>
+                      {visibleDropdown === video._id && (
+                        <div className="absolute right-4 top-2 bg-white shadow-lg border border-gray-300 rounded-lg z-50">
+                          <button
+                            className="flex gap-2 items-center px-6 py-2 hover:bg-gray-200 w-full text-left"
+                            onClick={() => handleEditClick(video)}
+                          >
+                            <MdOutlineModeEdit className="text-2xl" />
+                            <span>Edit</span>
+                          </button>
+                          <button
+                            className="flex gap-2 items-center px-6 py-2 hover:bg-gray-200 w-full text-left"
+                            onClick={() => handleDelete(video.videoId)}
+                          >
+                            <RiDeleteBin6Line className="text-2xl" />
+                            <span>Delete</span>
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {visibleDropdown === video._id && (
+                        <div className="absolute right-4 top-2 bg-white shadow-md rounded-lg z-10">
+                          <button className="flex gap-2 items-center px-6 py-2 hover:bg-gray-200 w-full text-left">
+                            <MdOutlineFlag className="text-2xl" />
+                            <span>Report</span>
+                          </button>
+                        </div>
+                      )}
+                    </>
                   )}
-                  </>)}
                 </div>
               </div>
             </div>

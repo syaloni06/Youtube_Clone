@@ -26,19 +26,43 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await axios.post("http://localhost:5100/channels", formData);
-      const updateUserResponse = await axios.put(`http://localhost:5100/update/${user.userId}`, {channelId: response.data.channel.channelId});
-      dispatch(updateUserInfo({ channelId: response.data.channel.channelId }))
-      console.log("Channel created successfully:", response.data, updateUserResponse.data);
+      const token = user?.token; // Replace with your actual token
+      const headers = {
+        Authorization: token,
+      };
+  
+      // Send POST request to create the channel
+      const response = await axios.post(
+        "http://localhost:5100/channels",
+        formData,
+        { headers } // Add headers here
+      );
+  
+      // Send PUT request to update the user with the channel ID
+      const updateUserResponse = await axios.put(
+        `http://localhost:5100/update/${user.userId}`,
+        { channelId: response.data.channel.channelId },
+        { headers } // Add headers here as well
+      );
+  
+      // Update Redux state and handle success
+      dispatch(updateUserInfo({ channelId: response.data.channel.channelId }));
+      console.log(
+        "Channel created successfully:",
+        response.data,
+        updateUserResponse.data
+      );
       alert("Channel created successfully!");
       setIsCreateChannelOpen(false);
     } catch (error) {
+      // Handle errors
       console.error("Error creating channel:", error);
       alert("Failed to create channel. Please try again.");
     }
   };
+  
 
   return (
     <>

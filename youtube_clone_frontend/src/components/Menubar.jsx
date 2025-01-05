@@ -37,7 +37,6 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
     };
   }, [menuRef, setIsMenuOpen]);
 
-  console.log(channelHandle)
   return (
     <div className="relative flex items-center">
       {user === null ? (

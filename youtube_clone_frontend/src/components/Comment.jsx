@@ -124,7 +124,7 @@ const Comment = ({ videoId }) => {
           <span className="text-sm font-semibold ml-2">Sort by</span>
         </div>
       </div>
-      <div className="flex py-4 md:w-full mx-3 md:mx-0 gap-x-2 md:gap-x-4">
+      <div className="flex py-4 md:w-full ml-3 mr-2 md:mx-0 gap-x-2 md:gap-x-4">
         <div>
           <img
             src={user.avatar}
@@ -208,7 +208,7 @@ const Comment = ({ videoId }) => {
                     {cmt.userId === user.userId ? (
                       <>
                         {menuVisible[cmt.commentId] && (
-                          <div className="absolute shadow-lg rounded-lg right-0 z-50">
+                          <div className="absolute shadow-lg rounded-lg right-0 bg-white z-50">
                             <button
                               className="flex items-center mt-2 gap-2 px-8 py-2 text-base hover:bg-gray-200 w-full"
                               onClick={() =>
@@ -229,9 +229,10 @@ const Comment = ({ videoId }) => {
                     ) : (
                       <>
                         {menuVisible[cmt.commentId] && (
-                          <div className="absolute shadow-lg rounded-lg right-0 ">
+                          <div className="absolute shadow-lg rounded-lg right-0 bg-white z-50">
+                             
                             <button
-                              className="flex z-50 items-center gap-2 px-8 py-2 mb-2 text-base hover:bg-gray-200 w-full"
+                              className="flex items-center gap-2 px-8 py-2 mb-2 text-base hover:bg-gray-200 w-full"
                               onClick={() =>
                                 setMenuVisible((prev) => ({
                                   ...prev,
@@ -239,7 +240,7 @@ const Comment = ({ videoId }) => {
                                 }))
                               }
                             >
-                              <MdOutlineFlag className="text-2xl z-50" /> Report
+                              <MdOutlineFlag className="text-2xl" />Report
                             </button>
                           </div>
                         )}
@@ -248,7 +249,7 @@ const Comment = ({ videoId }) => {
                   </div>
                 </div>
                 {editingCommentId === cmt.commentId ? (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 mr-6 md:mr-0">
                     <input
                       type="text"
                       value={editingText}
@@ -282,7 +283,7 @@ const Comment = ({ videoId }) => {
                   </div>
                 ) : (
                   <div>
-                    <p className="text-xs md:text-sm ">{cmt.text}</p>
+                    <p className="text-xs md:text-sm break-words max-w-full text-justify mr-8">{cmt.text}</p>
                     {/* Buttons for Like, Dislike, and Reply */}
                     <div className="flex gap-x-2 mt-1">
                       <button className="rounded-full hover:bg-gray-200 flex items-center">

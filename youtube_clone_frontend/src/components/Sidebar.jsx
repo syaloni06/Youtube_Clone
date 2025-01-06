@@ -10,7 +10,7 @@ const Sidebar = () => {
     <>
      {/* Conditionally render the sidebar based on the current pathname */}
       {(location.pathname === "/" || location.pathname.startsWith("/channel/")) && (
-        <div className="fixed bottom-0 lg:top-16 lg:left-0 lg:h-screen flex lg:flex-col w-full lg:w-20 bg-white lg:items-center">
+        <div className="fixed bottom-0 lg:top-16 lg:left-0 lg:h-screen flex lg:flex-col w-full lg:w-20 bg-white lg:items-center z-50 lg:z-0">
           {/* Sidebar Items Container */}
           <div className="flex flex-row lg:flex-col justify-around lg:justify-start w-full lg:w-auto">
             {/* Home */}

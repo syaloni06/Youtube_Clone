@@ -127,7 +127,7 @@ const Channel = () => {
   return (
     <>
       {/* Channel Header */}
-      <div className="channel-header ml-36 mt-16 mr-20 mb-3 overflow-hidden">
+      <div className="channel-header ml-10 lg:ml-36 mt-20 lg:mt-16 mr-10 lg:mr-20 mb-3 overflow-hidden">
         {channelData ? (
           <div>
             {/* Banner */}
@@ -175,7 +175,7 @@ const Channel = () => {
         )}
       </div>
       {/* Navigation Bar */}
-      <div className="channel-navigation sticky top-[60px] z-10 bg-white flex justify-start ml-20 mt-3 mb-6 text-gray-600 text-lg font-medium border-b-2 border-gray-200 mr-2">
+      <div className="channel-navigation sticky top-[60px] z-10 bg-white flex justify-start ml-10 lg:ml-20 mt-3 mb-6 text-gray-600 text-lg font-medium border-b-2 border-gray-200 mr-2">
         <button className="ml-16 px-2 mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
           Home
         </button>
@@ -200,7 +200,7 @@ const Channel = () => {
       </div>
 
       {/* Channel Videos */}
-      <div className="flex flex-wrap ml-36 mr-16 justify-start mb-16 gap-10">
+      <div className="flex flex-wrap ml-10 lg:ml-36 mr-10 lg:mr-16 justify-start mb-20 lg:mb-16 gap-5 lg:gap-10">
         {channelVideos?.map((video) => (
           <div
             key={video._id}

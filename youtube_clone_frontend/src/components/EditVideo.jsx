@@ -22,11 +22,6 @@ const EditVideo = ({
     if (!editVideo.thumbnailUrl.trim()) {
       newErrors.thumbnailUrl = "Thumbnail URL is required.";
     }
-    // else if (
-    //   !/^https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg|webp)$/i.test(editVideo.thumbnailUrl)
-    // ) {
-    //   newErrors.thumbnailUrl = "Please enter a valid image URL.";
-    // }
     return newErrors;
   };
 

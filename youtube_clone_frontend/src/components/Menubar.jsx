@@ -19,26 +19,50 @@ import { IoHelpCircleOutline } from "react-icons/io5";
 import { MdOutlineFeedback } from "react-icons/md";
 import CreateChannel from "./CreateChannel";
 import { ChannelContext } from "../utils/ChannelContext";
+import axios from "axios";
+
+
 const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
   const navigate = useNavigate();
   const [isCreateChannelOpen, setIsCreateChannelOpen] = useState(false);
   const menuRef = useRef();
-  const { channelHandle } = useContext(ChannelContext);
+  const { channelHandle, setChannelHandle } = useContext(ChannelContext);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuOpen(false);
       }
     };
-
+    
+    
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [menuRef, setIsMenuOpen]);
 
+  useEffect(() => {
+    const fetchChannelHandle = async () => {
+      const token = user?.token;
+      try {
+        const channelResponse = await axios.get(
+          `http://localhost:5100/channels/${user.channelId}`,
+          {
+            headers: { Authorization: token },
+          }
+        );
+        setChannelHandle(channelResponse.data.handle);
+      } catch (err) {
+        console.error("Error fetching videos:", err);
+      }
+    };
+    fetchChannelHandle();
+  }, [channelHandle, setChannelHandle, user])
+  
   return (
-    <div className="relative flex items-center">
+    <div id="menu-overlay"
+    ref={menuRef}
+    className="relative flex items-center">
       {user === null ? (
         <button
           onClick={() => navigate("/signin")}
@@ -66,8 +90,7 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
 
           {isMenuOpen && (
             <div
-              id="menu-overlay"
-              ref={menuRef}
+              
               className="absolute right-0 top-12 max-h-[90vh] mt-2 w-80 bg-white border border-gray-300 shadow-lg rounded-lg z-50"
             >
               <div className="flex gap-4 p-4 border-b border-gray-200">

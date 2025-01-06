@@ -103,7 +103,7 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
     <>
       {isCreateChannelOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg w-1/2 p-6 shadow-lg">
+          <div className="bg-white rounded-lg w-[95vw] md:w-[80vw] lg:w-1/2 p-6 shadow-lg">
             <h2 className="text-lg font-medium mb-6 text-center text-gray-700">Create Channel</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">

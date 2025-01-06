@@ -38,6 +38,7 @@ const Header = () => {
   };
 
   const toggleMenu = () => {
+    // console.log(isMenuOpen);
     setIsMenuOpen(!isMenuOpen); // Toggle user menu
   };
 

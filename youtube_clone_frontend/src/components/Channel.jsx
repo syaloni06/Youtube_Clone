@@ -42,7 +42,7 @@ const Channel = () => {
       } catch (err) {
         console.error("Error fetching videos:", err);
         dispatch(clearUserInfo());
-        navigate("/signin");
+        navigate("/");
       }
     };
 
@@ -61,7 +61,7 @@ const Channel = () => {
       } catch (err) {
         console.error("Error fetching channel data:", err);
         dispatch(clearUserInfo());
-        navigate("/signin");
+        navigate("/");
       }
     };
 
@@ -93,7 +93,7 @@ const Channel = () => {
     } catch (err) {
       console.error("Error updating video:", err);
       dispatch(clearUserInfo());
-      navigate("/signin");
+      navigate("/");
     }
   };
 
@@ -120,7 +120,7 @@ const Channel = () => {
     } catch (err) {
       console.error("Error deleting video:", err);
       dispatch(clearUserInfo());
-      navigate("/signin");
+      navigate("/");
     }
   };
 

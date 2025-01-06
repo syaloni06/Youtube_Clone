@@ -70,8 +70,8 @@ const VideoDetail = () => {
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row my-24 mx-5 md:mx-10 lg:mx-24">
-        <div className="flex flex-col w-full lg:w-8/12 mr-6 rounded-lg">
+      <div className="flex flex-col lg:flex-row my-16 md:my-24 mx-0 md:mx-10 lg:mx-24">
+        <div className="flex flex-col w-full lg:w-8/12 lg:mr-6 rounded-lg">
           {/* Error Message */}
           {error && <p className="text-red-500 text-center">{error}</p>}
 
@@ -83,21 +83,23 @@ const VideoDetail = () => {
           ) : videoData ? (
             <>
               {/* Video Player */}
-              <div className="relative w-full mx-auto mb-4 sm:mb-2">
+              <div className="relative w-full mx-auto mb-2 md:mb-4 sm:mb-2">
                 <ReactPlayer
                   url={videoData.videoUrl} // Assuming `videoUrl` is the direct link to the video file
                   controls={true}
                   playing={true}
                   width="100%"
                   height="auto" // Auto height for responsiveness
-                  className="rounded-2xl overflow-hidden aspect-video sm:h-[200px] lg:h-[420px]"
+                  className="rounded-none md:rounded-2xl overflow-hidden aspect-video sm:h-[200px] lg:h-[420px]"
                 />
               </div>
 
               {/* Video Info */}
-              <h1 className="text-lg md:text-2xl font-bold mb-2">{videoData.title}</h1>
+              <h1 className="text-lg md:text-2xl font-bold mx-3 md:mx-0 mb-2">
+                {videoData.title}
+              </h1>
               <div className="flex flex-col md:flex-row gap-y-4 mb-6 w-full">
-                <div className="flex">
+                <div className="flex mx-3 md:mx-0">
                   <img
                     src={videoData.channelLogo}
                     alt={videoData.uploader}
@@ -120,7 +122,6 @@ const VideoDetail = () => {
                     <span>Subscribe</span>
                   </button>
                 </div>
-
                 <div className="flex justify-evenly md:justify-end w-full gap-x-2">
                   <div className="flex">
                     <div className="flex items-center my-1 gap-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-l-full cursor-pointer shadow-sm">
@@ -146,7 +147,7 @@ const VideoDetail = () => {
                 </div>
               </div>
               {/* Description */}
-              <div className="text-black bg-gray-100 p-3 rounded-xl mb-4">
+              <div className="text-black bg-gray-100 p-3 mx-3 md:mx-0 rounded-xl mb-4">
                 <div className="flex gap-x-2">
                   <div className="font-semibold">
                     {formatSubscribers$Views(videoData.views)} views
@@ -164,40 +165,46 @@ const VideoDetail = () => {
             <p className="text-center text-gray-500">No video details found.</p>
           )}
         </div>
-        <div className="space-y-4 lg:mr-4 w-full lg:w-5/12">
+        <div className="space-y-8 md:space-y-4 lg:mr-4 w-full lg:w-5/12">
           {filteredVideo.map((video) => (
             <div
               key={video.id}
-              className="flex gap-4 items-start cursor-pointer"
+              className="flex flex-col md:flex-row gap-1 md:gap-4 items-start cursor-pointer"
               onClick={() => handleVideoClick(video.videoId)}
             >
               {/* Video Thumbnail */}
-              <div className="w-2/5 md:w-auto">
+              <div className="w-full md:w-auto">
                 <img
                   src={video.thumbnailUrl}
                   alt={video.title}
-                  className="w-48 h-20 md:h-28 rounded-lg"
+                  className=" w-full md:w-48 h-56 md:h-28 md:rounded-lg"
                 />
               </div>
               {/* Video Info */}
-              <div className="flex-1 w-4/5">
-                <h3 className="font-semibold text-sm md:text-base line-clamp-2">{video.title}</h3>
-                <div className="flex text-sm w-full text-gray-500 font-medium mt-1">
-                  <span className="line-clamp-1">{video.uploader}</span>
-                  <FaCheckCircle className="self-center ml-1 text-xs text-zinc-500" />
+              <div className="flex-1 w-full md:w-4/5">
+                <div className="flex justify-between mx-2 md:mx-0">
+                  <h3 className="font-semibold text-sm md:text-base line-clamp-2">
+                    {video.title}
+                  </h3>
+                  <div className="mt-1">
+                    <button className="text-xl">
+                      <BsThreeDotsVertical />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex text-gray-600 truncate text-xs md:text-sm">
-                  <span>{formatSubscribers$Views(video.views)} views</span>
-                  <LuDot className="self-center md:text-lg" />
-                  <span>{timeAgo(video.uploadDate)}</span>
+                <div className="flex md:flex-col gap-2 md:gap-0 mx-2 md:mx-0">
+                  <div className="flex text-xs md:text-sm md:w-full text-gray-500 font-medium mt-1">
+                    <span className="line-clamp-1">{video.uploader}</span>
+                    <FaCheckCircle className="self-center ml-1 text-xs text-zinc-500" />
+                  </div>
+                  <div className="flex items-end text-gray-600 truncate text-xs md:text-sm">
+                    <span>{formatSubscribers$Views(video.views)} views</span>
+                    <LuDot className="self-center md:text-lg" />
+                    <span>{timeAgo(video.uploadDate)}</span>
+                  </div>
                 </div>
               </div>
               {/* Options Icon */}
-              <div className="mt-1">
-                <button className="text-xl">
-                  <BsThreeDotsVertical />
-                </button>
-              </div>
             </div>
           ))}
         </div>

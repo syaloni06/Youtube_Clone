@@ -115,7 +115,7 @@ const Comment = ({ videoId }) => {
 
   return (
     <>
-      <div className="flex items-center pb-2">
+      <div className="flex items-center mx-3 md:mx-0 pb-2">
         <div className="px-2 text-2xl font-bold">
           {comments.length} Comments
         </div>
@@ -124,7 +124,7 @@ const Comment = ({ videoId }) => {
           <span className="text-sm font-semibold ml-2">Sort by</span>
         </div>
       </div>
-      <div className="flex py-4 w-full gap-x-4">
+      <div className="flex py-4 md:w-full mx-3 md:mx-0 gap-x-2 md:gap-x-4">
         <div>
           <img
             src={user.avatar}
@@ -132,7 +132,7 @@ const Comment = ({ videoId }) => {
             className="w-12 h-11 rounded-full"
           />
         </div>
-        <div className="w-full flex flex-col gap-y-2">
+        <div className="w-full flex flex-col mr-2 md:mr-0 gap-y-2">
           <div className="relative group">
             <input
               type="text"
@@ -176,10 +176,10 @@ const Comment = ({ videoId }) => {
           )}
         </div>
       </div>
-      <div className=" py-2 w-full">
+      <div className=" py-2w-full ">
         {comments.length > 0 ? (
           comments.map((cmt) => (
-            <div key={cmt.commentId} className="flex gap-x-4 py-2 w-full">
+            <div key={cmt.commentId} className="flex gap-x-4 ml-3 md:ml-0 py-2 md:w-full">
               <img
                 src={cmt.userAvatar}
                 alt={`${cmt.userName}'s avatar`}
@@ -197,7 +197,7 @@ const Comment = ({ videoId }) => {
                   </div>
                   <div className="relative">
                     <BsThreeDotsVertical
-                      className="cursor-pointer"
+                      className="cursor-pointer mx-3 md:mx-0"
                       onClick={() =>
                         setMenuVisible((prev) => ({
                           ...prev,
@@ -229,9 +229,9 @@ const Comment = ({ videoId }) => {
                     ) : (
                       <>
                         {menuVisible[cmt.commentId] && (
-                          <div className="absolute shadow-lg rounded-lg right-0 z-50">
+                          <div className="absolute shadow-lg rounded-lg right-0 ">
                             <button
-                              className="flex items-center gap-2 px-8 py-2 mb-2 text-base hover:bg-gray-200 w-full"
+                              className="flex z-50 items-center gap-2 px-8 py-2 mb-2 text-base hover:bg-gray-200 w-full"
                               onClick={() =>
                                 setMenuVisible((prev) => ({
                                   ...prev,
@@ -239,7 +239,7 @@ const Comment = ({ videoId }) => {
                                 }))
                               }
                             >
-                              <MdOutlineFlag className="text-2xl" /> Report
+                              <MdOutlineFlag className="text-2xl z-50" /> Report
                             </button>
                           </div>
                         )}
@@ -282,7 +282,7 @@ const Comment = ({ videoId }) => {
                   </div>
                 ) : (
                   <div>
-                    <p className="text-sm w-full">{cmt.text}</p>
+                    <p className="text-xs md:text-sm ">{cmt.text}</p>
                     {/* Buttons for Like, Dislike, and Reply */}
                     <div className="flex gap-x-2 mt-1">
                       <button className="rounded-full hover:bg-gray-200 flex items-center">

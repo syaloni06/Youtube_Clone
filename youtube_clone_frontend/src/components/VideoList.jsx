@@ -48,7 +48,7 @@ const VideoList = () => {
       } catch (err) {
         console.error(err);
         dispatch(clearUserInfo());
-        navigate("/signin");
+        navigate("/");
       } finally {
         setLoading(false);
       }
@@ -68,15 +68,27 @@ const VideoList = () => {
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
+  
     if (category === "All") {
+      // Show all videos
       setSearchedVideoList(videos);
+    } else if (category === "Recent") {
+      // Show videos uploaded within the last week
+      const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // 7 days ago
+      const recentVideos = videos.filter((video) => {
+        const uploadTime = new Date(video.uploadDate); // Convert uploadTime to Date object
+        return uploadTime > oneWeekAgo; // Check if video is uploaded within the last week
+      });
+      setSearchedVideoList(recentVideos);
     } else {
+      // Filter by other categories
       const filteredVideos = videos.filter(
         (video) => video.category === category
       );
       setSearchedVideoList(filteredVideos);
     }
   };
+  
 
   return (
     <>

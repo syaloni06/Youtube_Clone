@@ -95,6 +95,18 @@ const CategoryList = ({
             </button>
           </li>
         ))}
+         <li className="flex-shrink-0">
+          <button
+            onClick={() => handleCategoryClick("Recent")}
+            className={`px-2 py-1 sm:px-3 sm:py-2 font-medium text-xs sm:text-sm rounded-lg transition-transform ${
+              selectedCategory === "Recent"
+                ? "bg-black text-white"
+                : "bg-gray-100 text-black hover:bg-gray-200 hover:scale-105"
+            }`}
+          >
+            Recently uploaded
+          </button>
+        </li>
       </ul>
 
       {/* Right Arrow Button */}

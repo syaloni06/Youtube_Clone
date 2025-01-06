@@ -3,14 +3,15 @@ import { useRef, useEffect, useState } from "react";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
 
+// CategoryList component: A horizontally scrollable list of categories with left and right navigation arrows
 const CategoryList = ({
-  categories,
-  selectedCategory,
-  handleCategoryClick,
+  categories, // Array of category names to display
+  selectedCategory, // Currently selected category
+  handleCategoryClick, // Callback function when a category is clicked
 }) => {
-  const scrollRef = useRef(null);
-  const [isAtStart, setIsAtStart] = useState(true);
-  const [isAtEnd, setIsAtEnd] = useState(false);
+  const scrollRef = useRef(null); // Ref for the scrollable container
+  const [isAtStart, setIsAtStart] = useState(true); // State to track if the container is scrolled to the start
+  const [isAtEnd, setIsAtEnd] = useState(false); // State to track if the container is scrolled to the end
 
   // Function to scroll left
   const scrollLeft = () => {
@@ -26,33 +27,33 @@ const CategoryList = ({
     }
   };
 
-  // Check if the container is at the start or end
+  // Function to check if the scrollable container is at the start or end
   const checkScrollPosition = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      const tolerance = 2; // Add a small tolerance to account for precision issues
-      setIsAtStart(scrollLeft <= 0);
-      setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - tolerance);
+      const tolerance = 2; // Tolerance to handle floating-point precision issues
+      setIsAtStart(scrollLeft <= 0); // True if scrolled to the start
+      setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - tolerance); // True if scrolled to the end
     }
   };
 
-  // Attach the scroll listener
+  // Attach scroll listener to update `isAtStart` and `isAtEnd` when scrolling
   useEffect(() => {
     const ref = scrollRef.current;
     if (ref) {
       ref.addEventListener("scroll", checkScrollPosition);
-      checkScrollPosition(); // Initial check
+      checkScrollPosition(); // Perform an initial check on mount
     }
     return () => {
       if (ref) {
-        ref.removeEventListener("scroll", checkScrollPosition);
+        ref.removeEventListener("scroll", checkScrollPosition); // Cleanup listener on unmount
       }
     };
   }, []);
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 lg:ml-16 mt-12 lg:mt-10 relative">
-      {/* Left Arrow Button */}
+      {/* Left arrow button: Visible only if not at the start */}
       {!isAtStart && (
         <button
           className="absolute top-1/2 left-2 transform -translate-y-1/2 p-2 sm:p-3 bg-white rounded-full hover:scale-110 focus:outline-none hover:bg-gray-100"
@@ -62,12 +63,12 @@ const CategoryList = ({
         </button>
       )}
 
-      {/* List of categories with horizontal scrolling */}
+      {/* Scrollable list of categories */}
       <ul
         ref={scrollRef}
         className="flex flex-nowrap gap-2 sm:gap-4 lg:gap-6 overflow-x-auto scrollbar-hide mx-4 sm:mx-6"
       >
-        {/* "All" Category */}
+        {/* "All" category: A special category for showing all items */}
         <li className="flex-shrink-0">
           <button
             onClick={() => handleCategoryClick("All")}
@@ -80,7 +81,7 @@ const CategoryList = ({
             All
           </button>
         </li>
-        {/* Other Categories */}
+        {/* Render other categories dynamically */}
         {categories.map((category, index) => (
           <li key={index} className="flex-shrink-0">
             <button
@@ -95,7 +96,8 @@ const CategoryList = ({
             </button>
           </li>
         ))}
-         <li className="flex-shrink-0">
+        {/* "Recently uploaded" category */}
+        <li className="flex-shrink-0">
           <button
             onClick={() => handleCategoryClick("Recent")}
             className={`px-2 py-1 sm:px-3 sm:py-2 font-medium text-xs sm:text-sm rounded-lg transition-transform ${
@@ -109,7 +111,7 @@ const CategoryList = ({
         </li>
       </ul>
 
-      {/* Right Arrow Button */}
+      {/* Right arrow button: Visible only if not at the end */}
       {!isAtEnd && (
         <button
           className="absolute top-1/2 right-2 transform -translate-y-1/2 p-2 sm:p-3 bg-white rounded-full hover:scale-110 focus:outline-none hover:bg-gray-100"

@@ -35,13 +35,13 @@ import { Link } from "react-router-dom";
 const SidebarDrawer = ({ isDrawerOpen, toggleDrawer, closeDrawer }) => {
   return (
     <>
-    {/* Drawer Overlay */}
-    <div
+      {/* Drawer Overlay - This creates a semi-transparent background overlay when the sidebar is open */}
+      <div
         id="drawer-overlay"
         className={`fixed inset-0 bg-black bg-opacity-50 z-50 ${
           isDrawerOpen ? "block" : "hidden"
         }`}
-        onClick={closeDrawer}
+        onClick={closeDrawer} // Closes the drawer when clicked outside
       ></div>
 
       {/* Animated Sidebar */}
@@ -54,18 +54,15 @@ const SidebarDrawer = ({ isDrawerOpen, toggleDrawer, closeDrawer }) => {
         <div className="flex items-center mx-5 h-16">
           {/* Menu Button */}
           <button
-            onClick={toggleDrawer}
+            onClick={toggleDrawer} // Toggles the drawer open or closed
             className="p-2 rounded-full hover:bg-gray-200"
           >
             <AiOutlineMenu className="mt-1 self-center text-lg xl:text-2xl font-bold" />
           </button>
+          {/* YouTube Logo Section */}
           <div className="flex items-center">
             <Link
-              to="/"
-            //   onClick={() => {
-            //     setSearchFlag(!searchFlag);
-            //     setSearchTerm("");
-            //   }}
+              to="/" // This links back to the homepage
               className="flex items-center text-xl lg:text-2xl mx-1"
             >
               <div className="flex items-center justify-center ml-1 pt-1 hover:text-gray-800">
@@ -80,9 +77,10 @@ const SidebarDrawer = ({ isDrawerOpen, toggleDrawer, closeDrawer }) => {
             </Link>
           </div>
         </div>
-        {/* Drawer Items */}
-        {/* Home Section */}
+        {/* Drawer Menu Items */}
+
         <div className="overflow-y-auto scrollbar-hide h-full">
+          {/* Home Section */}
           <div className="mb-20">
             <div className="my-4">
               <ul className="mx-4">
@@ -101,7 +99,7 @@ const SidebarDrawer = ({ isDrawerOpen, toggleDrawer, closeDrawer }) => {
               </ul>
             </div>
             <hr className="mx-4" />
-            {/* You Section */}
+            {/* You Section - User-related options */}
             <div className="m-4">
               <h2 className="flex items-center text-black font-semibold hover:bg-gray-100 px-4 py-2 rounded-lg text-lg">
                 You
@@ -131,11 +129,13 @@ const SidebarDrawer = ({ isDrawerOpen, toggleDrawer, closeDrawer }) => {
               </ul>
             </div>
             <hr className="mx-4" />
+            {/* Subscriptions Section */}
             <div className="mx-4 my-2">
               <h2 className="flex items-center text-black font-semibold  px-4 py-2 rounded-lg text-lg">
                 Subscriptions
               </h2>
               <ul>
+                {/* Subscription channels - each item displays a channel name and image */}
                 <li className="flex items-center text-black hover:bg-gray-100 px-3 py-2 rounded-lg">
                   <img
                     className="rounded-full w-7 h-7"
@@ -194,11 +194,13 @@ const SidebarDrawer = ({ isDrawerOpen, toggleDrawer, closeDrawer }) => {
               </ul>
             </div>
             <hr className="mx-4" />
+            {/* Explore Section - Links to different content categories */}
             <div className="mx-4 my-2">
               <h2 className="flex items-center text-black font-semibold  px-4 py-2 rounded-lg text-lg">
                 Explore
               </h2>
               <ul>
+                {/* Each list item here corresponds to a category like Trending, Gaming, Music, etc. */}
                 <li className="flex items-center text-black hover:bg-gray-100 px-4 py-2 rounded-lg">
                   <HiFire className="text-3xl text-black" />
                   <span className="ml-5">Trending</span>
@@ -246,11 +248,13 @@ const SidebarDrawer = ({ isDrawerOpen, toggleDrawer, closeDrawer }) => {
               </ul>
             </div>
             <hr className="mx-4" />
+            {/* More from YouTube - Links to additional YouTube features */}
             <div className="mx-4 my-2">
               <h2 className="flex items-center text-black font-semibold  px-3 py-2 rounded-lg text-lg">
                 More from YouTube
               </h2>
               <ul>
+                {/* Each item represents a different feature of YouTube like YouTube Premium, YouTube Music, etc. */}
                 <li className="flex items-center text-black hover:bg-gray-100 px-4 py-2 rounded-lg">
                   <FaYoutube className="text-2xl text-youtube-red" />
                   <span className="ml-6">Youtube Premium</span>
@@ -270,8 +274,10 @@ const SidebarDrawer = ({ isDrawerOpen, toggleDrawer, closeDrawer }) => {
               </ul>
             </div>
             <hr className="mx-4" />
+            {/* Settings, Help, Feedback Section */}
             <div className="mx-4 my-2">
               <ul>
+                {/* These options manage settings, help, and feedback */}
                 <li className="flex items-center text-black hover:bg-gray-100 px-4 py-2 rounded-lg">
                   <IoSettingsOutline className="text-2xl text-black" />
                   <span className="ml-6">Settings</span>
@@ -305,9 +311,9 @@ const SidebarDrawer = ({ isDrawerOpen, toggleDrawer, closeDrawer }) => {
             </div>
           </div>
         </div>
-        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
 export default SidebarDrawer;

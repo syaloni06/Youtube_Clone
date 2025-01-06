@@ -21,48 +21,48 @@ import CreateChannel from "./CreateChannel";
 import { ChannelContext } from "../utils/ChannelContext";
 import axios from "axios";
 
-
+// MenuBar Component to display user options and settings
 const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
   const navigate = useNavigate();
-  const [isCreateChannelOpen, setIsCreateChannelOpen] = useState(false);
-  const menuRef = useRef();
-  const { channelHandle, setChannelHandle } = useContext(ChannelContext);
+  const [isCreateChannelOpen, setIsCreateChannelOpen] = useState(false); // State for managing channel creation
+  const menuRef = useRef(); // Ref for detecting clicks outside menu
+  const { channelHandle, setChannelHandle } = useContext(ChannelContext); // Context for managing channel handle
+  // Effect for closing the menu when clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuOpen(false);
       }
     };
-    
-    
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [menuRef, setIsMenuOpen]);
 
+  // Effect for fetching channel handle when user is logged in
   useEffect(() => {
     const fetchChannelHandle = async () => {
-      const token = user?.token;
+      const token = user?.token; // Get user token
       try {
         const channelResponse = await axios.get(
           `http://localhost:5100/channels/${user.channelId}`,
           {
-            headers: { Authorization: token },
+            headers: { Authorization: token }, // Authorization header with user token
           }
         );
-        setChannelHandle(channelResponse.data.handle);
+        setChannelHandle(channelResponse.data.handle); // Set channel handle in context
       } catch (err) {
         console.error("Error fetching videos:", err);
       }
     };
     fetchChannelHandle();
-  }, [channelHandle, setChannelHandle, user])
-  
+  }, [channelHandle, setChannelHandle, user]);
+
   return (
-    <div id="menu-overlay"
-    ref={menuRef}
-    className="relative flex items-center">
+    <div id="menu-overlay" ref={menuRef} className="relative flex items-center">
+      {/* If user is not logged in, show sign in button */}
       {user === null ? (
         <button
           onClick={() => navigate("/signin")}
@@ -77,6 +77,7 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
         </button>
       ) : (
         <>
+          {/* If user is logged in, show profile avatar and menu */}
           <button
             className="flex items-center text-black px-1 md:px-3 py-2 rounded-lg"
             onClick={toggleMenu}
@@ -87,12 +88,9 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
               alt="User Avatar"
             />
           </button>
-
+          {/* Menu dropdown with user details and options */}
           {isMenuOpen && (
-            <div
-              
-              className="absolute right-0 top-12 max-h-[90vh] mt-2 w-80 bg-white border border-gray-300 shadow-lg rounded-lg z-50"
-            >
+            <div className="absolute right-0 top-12 max-h-[90vh] mt-2 w-80 bg-white border border-gray-300 shadow-lg rounded-lg z-50">
               <div className="flex gap-4 p-4 border-b border-gray-200">
                 <img
                   className="rounded-full w-11 h-11"
@@ -102,25 +100,32 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
                 <div>
                   <p className="font-medium text-lg">{user?.username}</p>
                   <p className=" font-medium text-base">
-                  {channelHandle ? `@${channelHandle}` : user?.email}
+                    {channelHandle ? `@${channelHandle}` : user?.email}
                   </p>
-                  {user.channelId !== undefined ? (<><Link
-                    to={`/channel/${user.channelId}`}
-                    className="text-blue-500 font-medium text-sm"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    View your channel
-                  </Link></>) : (<><button
-                    onClick={() => setIsCreateChannelOpen(true)}
-                    className="block text-blue-500 font-medium text-sm mt-2"
-                  >
-                    Create Channel
-                  </button></>)}
-                  
-                  
+                  {/* If user has a channel, provide option to view channel, else offer to create one */}
+                  {user.channelId !== undefined ? (
+                    <>
+                      <Link
+                        to={`/channel/${user.channelId}`}
+                        className="text-blue-500 font-medium text-sm"
+                        onClick={() => setIsMenuOpen(false)} // Close menu after clicking
+                      >
+                        View your channel
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => setIsCreateChannelOpen(true)} // Open create channel modal
+                        className="block text-blue-500 font-medium text-sm mt-2"
+                      >
+                        Create Channel
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
-              
+              {/* Menu items for various settings and options */}
               <div className="mt-2 max-h-[65vh] scrollbar-hide overflow-y-auto">
                 <ul className="">
                   <li className="flex gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
@@ -202,10 +207,11 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
               </div>
             </div>
           )}
-           <CreateChannel 
-           isCreateChannelOpen={isCreateChannelOpen}
-           setIsCreateChannelOpen={setIsCreateChannelOpen}
-           />
+          {/* Create channel modal */}
+          <CreateChannel
+            isCreateChannelOpen={isCreateChannelOpen}
+            setIsCreateChannelOpen={setIsCreateChannelOpen}
+          />
         </>
       )}
     </div>

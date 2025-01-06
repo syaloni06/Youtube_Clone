@@ -5,19 +5,22 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserInfo } from "../utils/userSlice";
 
+// CreateChannel component for creating a new channel
 const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.data);
+  // Initial form state
   const [formData, setFormData] = useState({
     channelName: "",
-    owner: user.userId,
+    owner: user.userId, // Setting owner to the current logged-in user's ID
     handle: "",
     description: "",
     channelBanner: "",
     channelLogo: "",
   });
   const [errors, setErrors] = useState({});
-  
+
+  // Function to handle input changes and validate the field in real-time
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
@@ -25,10 +28,11 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
       [id]: value,
     }));
 
-    // Real-time Validation
+    // Real-time validation for individual fields
     validateField(id, value);
   };
 
+  // Validate individual fields and set error messages
   const validateField = (name, value) => {
     let fieldErrors = { ...errors };
 
@@ -37,7 +41,8 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
         fieldErrors.channelName = value ? "" : "Channel name is required.";
         break;
       case "handle":
-        fieldErrors.handle = value.length >= 3 ? "" : "Handle must be at least 3 characters.";
+        fieldErrors.handle =
+          value.length >= 3 ? "" : "Handle must be at least 3 characters.";
         break;
       case "description":
         fieldErrors.description = value ? "" : "Description is required.";
@@ -55,27 +60,29 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
     setErrors(fieldErrors);
   };
 
+  // Validate the entire form before submission
   const validateForm = () => {
     const fieldErrors = {};
     Object.keys(formData).forEach((key) => {
-      if (!formData[key]) fieldErrors[key] = `${key} is required.`;
+      if (!formData[key]) fieldErrors[key] = `${key} is required.`; // Mark fields as required
     });
     setErrors(fieldErrors);
-    return Object.keys(fieldErrors).length === 0;
+    return Object.keys(fieldErrors).length === 0; // Form is valid if there are no errors
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    // If form is not valid, stop submission
     if (!validateForm()) return;
 
     try {
-      const token = user?.token;
+      const token = user?.token; // Get user token
       const headers = {
-        Authorization: token,
+        Authorization: token, // Set Authorization header
       };
 
-      // Send POST request to create the channel
+      // Send POST request to create a new channel
       const response = await axios.post(
         "http://localhost:5100/channels",
         formData,
@@ -89,13 +96,14 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
         { headers }
       );
 
-      // Update Redux state and handle success
+      // Update Redux state with the new channel ID
       dispatch(updateUserInfo({ channelId: response.data.channel.channelId }));
+      // Success message and close modal
       alert("Channel created successfully!");
       setIsCreateChannelOpen(false);
     } catch (error) {
       console.error("Error creating channel:", error);
-      alert("Failed to create channel. Please try again.");
+      alert("Failed to create channel. Please try again."); // Show error message
     }
   };
 
@@ -103,9 +111,20 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
     <>
       {isCreateChannelOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg w-[95vw] md:w-[80vw] lg:w-1/2 p-6 shadow-lg">
-            <h2 className="text-lg font-medium mb-6 text-center text-gray-700">Create Channel</h2>
+          <div className="bg-white rounded-lg w-[95vw] md:w-[80vw] lg:w-1/2 p-6 shadow-lg relative">
+            {/* Close button */}
+            <button
+              className="absolute top-4 right-4 text-gray-500 text-lg hover:text-gray-800"
+              onClick={() => setIsCreateChannelOpen(false)}
+            >
+              &times;
+            </button>
+            {/* Modal Header */}
+            <h2 className="text-lg font-medium mb-6 text-center text-gray-700">
+              Create Channel
+            </h2>
             <form onSubmit={handleSubmit}>
+              {/* Input for channel name */}
               <div className="mb-4">
                 <label
                   htmlFor="channelName"
@@ -125,10 +144,12 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
                   required
                 />
                 {errors.channelName && (
-                  <p className="text-sm text-red-500 mt-1">{errors.channelName}</p>
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors.channelName}
+                  </p>
                 )}
               </div>
-
+              {/* Input for handle */}
               <div className="mb-4">
                 <label
                   htmlFor="handle"
@@ -151,7 +172,7 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
                   <p className="text-sm text-red-500 mt-1">{errors.handle}</p>
                 )}
               </div>
-
+              {/* Input for description */}
               <div className="mb-4">
                 <label
                   htmlFor="description"
@@ -170,10 +191,12 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
                   required
                 ></textarea>
                 {errors.description && (
-                  <p className="text-sm text-red-500 mt-1">{errors.description}</p>
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors.description}
+                  </p>
                 )}
               </div>
-
+              {/* Input for banner URL */}
               <div className="mb-4">
                 <label
                   htmlFor="channelBanner"
@@ -193,10 +216,12 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
                   required
                 />
                 {errors.channelBanner && (
-                  <p className="text-sm text-red-500 mt-1">{errors.channelBanner}</p>
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors.channelBanner}
+                  </p>
                 )}
               </div>
-
+              {/* Input for logo URL */}
               <div className="mb-4">
                 <label
                   htmlFor="channelLogo"
@@ -216,10 +241,12 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
                   required
                 />
                 {errors.channelLogo && (
-                  <p className="text-sm text-red-500 mt-1">{errors.channelLogo}</p>
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors.channelLogo}
+                  </p>
                 )}
               </div>
-
+              {/* Action buttons */}
               <div className="flex justify-end gap-3">
                 <button
                   type="button"

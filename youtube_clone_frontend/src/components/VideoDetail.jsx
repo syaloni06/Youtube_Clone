@@ -19,15 +19,16 @@ import { clearUserInfo } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
 
 const VideoDetail = () => {
-  const videoId = useParams(); // Get the videoId from the URL
-  const [videoData, setVideoData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [filteredVideo, setFilteredVideo] = useState([]);
-  const user = useSelector((state) => state.user.data);
-  const videos = useSelector((state) => state.videos.data);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const videoId = useParams(); // Get the videoId from the URL parameters
+  const [videoData, setVideoData] = useState(null); // State to store video data
+  const [error, setError] = useState(null); // State to store errors
+  const [loading, setLoading] = useState(true); // State to track the loading state
+  const [filteredVideo, setFilteredVideo] = useState([]); // State to store filtered videos
+  const user = useSelector((state) => state.user.data); // Get user data from Redux store
+  const videos = useSelector((state) => state.videos.data); // Get videos data from Redux store
+  const navigate = useNavigate(); // Hook for navigation
+  const dispatch = useDispatch(); // Hook for dispatching actions
+
   const handleVideoClick = (videoId) => {
     // Navigate to the video detail page when a video is clicked
     navigate(`/video/${videoId}`);
@@ -35,9 +36,10 @@ const VideoDetail = () => {
 
   useEffect(() => {
     const fetchVideo = async () => {
-      setLoading(true);
-      const token = user?.token;
+      setLoading(true); // Set loading state to true
+      const token = user?.token; // Get the user's token for authentication
       try {
+        // Fetch video details from the server using the video ID
         const response = await axios.get(
           `http://localhost:5100/videos/${videoId.id}`,
           {
@@ -46,25 +48,27 @@ const VideoDetail = () => {
             },
           }
         );
-        setVideoData(response.data); // Assuming the API returns a single video object
+        setVideoData(response.data); // Store the fetched video data
+        // Filter out the current video from the list of videos
         const filtervideo = videos.filter(
           (video) => video.videoId !== videoId.id
         );
-        setFilteredVideo(filtervideo);
+        setFilteredVideo(filtervideo); // Store the filtered list of videos
         setError(null); // Clear any previous errors
       } catch (err) {
         console.error(err);
-        dispatch(clearUserInfo());
-        navigate("/signin");
-        setError("Failed to fetch video details. Please try again later.");
+        dispatch(clearUserInfo()); // Clear user data in case of an error
+        navigate("/"); // Redirect user to the main page
+        setError("Failed to fetch video details. Please try again later."); // Set the error state
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading state to false after fetching
       }
     };
     fetchVideo();
-  }, [user?.token, videoId, videos]);
+  }, [user?.token, videoId, videos]); // Dependency array ensures the effect runs when user, videoId, or videos changes
 
   const handleChannelClick = (channelId) => {
+    // Navigate to the selected channel's page
     navigate(`/channel/${channelId}`);
   };
 
@@ -165,6 +169,7 @@ const VideoDetail = () => {
             <p className="text-center text-gray-500">No video details found.</p>
           )}
         </div>
+        {/* Suggested Videos */}
         <div className="space-y-8 md:space-y-4 lg:mr-4 w-full lg:w-5/12">
           {filteredVideo.map((video) => (
             <div
@@ -204,7 +209,6 @@ const VideoDetail = () => {
                   </div>
                 </div>
               </div>
-              {/* Options Icon */}
             </div>
           ))}
         </div>

@@ -16,64 +16,72 @@ import MenuBar from "./Menubar.jsx";
 import { VideoListContext } from "../utils/VideoListContext.jsx";
 
 const Header = () => {
+  // Extract values from contexts
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const { searchFlag, setSearchFlag } = useContext(SearchFlagContext);
   const { setSearchedVideoList } = useContext(VideoListContext);
   const { drawerIsOpen, setDrawerIsOpen } = useContext(DrawerContext);
   const navigate = useNavigate();
+  // State variables for drawer and menu toggles
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for user menu
+  // Access user and videos from Redux store
   const user = useSelector((state) => state.user.data);
   const videos = useSelector((state) => state.videos.data);
+  // Toggle the state of the drawer (sidebar)
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
     setDrawerIsOpen(!drawerIsOpen);
   };
-
+  // Close the drawer if overlay is clicked
   const closeDrawer = (e) => {
     if (e.target.id === "drawer-overlay") {
       setIsDrawerOpen(false);
       setDrawerIsOpen(false);
     }
   };
-
+  // Toggle the state of the user menu
   const toggleMenu = () => {
-    // console.log(isMenuOpen);
     setIsMenuOpen(!isMenuOpen); // Toggle user menu
   };
-
+  // Close the user menu if overlay is clicked
   const closeMenu = (e) => {
     if (e.target.id === "menu-overlay") {
       setIsMenuOpen(false);
     }
   };
+  // Function to search for videos based on search term
   const searchVideos = () => {
     const searchedVideo = videos.filter((video) => {
       if (!searchTerm || searchTerm.trim() === "") return true; // If no search term, return all videos
-  
+
       // Split the search term into individual words
-      const searchWords = searchTerm.toLowerCase().split(" ").filter((word) => word.trim() !== "");
-  
+      const searchWords = searchTerm
+        .toLowerCase()
+        .split(" ")
+        .filter((word) => word.trim() !== "");
+
       // Check if any word matches either the title, description, or uploader
-      const matchesSearch = searchWords.some((word) =>
-        (video.title?.toLowerCase().includes(word) || 
-         video.description?.toLowerCase().includes(word) || 
-         video.uploader?.toLowerCase().includes(word))
+      const matchesSearch = searchWords.some(
+        (word) =>
+          video.title?.toLowerCase().includes(word) ||
+          video.description?.toLowerCase().includes(word) ||
+          video.uploader?.toLowerCase().includes(word)
       );
-  
+
       return matchesSearch;
     });
-  
+
     // Update the video list with filtered videos
     setSearchedVideoList(searchedVideo);
-    navigate("/");
+    navigate("/"); // Navigate to the home page
   };
-  
+
   return (
     <>
-      <div className="flex md:justify-between bg-white top-0 fixed w-full z-40 h-16">
+      <div className="flex lg:justify-between bg-white top-0 fixed w-full z-50 h-16">
         {/* Logo and Home link */}
-        <div className="flex items-center md:w-1/3 ml-3 mr-1 md:mx-5">
+        <div className="flex items-center lg:w-1/3 ml-3 mr-1 md:mx-5">
           {/* Menu Button */}
           <button
             onClick={toggleDrawer}
@@ -126,25 +134,34 @@ const Header = () => {
           </div>
         </div>
         <div className="flex w-1/3 justify-end">
-          <div className="py-2 px-4 lg:flex self-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 rounded-full 
-              hidden "> {/* Hides on devices >= 768px */}
+          <div
+            className="py-2 px-4 lg:flex self-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 rounded-full 
+              hidden "
+          >
+            {" "}
+            {/* Hides on devices >= 768px */} {/* Create Button */}
             <BsPlusLg className="text-2xl self-center text-black" />
             <span className="font-semibold">Create</span>
           </div>
-          <div className="w-11 h-11 mr-3 ml-2 lg:flex self-center justify-center hover:bg-gray-200 rounded-full 
-              hidden"> {/* Hides on devices >= 768px */}
+          <div
+            className="w-11 h-11 mr-3 ml-2 lg:flex self-center justify-center hover:bg-gray-200 rounded-full 
+              hidden"
+          >
+            {" "}
+            {/* Hides on devices >= 768px */} {/* Notification Bell */}
             <GoBell className="text-2xl self-center text-black" />
           </div>
+          {/* User Menu or Sign in Button */}
           <div className="mr-3 md:mr-7 self-center">
             {user === null ? (
               <>
                 <button
                   onClick={() => navigate("/signin")}
-                  className="flex w-full items-center border border-gray-300 rounded-full h-10 mr-7 self-center hover:bg-blue-100"
+                  className="flex w-full items-center md:border border-gray-300 rounded-full h-10 mr-7 self-center md:hover:bg-blue-100"
                 >
                   <div className="flex p-2 gap-1">
-                    <RiAccountCircleLine className="self-center text-blue-600 text-3xl" />
-                    <span className="text-blue-600 self-center font-semibold text-lg">
+                    <RiAccountCircleLine className="self-center text-blue-600 text-2xl md:text-xl lg:text-3xl" />
+                    <span className="text-blue-600 hidden md:flex self-center font-semibold lg:text-lg">
                       Sign in
                     </span>
                   </div>
@@ -152,7 +169,7 @@ const Header = () => {
               </>
             ) : (
               <>
-                {/* MenuBar Component */}
+                {/* MenuBar Component for signed-in users */}
                 <MenuBar
                   isMenuOpen={isMenuOpen}
                   toggleMenu={toggleMenu}

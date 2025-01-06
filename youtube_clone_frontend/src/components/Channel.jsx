@@ -15,17 +15,19 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { clearUserInfo } from "../utils/userSlice";
 
 const Channel = () => {
-  const channelId = useParams();
-  const user = useSelector((state) => state.user.data);
-  const [channelVideos, setChannelVideos] = useState([]);
-  const [visibleDropdown, setVisibleDropdown] = useState(null); // State to track which dropdown is visible
-  const [channelData, setChannelData] = useState(null);
-  const [updateFlag, setUpdateFlag] = useState(true);
-  const [showEditDialog, setShowEditDialog] = useState(false);
-  const [editVideo, setEditVideo] = useState(null);
+  const channelId = useParams(); // Get channel ID from URL parameters
+  const user = useSelector((state) => state.user.data); // Redux state for the logged-in user
+  // State variables
+  const [channelVideos, setChannelVideos] = useState([]); // Videos of the channel
+  const [visibleDropdown, setVisibleDropdown] = useState(null); // Dropdown visibility for each video
+  const [channelData, setChannelData] = useState(null); // Channel information
+  const [updateFlag, setUpdateFlag] = useState(true); // Flag to trigger data re-fetching
+  const [showEditDialog, setShowEditDialog] = useState(false); // Edit video dialog visibility
+  const [editVideo, setEditVideo] = useState(null); // Video being edited
+  // Navigation and Redux dispatch hooks
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  // Fetch videos and channel data on component load
   useEffect(() => {
     const fetchVideo = async () => {
       const token = user?.token;
@@ -71,10 +73,12 @@ const Channel = () => {
     }
   }, [user?.token, channelId, updateFlag]);
 
+  // Navigate to the clicked video
   const handleVideoClick = (videoId) => {
     navigate(`/video/${videoId}`);
   };
 
+  // Save edits to a video
   const handleSaveEdit = async () => {
     const token = user?.token;
     try {
@@ -89,7 +93,7 @@ const Channel = () => {
       );
       console.log(response.data);
       setShowEditDialog(false);
-      setUpdateFlag(!updateFlag);
+      setUpdateFlag(!updateFlag); // Trigger data refresh
     } catch (err) {
       console.error("Error updating video:", err);
       dispatch(clearUserInfo());
@@ -97,16 +101,19 @@ const Channel = () => {
     }
   };
 
+  // Toggle dropdown visibility for a video
   const toggleDropdown = (videoId) => {
     setVisibleDropdown((prev) => (prev === videoId ? null : videoId));
   };
 
+  // Open the edit dialog for a video
   const handleEditClick = (video) => {
     setVisibleDropdown(null); // Close dropdown when editing
     setEditVideo(video);
     setShowEditDialog(true);
   };
 
+  // Delete a video
   const handleDelete = async (videoId) => {
     setVisibleDropdown(null); // Close dropdown when deleting
     const token = user?.token;
@@ -116,7 +123,7 @@ const Channel = () => {
           Authorization: token,
         },
       });
-      setUpdateFlag(!updateFlag);
+      setUpdateFlag(!updateFlag); // Trigger data refresh
     } catch (err) {
       console.error("Error deleting video:", err);
       dispatch(clearUserInfo());
@@ -181,33 +188,37 @@ const Channel = () => {
             </button>
           </div>
         ) : (
-          <p>Loading channel information...</p>
+          <p className="text-gray-700 mt-28 text-center text-xl">
+            You have to Signin to view your channel
+          </p>
         )}
       </div>
       {/* Navigation Bar */}
-      <div className="channel-navigation sticky top-[60px] md:top-[65px] lg:top-[60px] z-10 bg-white flex justify-start ml-2 md:ml-10 lg:ml-20 mt-3 mb-6 text-gray-600 text-lg font-medium border-b-2 border-gray-200">
-        <button className="md:ml-8 lg:ml-16 px-2 mx-1 md:mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
-          Home
-        </button>
-        <button className="px-2 mx-1 md:mx-2 pb-2 text-black border-b-2 border-black">
-          Videos
-        </button>
-        <button className="px-2 mx-1 md:mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
-          Shorts
-        </button>
-        <button className="px-2 mx-2 hidden md:flex pb-2 border-b-2 border-white hover:border-gray-400">
-          Courses
-        </button>
-        <button className="px-2 mx-2 hidden md:flex pb-2 border-b-2 border-white hover:border-gray-400">
-          Playlists
-        </button>
-        <button className="px-2 mx-1 md:mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
-          Community
-        </button>
-        <button className="px-4 pb-2 hidden md:flex">
-          <CiSearch className="text-3xl" />
-        </button>
-      </div>
+      {channelData && (
+        <div className="channel-navigation sticky top-[60px] md:top-[65px] lg:top-[60px] z-10 bg-white flex justify-start ml-2 md:ml-10 lg:ml-20 mt-3 mb-6 text-gray-600 text-lg font-medium border-b-2 border-gray-200">
+          <button className="md:ml-8 lg:ml-16 px-2 mx-1 md:mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
+            Home
+          </button>
+          <button className="px-2 mx-1 md:mx-2 pb-2 text-black border-b-2 border-black">
+            Videos
+          </button>
+          <button className="px-2 mx-1 md:mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
+            Shorts
+          </button>
+          <button className="px-2 mx-2 hidden md:flex pb-2 border-b-2 border-white hover:border-gray-400">
+            Courses
+          </button>
+          <button className="px-2 mx-2 hidden md:flex pb-2 border-b-2 border-white hover:border-gray-400">
+            Playlists
+          </button>
+          <button className="px-2 mx-1 md:mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
+            Community
+          </button>
+          <button className="px-4 pb-2 hidden md:flex">
+            <CiSearch className="text-3xl" />
+          </button>
+        </div>
+      )}
 
       {/* Channel Videos */}
       <div className="flex flex-wrap m-2 md:ml-10 lg:ml-36 md:mr-10 lg:mr-16 justify-start mb-20 lg:mb-16 gap-3 md:gap-5 lg:gap-10">
@@ -286,6 +297,7 @@ const Channel = () => {
           </div>
         ))}
       </div>
+      {/* Edit Video Dialog */}
       <EditVideo
         showEditDialog={showEditDialog}
         editVideo={editVideo}

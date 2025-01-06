@@ -7,12 +7,16 @@ export const VideoListContext = createContext();
 
 // Defining the provider component to wrap the parts of the app that need access to the video list
 export const VideoListProvider = ({ children }) => {
-  // Initializing the videoList state to hold an empty array by default
-  const [searchedVideoList, setSearchedVideoList] = useState([]); 
+  // Initializing the `searchedVideoList` state to hold an array of videos (default is an empty array)
+  const [searchedVideoList, setSearchedVideoList] = useState([]);
 
   return (
-    <VideoListContext.Provider value={{ searchedVideoList, setSearchedVideoList }}>
-      {/* Passing the video list state and setter function to the children components */}
+    // The context provider shares the `searchedVideoList` state and the `setSearchedVideoList` function
+    // with all child components that consume this context
+    <VideoListContext.Provider
+      value={{ searchedVideoList, setSearchedVideoList }}
+    >
+      {/* Render the children components inside the provider */}
       {children}
     </VideoListContext.Provider>
   );

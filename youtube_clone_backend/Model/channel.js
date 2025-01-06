@@ -54,13 +54,6 @@ const channelSchema = new mongoose.Schema({
     required: true, // The field is mandatory
     default: 0 // Default value if not provided
   },
-
-  // Array of video IDs associated with the channel
-  videos: [
-    {
-      type: String // Each video ID is stored as a string
-    }
-  ]
 });
 
 // Create a Mongoose model for the channel schema

@@ -99,7 +99,7 @@ const VideoList = () => {
       >
         <div className="flex flex-col">
           <div className={`${
-              drawerIsOpen ? " w-[86vw]" : "w-full"
+              drawerIsOpen ? " lg:w-[86vw]" : "w-full"
             }`}>
           {user !== null && (
             <CategoryList
@@ -112,7 +112,7 @@ const VideoList = () => {
           
           <div
             className={`container lg:ml-24 pt-3 mb-20 pb-6 ${
-              drawerIsOpen ? " w-[80vw]" : "w-full"
+              drawerIsOpen ? " lg:w-[80vw]" : "w-full"
             }`}
           >
             {error && <p className="text-red-500">{error}</p>}

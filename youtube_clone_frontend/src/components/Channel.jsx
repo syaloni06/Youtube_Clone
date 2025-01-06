@@ -127,39 +127,43 @@ const Channel = () => {
   return (
     <>
       {/* Channel Header */}
-      <div className="channel-header ml-10 lg:ml-36 mt-20 lg:mt-16 mr-10 lg:mr-20 mb-3 overflow-hidden">
+      <div className="channel-header m-2 md:ml-10 lg:ml-36 mt-16 md:mt-20 lg:mt-16 md:mr-10 lg:mr-20 mb-3 overflow-hidden">
         {channelData ? (
           <div>
             {/* Banner */}
             <img
-              className="channel-banner h-46 rounded-2xl w-full"
+              className="channel-banner h-20 md:h-auto rounded-lg md:rounded-2xl w-full"
               src={channelData.channelBanner}
               alt="Channel Banner"
             />
             {/* Channel Info */}
-            <div className="flex items-start mt-4 gap-4 p-4">
+            <div className="flex items-start mt-2 md:mt-4 gap-2 md:gap-4 md:p-4">
               <img
                 src={channelData.channelLogo}
                 alt={channelData.channelName}
-                className="w-44 h-44 rounded-full border border-gray-300"
+                className="w-20 h-20 md:w-44 md:h-44 rounded-full border border-gray-300"
               />
               <div>
-                <h2 className="flex  gap-2 text-4xl font-bold">
+                <h2 className="flex gap-2 text-xl md:text-4xl font-bold">
                   {channelData.channelName}
-                  <FaCheckCircle className="text-sm self-center" />
+                  <FaCheckCircle className="text-xs md:text-sm self-center" />
                 </h2>
-                <div className="flex font-medium mt-3 text-gray-500">
+                <div className="flex flex-col md:flex-row font-medium mt-1 md:mt-3 text-gray-500">
                   <span className="text-black">@{channelData.handle}</span>
-                  <LuDot className="self-center" />
-                  <span>
-                    {formatSubscribers$Views(channelData.subscribers)}{" "}
-                    subscribers
-                  </span>
-                  <LuDot className="self-center" />
-                  <span>{channelVideos.length} videos</span>
+                  <LuDot className="self-center hidden md:flex" />
+                  <div className="flex">
+                    <span>
+                      {formatSubscribers$Views(channelData.subscribers)}{" "}
+                      subscribers
+                    </span>
+                    <LuDot className="self-center" />
+                    <span>{channelVideos.length} videos</span>
+                  </div>
                 </div>
-                <p className="mt-2 text-gray-700">{channelData.description}</p>
-                <div className="flex gap-2 mt-3">
+                <p className="mt-2 hidden md:flex text-justify text-gray-700">
+                  {channelData.description}
+                </p>
+                <div className="hidden md:flex gap-2 mt-3">
                   <button className="px-5 py-2 bg-black hover:bg-slate-800 text-white font-medium rounded-full shadow-sm transition">
                     <span>Subscribe</span>
                   </button>
@@ -169,64 +173,70 @@ const Channel = () => {
                 </div>
               </div>
             </div>
+            <div className="mt-2 md:hidden text-xs mx-3 text-justify text-gray-700">
+              {channelData.description}
+            </div>
+            <button className="px-5 py-2 w-full bg-black text-lg mt-2 hover:bg-slate-800 text-white font-medium rounded-full shadow-sm transition flex justify-center md:hidden">
+              <span>Subscribe</span>
+            </button>
           </div>
         ) : (
           <p>Loading channel information...</p>
         )}
       </div>
       {/* Navigation Bar */}
-      <div className="channel-navigation sticky top-[60px] z-10 bg-white flex justify-start ml-10 lg:ml-20 mt-3 mb-6 text-gray-600 text-lg font-medium border-b-2 border-gray-200 mr-2">
-        <button className="ml-16 px-2 mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
+      <div className="channel-navigation sticky top-[60px] md:top-[65px] lg:top-[60px] z-10 bg-white flex justify-start ml-2 md:ml-10 lg:ml-20 mt-3 mb-6 text-gray-600 text-lg font-medium border-b-2 border-gray-200">
+        <button className="md:ml-8 lg:ml-16 px-2 mx-1 md:mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
           Home
         </button>
-        <button className="px-2 mx-2 pb-2 text-black border-b-2 border-black">
+        <button className="px-2 mx-1 md:mx-2 pb-2 text-black border-b-2 border-black">
           Videos
         </button>
-        <button className="px-2 mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
+        <button className="px-2 mx-1 md:mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
           Shorts
         </button>
-        <button className="px-2 mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
+        <button className="px-2 mx-2 hidden md:flex pb-2 border-b-2 border-white hover:border-gray-400">
           Courses
         </button>
-        <button className="px-2 mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
+        <button className="px-2 mx-2 hidden md:flex pb-2 border-b-2 border-white hover:border-gray-400">
           Playlists
         </button>
-        <button className="px-2 mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
+        <button className="px-2 mx-1 md:mx-2 pb-2 border-b-2 border-white hover:border-gray-400">
           Community
         </button>
-        <button className="px-4 pb-2">
+        <button className="px-4 pb-2 hidden md:flex">
           <CiSearch className="text-3xl" />
         </button>
       </div>
 
       {/* Channel Videos */}
-      <div className="flex flex-wrap ml-10 lg:ml-36 mr-10 lg:mr-16 justify-start mb-20 lg:mb-16 gap-5 lg:gap-10">
+      <div className="flex flex-wrap m-2 md:ml-10 lg:ml-36 md:mr-10 lg:mr-16 justify-start mb-20 lg:mb-16 gap-3 md:gap-5 lg:gap-10">
         {channelVideos?.map((video) => (
           <div
             key={video._id}
-            className="bg-white overflow-hidden w-full sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)]"
+            className="bg-white flex md:flex-col w-full sm:w-[calc(100%-0.75rem)] md:w-[calc(50%-0.75rem)] lg:w-[calc(32%-0.75rem)]"
           >
             <img
               src={video.thumbnailUrl}
               alt={video.title}
-              className="w-full h-56 rounded-xl cursor-pointer"
+              className="md:w-full w-40 h-24  md:h-56 rounded-xl cursor-pointer"
               onClick={() => handleVideoClick(video.videoId)}
             />
-            <div className="px-1 py-2">
+            <div className="px-2 md:px-1 py-2">
               <div className="flex gap-4">
                 <img
                   src={video.channelLogo}
                   alt={video.uploader}
-                  className="w-10 h-10 my-1 rounded-full"
+                  className="w-10 h-10 my-1 hidden md:flex rounded-full"
                 />
                 <div className="flex-1">
                   <h3
                     onClick={() => handleVideoClick(video.videoId)}
-                    className="font-semibold text-lg line-clamp-2 cursor-pointer"
+                    className="font-semibold text-base md:text-lg line-clamp-2 cursor-pointer"
                   >
                     {video.title}
                   </h3>
-                  <div className="flex mt-2 text-gray-600 text-sm">
+                  <div className="flex mt-2 text-gray-600 text-xs md:text-sm">
                     <span>{formatSubscribers$Views(video.views)} views</span>
                     <LuDot className="self-center" />
                     <span>{timeAgo(video.uploadDate)}</span>

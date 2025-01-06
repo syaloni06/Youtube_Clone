@@ -39,7 +39,7 @@ const EditVideo = ({
     <>
       {showEditDialog && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-8 rounded-xl shadow-xl w-3/5 relative">
+          <div className="bg-white p-8 rounded-xl shadow-xl m-4 md:m-0 w-full md:w-3/5 relative">
             <button
               className="absolute top-4 right-4 text-gray-500 text-lg hover:text-gray-800"
               onClick={() => setShowEditDialog(false)}

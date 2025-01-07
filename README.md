@@ -34,4 +34,4 @@ npm start
 4. **User Authentication**: Sign in for personalized experiences or sign up to unlock features like subscriptions.
 5. **Seamless Navigation**: Access content with dynamic routing, responsive design, and an intuitive drawer menu for smooth navigation.
 ## Project Demo
-### Deployed Link - https://shoppyglobebysyaloni.netlify.app/
+https://github.com/user-attachments/assets/2f4c2798-8d8f-43ec-ace1-bccd7e0329c4

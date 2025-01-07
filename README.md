@@ -23,7 +23,7 @@ npm install
 npm run dev
 ```
 ## Usage
-1. **Video Exploration**: Browse the homepage to view and play videos, and click to explore detailed content.
+1. ***Video Exploration***: Browse the homepage to view and play videos, and click to explore detailed content.
 2. **Search & Discover**: Use the search bar to find videos or channels with real-time updates based on your query.
 3. **Channel Insights**: Visit creator channels to explore their content and gain deeper insights into their work.
 4. **User Authentication**: Sign in for personalized experiences or sign up to unlock features like subscriptions.

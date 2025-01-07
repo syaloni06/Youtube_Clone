@@ -34,4 +34,4 @@ npm start
 4. **User Authentication**: Sign in for personalized experiences or sign up to unlock features like subscriptions.
 5. **Seamless Navigation**: Access content with dynamic routing, responsive design, and an intuitive drawer menu for smooth navigation.
 ## Project Demo
-https://github.com/user-attachments/assets/2f4c2798-8d8f-43ec-ace1-bccd7e0329c4
+https://github.com/user-attachments/assets/e3cb52aa-6e6b-4a85-990b-b5290328974c

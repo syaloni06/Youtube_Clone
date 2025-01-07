@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,8 @@ import { MdOutlineFlag, MdOutlineModeEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { clearUserInfo } from "../utils/userSlice";
 import Swal from "sweetalert2";
+import { clearVideoList } from "../utils/videoSlice";
+import { VideoListContext } from "../utils/VideoListContext";
 
 const Channel = () => {
   const channelId = useParams(); // Get channel ID from URL parameters
@@ -28,6 +30,7 @@ const Channel = () => {
   // Navigation and Redux dispatch hooks
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { setSearchedVideoList } = useContext(VideoListContext);
   // Fetch videos and channel data on component load
   useEffect(() => {
     const fetchVideo = async () => {
@@ -41,15 +44,13 @@ const Channel = () => {
             },
           }
         );
-        if (response.status === 304) {
-          dispatch(clearUserInfo());
-          navigate("/");
-        }
         setChannelVideos(response.data);
       } catch (err) {
         console.error("Error fetching videos:", err);
-        dispatch(clearUserInfo());
-        navigate("/");
+        dispatch(clearUserInfo()); // Clear the user data from the Redux store in case of an error
+        dispatch(clearVideoList()); // Clear the video list from the Redux store
+        setSearchedVideoList([]); // Reset the searched video list to an empty array (local state)
+        navigate("/"); // Redirect the user to the home page
       }
     };
 
@@ -67,8 +68,10 @@ const Channel = () => {
         setChannelData(response.data);
       } catch (err) {
         console.error("Error fetching channel data:", err);
-        dispatch(clearUserInfo());
-        navigate("/");
+        dispatch(clearUserInfo()); // Clear the user data from the Redux store in case of an error
+        dispatch(clearVideoList()); // Clear the video list from the Redux store
+        setSearchedVideoList([]); // Reset the searched video list to an empty array (local state)
+        navigate("/"); // Redirect the user to the home page
       }
     };
     fetchVideo();
@@ -123,9 +126,10 @@ const Channel = () => {
         title: "Failed",
         text: "Failed to update the video. Please try again.",
       });
-
-      dispatch(clearUserInfo());
-      navigate("/");
+      dispatch(clearUserInfo()); // Clear the user data from the Redux store in case of an error
+      dispatch(clearVideoList()); // Clear the video list from the Redux store
+      setSearchedVideoList([]); // Reset the searched video list to an empty array (local state)
+      navigate("/"); // Redirect the user to the home page
     }
   };
 
@@ -170,14 +174,11 @@ const Channel = () => {
     });
 
     try {
-      await axios.delete(
-        `http://localhost:5100/videos/${videoId}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      await axios.delete(`http://localhost:5100/videos/${videoId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
 
       // Close the SweetAlert loading spinner and show success
       Swal.fire({
@@ -197,8 +198,10 @@ const Channel = () => {
         text: "Failed to delete the video. Please try again.",
       });
 
-      dispatch(clearUserInfo());
-      navigate("/");
+      dispatch(clearUserInfo()); // Clear the user data from the Redux store in case of an error
+      dispatch(clearVideoList()); // Clear the video list from the Redux store
+      setSearchedVideoList([]); // Reset the searched video list to an empty array (local state)
+      navigate("/"); // Redirect the user to the home page
     }
   };
 

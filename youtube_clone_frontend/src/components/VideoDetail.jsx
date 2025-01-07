@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { BsThreeDots } from "react-icons/bs";
@@ -17,6 +17,8 @@ import { formatSubscribers$Views } from "../utils/formater";
 import { timeAgo } from "../utils/formater";
 import { clearUserInfo } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
+import { clearVideoList } from "../utils/videoSlice";
+import { VideoListContext } from "../utils/VideoListContext";
 
 const VideoDetail = () => {
   const videoId = useParams(); // Get the videoId from the URL parameters
@@ -28,7 +30,7 @@ const VideoDetail = () => {
   const videos = useSelector((state) => state.videos.data); // Get videos data from Redux store
   const navigate = useNavigate(); // Hook for navigation
   const dispatch = useDispatch(); // Hook for dispatching actions
-
+  const { setSearchedVideoList } = useContext(VideoListContext);
   const handleVideoClick = (videoId) => {
     // Navigate to the video detail page when a video is clicked
     navigate(`/video/${videoId}`);
@@ -58,8 +60,10 @@ const VideoDetail = () => {
       } catch (err) {
         console.error(err);
         setError("Failed to fetch video details. Please try again later."); // Set the error state
-        dispatch(clearUserInfo()); // Clear user data in case of an error
-        navigate("/"); // Redirect user to the main page
+        dispatch(clearUserInfo()); // Clear the user data from the Redux store in case of an error
+        dispatch(clearVideoList()); // Clear the video list from the Redux store
+        setSearchedVideoList([]); // Reset the searched video list to an empty array (local state)
+        navigate("/"); // Redirect the user to the home page
       } finally {
         setLoading(false); // Set loading state to false after fetching
       }

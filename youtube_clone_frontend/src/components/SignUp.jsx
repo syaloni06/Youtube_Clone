@@ -15,7 +15,7 @@ const SignUp = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate(); // Navigate to other routes after successful signup
 
-// Handle input field changes and perform real-time validation
+  // Handle input field changes and perform real-time validation
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });

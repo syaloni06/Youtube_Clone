@@ -149,11 +149,11 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
                     <button
                       className="flex gap-4 w-full"
                       onClick={() => {
-                        dispatch(clearUserInfo());
-                        dispatch(clearVideoList());
-                        setSearchedVideoList([]);
-                        setIsMenuOpen(false);
-                        navigate("/");
+                        dispatch(clearUserInfo()); // Clear the user data from the Redux store in case of an error
+                        dispatch(clearVideoList()); // Clear the video list from the Redux store
+                        setSearchedVideoList([]); // Reset the searched video list to an empty array (local state)
+                        setIsMenuOpen(false); // reset the menu option
+                        navigate("/"); // Redirect the user to the home page
                       }}
                     >
                       <CiLogin className="self-center text-2xl" />

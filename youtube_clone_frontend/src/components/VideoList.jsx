@@ -13,7 +13,7 @@ import { LuDot } from "react-icons/lu";
 import { formatSubscribers$Views, timeAgo } from "../utils/formater";
 import CategoryList from "./CategoryList"; // Import the new component
 import { clearUserInfo } from "../utils/userSlice";
-
+import { clearVideoList } from "../utils/videoSlice";
 const VideoList = () => {
   const [error, setError] = useState(null); // State for handling errors
   const [loading, setLoading] = useState(true); // State for loading status
@@ -48,7 +48,9 @@ const VideoList = () => {
         }
       } catch (err) {
         console.error(err);
-        dispatch(clearUserInfo()); // If an error occurs, clear the user data from Redux store
+        dispatch(clearUserInfo()); // Clear the user data from the Redux store in case of an error
+        dispatch(clearVideoList()); // Clear the video list from the Redux store
+        setSearchedVideoList([]); // Reset the searched video list to an empty array (local state)
         navigate("/"); // Redirect the user to the home page
       } finally {
         setLoading(false); // Set loading state to false after fetching data

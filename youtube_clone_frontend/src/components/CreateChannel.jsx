@@ -74,10 +74,10 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // If form is not valid, stop submission
     if (!validateForm()) return;
-  
+
     // Show a SweetAlert loading spinner
     Swal.fire({
       title: "Processing...",
@@ -87,42 +87,42 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
         Swal.showLoading();
       },
     });
-  
+
     try {
       const token = user?.token; // Get user token
       const headers = {
         Authorization: token, // Set Authorization header
       };
-  
+
       // Send POST request to create a new channel
       const response = await axios.post(
         "http://localhost:5100/channels",
         formData,
         { headers }
       );
-  
+
       // Send PUT request to update the user with the channel ID
       const updateUserResponse = await axios.put(
         `http://localhost:5100/update/${user.userId}`,
         { channelId: response.data.channel.channelId },
         { headers }
       );
-  
+
       // Update Redux state with the new channel ID
       dispatch(updateUserInfo({ channelId: response.data.channel.channelId }));
-  
+
       // Close the SweetAlert loading spinner and show success
       Swal.fire({
         icon: "success",
         title: "Success!",
         text: "Channel created successfully!",
       });
-  
+
       // Close the modal
       setIsCreateChannelOpen(false);
     } catch (error) {
       console.error("Error creating channel:", error);
-  
+
       // Close the SweetAlert loading spinner and show error
       Swal.fire({
         icon: "error",

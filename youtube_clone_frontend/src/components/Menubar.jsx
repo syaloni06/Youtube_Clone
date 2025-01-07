@@ -20,6 +20,10 @@ import { MdOutlineFeedback } from "react-icons/md";
 import CreateChannel from "./CreateChannel";
 import { ChannelContext } from "../utils/ChannelContext";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { clearUserInfo } from "../utils/userSlice";
+import { clearVideoList } from "../utils/videoSlice";
+import { VideoListContext } from "../utils/VideoListContext";
 
 // MenuBar Component to display user options and settings
 const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
@@ -27,6 +31,8 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
   const [isCreateChannelOpen, setIsCreateChannelOpen] = useState(false); // State for managing channel creation
   const menuRef = useRef(); // Ref for detecting clicks outside menu
   const { channelHandle, setChannelHandle } = useContext(ChannelContext); // Context for managing channel handle
+  const { setSearchedVideoList } = useContext(VideoListContext);
+  const dispatch = useDispatch();
   // Effect for closing the menu when clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -140,8 +146,19 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
                     <IoIosArrowForward className="self-center text-xl" />
                   </li>
                   <li className="flex gap-4 px-4 py-3 text-base hover:bg-gray-100 cursor-pointer">
-                    <CiLogin className="self-center text-2xl" />
-                    Sign out
+                    <button
+                      className="flex gap-4 w-full"
+                      onClick={() => {
+                        dispatch(clearUserInfo());
+                        dispatch(clearVideoList());
+                        setSearchedVideoList([]);
+                        setIsMenuOpen(false);
+                        navigate("/");
+                      }}
+                    >
+                      <CiLogin className="self-center text-2xl" />
+                      Sign out
+                    </button>
                   </li>
                   <hr className="border-b mt-2 border-gray-200" />
                   <li className="flex gap-4 px-4 py-3 mt-2 text-base hover:bg-gray-100 cursor-pointer">

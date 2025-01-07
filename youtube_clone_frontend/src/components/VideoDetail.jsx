@@ -57,9 +57,9 @@ const VideoDetail = () => {
         setError(null); // Clear any previous errors
       } catch (err) {
         console.error(err);
+        setError("Failed to fetch video details. Please try again later."); // Set the error state
         dispatch(clearUserInfo()); // Clear user data in case of an error
         navigate("/"); // Redirect user to the main page
-        setError("Failed to fetch video details. Please try again later."); // Set the error state
       } finally {
         setLoading(false); // Set loading state to false after fetching
       }
@@ -103,14 +103,14 @@ const VideoDetail = () => {
                 {videoData.title}
               </h1>
               <div className="flex flex-col md:flex-row gap-y-4 mb-6 w-full">
-                <div className="flex mx-3 md:mx-0">
+                <div className="flex mx-3 md:w-full md:mx-0">
                   <img
                     src={videoData.channelLogo}
                     alt={videoData.uploader}
                     className="w-11 h-11 self-center rounded-full cursor-pointer"
                     onClick={() => handleChannelClick(videoData.channelId)}
                   />
-                  <div className="flex flex-col ml-4 w-2/3">
+                  <div className="flex flex-col ml-4 w-auto">
                     <div className="flex gap-2">
                       <p className="font-semibold text-lg line-clamp-1">
                         {videoData.uploader}

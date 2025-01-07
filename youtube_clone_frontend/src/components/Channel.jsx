@@ -13,6 +13,7 @@ import { timeAgo } from "../utils/formater";
 import { MdOutlineFlag, MdOutlineModeEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { clearUserInfo } from "../utils/userSlice";
+import Swal from "sweetalert2";
 
 const Channel = () => {
   const channelId = useParams(); // Get channel ID from URL parameters
@@ -40,6 +41,10 @@ const Channel = () => {
             },
           }
         );
+        if (response.status === 304) {
+          dispatch(clearUserInfo());
+          navigate("/");
+        }
         setChannelVideos(response.data);
       } catch (err) {
         console.error("Error fetching videos:", err);
@@ -66,11 +71,8 @@ const Channel = () => {
         navigate("/");
       }
     };
-
-    if (user?.token && channelId.id) {
-      fetchVideo();
-      fetchChannel();
-    }
+    fetchVideo();
+    fetchChannel();
   }, [user?.token, channelId, updateFlag]);
 
   // Navigate to the clicked video
@@ -81,8 +83,19 @@ const Channel = () => {
   // Save edits to a video
   const handleSaveEdit = async () => {
     const token = user?.token;
+
+    // Show a SweetAlert loading spinner
+    Swal.fire({
+      title: "Saving...",
+      text: "Please wait while we save your changes.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     try {
-      const response = await axios.put(
+      await axios.put(
         `http://localhost:5100/videos/${editVideo.videoId}`,
         editVideo,
         {
@@ -91,11 +104,26 @@ const Channel = () => {
           },
         }
       );
-      console.log(response.data);
+
+      // Close the SweetAlert loading spinner and show success
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Video updated successfully!",
+      });
+
       setShowEditDialog(false);
       setUpdateFlag(!updateFlag); // Trigger data refresh
     } catch (err) {
       console.error("Error updating video:", err);
+
+      // Close the SweetAlert loading spinner and show error
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Failed to update the video. Please try again.",
+      });
+
       dispatch(clearUserInfo());
       navigate("/");
     }
@@ -117,15 +145,58 @@ const Channel = () => {
   const handleDelete = async (videoId) => {
     setVisibleDropdown(null); // Close dropdown when deleting
     const token = user?.token;
+
+    // Show a SweetAlert confirmation dialog
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (!result.isConfirmed) return;
+
+    // Show a SweetAlert loading spinner
+    Swal.fire({
+      title: "Deleting...",
+      text: "Please wait while we delete the video.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     try {
-      await axios.delete(`http://localhost:5100/videos/${videoId}`, {
-        headers: {
-          Authorization: token,
-        },
+      await axios.delete(
+        `http://localhost:5100/videos/${videoId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      // Close the SweetAlert loading spinner and show success
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "The video has been deleted successfully!",
       });
+
       setUpdateFlag(!updateFlag); // Trigger data refresh
     } catch (err) {
       console.error("Error deleting video:", err);
+
+      // Close the SweetAlert loading spinner and show error
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Failed to delete the video. Please try again.",
+      });
+
       dispatch(clearUserInfo());
       navigate("/");
     }
@@ -189,7 +260,7 @@ const Channel = () => {
           </div>
         ) : (
           <p className="text-gray-700 mt-28 text-center text-xl">
-            You have to Signin to view your channel
+            Loading channel....
           </p>
         )}
       </div>

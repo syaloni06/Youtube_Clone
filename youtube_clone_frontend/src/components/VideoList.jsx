@@ -196,7 +196,7 @@ const VideoList = () => {
           <div className="flex flex-col items-center justify-center min-h-screen">
             <div className="text-center bg-white p-6 rounded-lg shadow-md border border-gray-200">
               <h1 className="text-2xl font-bold text-gray-800">
-                Try searching to get started
+                Sign In to watch videos
               </h1>
               <p className="text-gray-600 mt-2">
                 Start watching videos to help us build a feed of videos

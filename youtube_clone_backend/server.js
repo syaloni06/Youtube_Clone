@@ -1,10 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors"; // Import the CORS package
+import dotenv from "dotenv";
 import { authRoutes } from "./Routes/authRoutes.js";
 import { channelRoutes } from "./Routes/channelRoutes.js";
 import { videoRoutes } from "./Routes/videoRoutes.js";
 
+dotenv.config();
 const app = new express();
 
 // Middleware to enable CORS for all origins
@@ -41,7 +43,7 @@ videoRoutes(app);
 
 // Connect to MongoDB database
 // Establishes a connection to the MongoDB database named "youtubeCloneDB"
-mongoose.connect("mongodb://localhost:27017/youtubeCloneDB");
+mongoose.connect(process.env.MONGO_URI);
 
 // Event listener for successful database connection
 // Logs a success message when the database connection is established

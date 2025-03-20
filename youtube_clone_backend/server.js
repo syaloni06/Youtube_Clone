@@ -13,7 +13,7 @@ const app = new express();
 // Allows cross-origin requests to the server
 app.use(
   cors({
-    origin: "https://eventifysyaloni.netlify.app", // Allow frontend domain
+    origin: "https://youtubebysyaloni.netlify.app", // Allow frontend domain
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
     credentials: true, // Allow cookies & auth headers
   })

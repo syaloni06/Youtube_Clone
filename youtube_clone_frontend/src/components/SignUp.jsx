@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../utils/API_URL";
 
 const SignUp = () => {
   // State to hold form input values
@@ -75,7 +76,7 @@ const SignUp = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5100/register", // Send POST request to register the user
+        `${API_URL}/register`, // Send POST request to register the user
         formData
       );
 

@@ -19,6 +19,7 @@ import { clearUserInfo } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
 import { clearVideoList } from "../utils/videoSlice";
 import { VideoListContext } from "../utils/VideoListContext";
+import { API_URL } from "../utils/API_URL";
 
 const VideoDetail = () => {
   const videoId = useParams(); // Get the videoId from the URL parameters
@@ -43,7 +44,7 @@ const VideoDetail = () => {
       try {
         // Fetch video details from the server using the video ID
         const response = await axios.get(
-          `http://localhost:5100/videos/${videoId.id}`,
+          `${API_URL}/videos/${videoId.id}`,
           {
             headers: {
               Authorization: token, // Pass token in the Authorization header

@@ -11,6 +11,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdOutlineSort } from "react-icons/md";
 import { MdOutlineFlag } from "react-icons/md";
 import { timeAgo } from "../utils/formater";
+import { API_URL } from "../utils/API_URL";
 
 const Comment = ({ videoId }) => {
   const [comment, setComment] = useState(""); // State to manage the input for a new comment
@@ -29,7 +30,7 @@ const Comment = ({ videoId }) => {
       try {
         // API call to fetch comments for the given video
         const response = await axios.get(
-          `http://localhost:5100/videos/${videoId.id}`,
+          `${API_URL}/videos/${videoId.id}`,
           {
             headers: {
               Authorization: token,
@@ -53,7 +54,7 @@ const Comment = ({ videoId }) => {
     try {
       // API call to add a new comment
       const response = await axios.put(
-        `http://localhost:5100/videos/addComments/${videoId.id}`,
+        `${API_URL}/videos/addComments/${videoId.id}`,
         {
           userId: user.userId, // User ID of the commenter
           userName: user.username, // User name of the commenter
@@ -84,7 +85,7 @@ const Comment = ({ videoId }) => {
     try {
       // API call to update the comment
       const response = await axios.put(
-        `http://localhost:5100/videos/updateComments/${videoId.id}`,
+        `${API_URL}/videos/updateComments/${videoId.id}`,
         {
           commentId: commentId, // ID of the comment being updated
           text: editingText, // Updated text of the comment
@@ -106,7 +107,7 @@ const Comment = ({ videoId }) => {
     try {
       // API call to delete the comment
       const response = await axios.put(
-        `http://localhost:5100/videos/deleteComments/${videoId.id}`,
+        `${API_URL}/videos/deleteComments/${videoId.id}`,
         {
           commentId: commentId, // ID of the comment to be deleted
         }

@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { clearUserInfo } from "../utils/userSlice";
 import { clearVideoList } from "../utils/videoSlice";
 import { VideoListContext } from "../utils/VideoListContext";
+import { API_URL } from "../utils/API_URL";
 
 // MenuBar Component to display user options and settings
 const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
@@ -53,7 +54,7 @@ const MenuBar = ({ toggleMenu, isMenuOpen, setIsMenuOpen, user }) => {
       const token = user?.token; // Get user token
       try {
         const channelResponse = await axios.get(
-          `http://localhost:5100/channels/${user.channelId}`,
+          `${API_URL}/channels/${user.channelId}`,
           {
             headers: { Authorization: token }, // Authorization header with user token
           }

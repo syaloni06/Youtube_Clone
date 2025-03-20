@@ -16,6 +16,7 @@ import { clearUserInfo } from "../utils/userSlice";
 import Swal from "sweetalert2";
 import { clearVideoList } from "../utils/videoSlice";
 import { VideoListContext } from "../utils/VideoListContext";
+import { API_URL } from "../utils/API_URL";
 
 const Channel = () => {
   const channelId = useParams(); // Get channel ID from URL parameters
@@ -37,7 +38,7 @@ const Channel = () => {
       const token = user?.token;
       try {
         const response = await axios.get(
-          `http://localhost:5100/videos/channel/${channelId.id}`,
+          `${API_URL}/videos/channel/${channelId.id}`,
           {
             headers: {
               Authorization: token,
@@ -58,7 +59,7 @@ const Channel = () => {
       const token = user?.token;
       try {
         const response = await axios.get(
-          `http://localhost:5100/channels/${channelId.id}`,
+          `${API_URL}/channels/${channelId.id}`,
           {
             headers: {
               Authorization: token,
@@ -99,7 +100,7 @@ const Channel = () => {
 
     try {
       await axios.put(
-        `http://localhost:5100/videos/${editVideo.videoId}`,
+        `${API_URL}/videos/${editVideo.videoId}`,
         editVideo,
         {
           headers: {
@@ -174,7 +175,7 @@ const Channel = () => {
     });
 
     try {
-      await axios.delete(`http://localhost:5100/videos/${videoId}`, {
+      await axios.delete(`${API_URL}/videos/${videoId}`, {
         headers: {
           Authorization: token,
         },

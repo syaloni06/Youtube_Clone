@@ -11,7 +11,13 @@ const app = new express();
 
 // Middleware to enable CORS for all origins
 // Allows cross-origin requests to the server
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://eventifysyaloni.netlify.app", // Allow frontend domain
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+    credentials: true, // Allow cookies & auth headers
+  })
+);
 
 // Middleware to parse incoming JSON requests
 // Ensures the server can handle JSON data in request bodies

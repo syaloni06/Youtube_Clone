@@ -14,6 +14,8 @@ import { formatSubscribers$Views, timeAgo } from "../utils/formater";
 import CategoryList from "./CategoryList"; // Import the new component
 import { clearUserInfo } from "../utils/userSlice";
 import { clearVideoList } from "../utils/videoSlice";
+import { API_URL } from "../utils/API_URL";
+
 const VideoList = () => {
   const [error, setError] = useState(null); // State for handling errors
   const [loading, setLoading] = useState(true); // State for loading status
@@ -37,7 +39,7 @@ const VideoList = () => {
       try {
         if (token !== null) {
           // Fetch video data from the server if the user is authenticated
-          const response = await axios.get("http://localhost:5100/videos", {
+          const response = await axios.get(`${API_URL}/videos`, {
             headers: {
               Authorization: token, // Pass token in the Authorization header for security
             },

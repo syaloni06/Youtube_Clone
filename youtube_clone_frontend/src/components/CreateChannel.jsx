@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserInfo } from "../utils/userSlice";
 import Swal from "sweetalert2";
+import { API_URL } from "../utils/API_URL";
 
 // CreateChannel component for creating a new channel
 const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
@@ -96,14 +97,14 @@ const CreateChannel = ({ isCreateChannelOpen, setIsCreateChannelOpen }) => {
 
       // Send POST request to create a new channel
       const response = await axios.post(
-        "http://localhost:5100/channels",
+        `${API_URL}/channels`,
         formData,
         { headers }
       );
 
       // Send PUT request to update the user with the channel ID
       const updateUserResponse = await axios.put(
-        `http://localhost:5100/update/${user.userId}`,
+        `${API_URL}/update/${user.userId}`,
         { channelId: response.data.channel.channelId },
         { headers }
       );

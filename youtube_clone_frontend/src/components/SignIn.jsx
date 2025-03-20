@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "../utils/userSlice";
 import { ChannelContext } from "../utils/ChannelContext";
+import { API_URL } from "../utils/API_URL";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" }); // State to hold form data
@@ -62,7 +63,7 @@ const SignIn = () => {
     try {
       // Make a POST request to the backend with the form data (email and password)
       const response = await axios.post(
-        "http://localhost:5100/login", // Backend URL for login
+        `${API_URL}/login`, // Backend URL for login
         formData
       );
 
@@ -77,7 +78,7 @@ const SignIn = () => {
         // If user has a channelId, fetch channel data and set the channel handle
         if (user.channelId !== undefined) {
           const channelResponse = await axios.get(
-            `http://localhost:5100/channels/${user.channelId}`, // Fetch channel details
+            `${API_URL}/channels/${user.channelId}`, // Fetch channel details
             {
               headers: { Authorization: token }, // Include token in request header
             }
